@@ -40,6 +40,104 @@ interface ComponentMetadata {
 }
 
 /**
+ * Extract global props list from pb_forms_global_props_helper.rb
+ */
+function extractGlobalPropsList(playbookPath: string): string[] {
+  // Go up from .../playbook/app/pb_kits/playbook to .../playbook/playbook
+  const playbookRoot = path.dirname(path.dirname(path.dirname(playbookPath)))
+  const helperPath = path.join(playbookRoot, "lib/playbook/pb_forms_global_props_helper.rb")
+
+  if (!fs.existsSync(helperPath)) {
+    console.warn(
+      `Could not find pb_forms_global_props_helper.rb at ${helperPath}, using fallback global props`
+    )
+    return [
+      "padding",
+      "padding_top",
+      "padding_bottom",
+      "padding_left",
+      "padding_right",
+      "padding_x",
+      "padding_y",
+      "margin",
+      "margin_top",
+      "margin_bottom",
+      "margin_left",
+      "margin_right",
+      "margin_x",
+      "margin_y",
+      "shadow",
+      "width",
+      "min_width",
+      "max_width",
+      "height",
+      "min_height",
+      "max_height",
+      "position",
+      "vertical_alignment",
+      "z_index",
+      "line_height",
+      "number_spacing",
+      "border_radius",
+      "text_size",
+      "letter_spacing",
+      "display",
+      "cursor",
+      "hover",
+      "text_align",
+      "overflow",
+      "overflow_x",
+      "overflow_y",
+      "truncate",
+      "group_hover"
+    ]
+  }
+
+  const content = fs.readFileSync(helperPath, "utf-8")
+  const match = content.match(/global_props\s*=\s*%i\[([^\]]+)\]/)
+
+  if (!match) {
+    console.warn("Could not parse global_props from helper file")
+    return []
+  }
+
+  return match[1]
+    .split(/\s+/)
+    .map((p) => p.trim())
+    .filter((p) => p.length > 0)
+}
+
+/**
+ * Extract values for a global prop from its module file in lib/playbook
+ */
+function extractGlobalPropValues(propName: string, playbookPath: string): string[] | undefined {
+  // Map prop name to file name (e.g., "number_spacing" -> "number_spacing.rb")
+  // Go up from .../playbook/app/pb_kits/playbook to .../playbook/playbook
+  const playbookRoot = path.dirname(path.dirname(path.dirname(playbookPath)))
+  const libPath = path.join(playbookRoot, "lib/playbook", `${propName}.rb`)
+
+  if (!fs.existsSync(libPath)) {
+    return undefined
+  }
+
+  const content = fs.readFileSync(libPath, "utf-8")
+
+  // Look for def <prop>_values method
+  const valuesMatch = content.match(
+    new RegExp(`def\\s+${propName}_values\\s+%w\\[([^\\]]+)\\]`, "i")
+  )
+
+  if (!valuesMatch) {
+    return undefined
+  }
+
+  return valuesMatch[1]
+    .split(/\s+/)
+    .map((v) => v.trim())
+    .filter((v) => v.length > 0)
+}
+
+/**
  * Parse a Ruby prop definition line
  * Example: prop :text, type: Playbook::Props::String, default: "Click"
  */
@@ -346,7 +444,14 @@ function generateSnippets(components: ComponentMetadata[]): void {
   const reactSnippets: Record<string, any> = {}
 
   for (const component of components) {
-    const railsSnippetName = `Playbook ${component.reactName}`
+    // Use unique names to avoid collisions between standalone and subcomponents
+    // For subcomponents like "layout/body", create a unique snippet name
+    const railsSnippetName = component.railsName.includes("/")
+      ? `Playbook ${component.railsName
+          .split("/")
+          .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
+          .join("")}`
+      : `Playbook ${component.reactName}`
     const reactSnippetName = `Playbook ${component.reactName}`
 
     railsSnippets[railsSnippetName] = generateERBSnippet(component)
@@ -373,175 +478,88 @@ function generateSnippets(components: ComponentMetadata[]): void {
  * Generate metadata file
  */
 function generateMetadata(components: ComponentMetadata[]): void {
+  // Extract global props dynamically from Playbook source
+  const globalPropsList = extractGlobalPropsList(PLAYBOOK_REPO_PATH)
+  const globalProps: Record<string, any> = {}
+
+  // Define standard values for spacing props
+  const spacingValues = ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+  const positionValues = ["relative", "absolute", "fixed", "sticky", "static"]
+  const shadowValues = ["none", "deep", "deeper", "deepest"]
+  const displayValues = ["block", "inline_block", "inline", "flex", "inline_flex", "none"]
+  const textAlignValues = ["left", "center", "right", "justify"]
+  const overflowValues = ["visible", "hidden", "scroll", "auto"]
+
+  // Build global props object
+  for (const propName of globalPropsList) {
+    // Try to extract values from lib/playbook files
+    const extractedValues = extractGlobalPropValues(propName, PLAYBOOK_REPO_PATH)
+
+    if (extractedValues) {
+      globalProps[propName] = {
+        type: "string",
+        values: extractedValues
+      }
+    } else if (propName.startsWith("padding") || propName.startsWith("margin")) {
+      globalProps[propName] = {
+        type: "string",
+        values: spacingValues
+      }
+    } else if (propName === "position") {
+      globalProps[propName] = {
+        type: "string",
+        values: positionValues
+      }
+    } else if (propName === "shadow") {
+      globalProps[propName] = {
+        type: "string",
+        values: shadowValues
+      }
+    } else if (propName === "display") {
+      globalProps[propName] = {
+        type: "string",
+        values: displayValues
+      }
+    } else if (propName === "text_align") {
+      globalProps[propName] = {
+        type: "string",
+        values: textAlignValues
+      }
+    } else if (propName === "overflow" || propName === "overflow_x" || propName === "overflow_y") {
+      globalProps[propName] = {
+        type: "string",
+        values: overflowValues
+      }
+    } else if (propName === "z_index") {
+      globalProps[propName] = {
+        type: "number",
+        values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+      }
+    } else if (propName === "group_hover" || propName === "truncate") {
+      globalProps[propName] = {
+        type: "boolean"
+      }
+    } else {
+      // Generic string prop
+      globalProps[propName] = {
+        type: "string"
+      }
+    }
+  }
+
   const metadata: any = {
     $schema: "./playbook-schema.json",
     generatedAt: new Date().toISOString(),
-    globalProps: {
-      alignment: { type: "string", values: ["start", "end", "center"] },
-      align_content: { type: "string", values: ["start", "end", "center", "spaceBetween"] },
-      align_items: {
-        type: "string",
-        values: ["start", "end", "center", "flexStart", "flexEnd", "stretch", "baseline"]
-      },
-      align_self: {
-        type: "string",
-        values: ["start", "end", "center", "auto", "stretch", "baseline"]
-      },
-      all_sizes: { type: "string", values: ["none", "xxs", "xs", "sm", "md", "lg", "xl"] },
-      aria: { type: "string" },
-      border_radius: { type: "string", values: ["none", "xs", "sm", "md", "lg", "xl", "rounded"] },
-      class_name: { type: "string" },
-      cursor: {
-        type: "string",
-        values: [
-          "auto",
-          "default",
-          "none",
-          "contextMenu",
-          "help",
-          "pointer",
-          "progress",
-          "wait",
-          "cell",
-          "crosshair",
-          "text",
-          "verticalText",
-          "alias",
-          "copy",
-          "move",
-          "noDrop",
-          "notAllowed",
-          "grab",
-          "grabbing",
-          "eResize",
-          "nResize",
-          "neResize",
-          "nwResize",
-          "sResize",
-          "seResize",
-          "swResize",
-          "wResize",
-          "ewResize",
-          "nsResize",
-          "neswResize",
-          "nwseResize",
-          "colResize",
-          "rowResize",
-          "allScroll",
-          "zoomIn",
-          "zoomOut"
-        ]
-      },
-      dark: { type: "boolean" },
-      flex: {
-        type: "string",
-        values: [
-          "auto",
-          "initial",
-          "0",
-          "1",
-          "2",
-          "3",
-          "4",
-          "5",
-          "6",
-          "7",
-          "8",
-          "9",
-          "10",
-          "11",
-          "12",
-          "none"
-        ]
-      },
-      flex_direction: { type: "string", values: ["row", "column", "columnReverse"] },
-      flex_grow: { type: "number", values: ["0", "1"] },
-      flex_shrink: { type: "number", values: ["0", "1"] },
-      flex_wrap: { type: "string", values: ["wrap", "nowrap", "wrapReverse"] },
-      gap: { type: "string", values: ["none", "xxs", "xs", "sm", "md", "lg", "xl"] },
-      html_options: { type: "object" },
-      id: { type: "string" },
-      justify_content: {
-        type: "string",
-        values: ["start", "end", "center", "spaceBetween", "spaceAround", "spaceEvenly"]
-      },
-      justify_self: { type: "string", values: ["start", "end", "center", "auto", "stretch"] },
-      line_height: {
-        type: "string",
-        values: ["loosest", "looser", "loose", "normal", "tight", "tighter", "tightest"]
-      },
-      margin: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      margin_bottom: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      margin_left: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      margin_right: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      margin_top: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      margin_x: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      margin_y: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      max_width: { type: "string", values: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] },
-      number_spacing: { type: "string", values: ["tabular"] },
-      order: {
-        type: "string",
-        values: ["none", "first", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
-      },
-      padding: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      padding_bottom: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      padding_left: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      padding_right: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      padding_top: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      padding_x: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      padding_y: {
-        type: "string",
-        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
-      },
-      position: { type: "string", values: ["relative", "absolute", "fixed", "sticky", "static"] },
-      shadow: { type: "string", values: ["none", "deep", "deeper", "deepest"] },
-      space: { type: "string", values: ["spaceBetween", "spaceAround", "spaceEvenly"] },
-      z_index: { type: "number", values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] }
-    },
+    globalProps,
     components: {}
   }
 
+  // Use railsName as key to avoid collisions (e.g., "body" vs "layout/body")
   for (const component of components) {
-    metadata.components[component.reactName] = {
+    // Create a unique key: for subcomponents use full path, for regular use react name
+    const key = component.railsName.includes("/") ? component.railsName : component.reactName
+
+    metadata.components[key] = {
       rails: component.railsName,
       react: component.reactName,
       description: `Playbook ${component.reactName} component`,

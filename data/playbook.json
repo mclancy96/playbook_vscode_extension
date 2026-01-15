@@ -1,366 +1,23 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-01-15T12:50:49.582Z",
+  "generatedAt": "2026-01-15T15:15:38.917Z",
   "globalProps": {
-    "alignment": {
-      "type": "string",
-      "values": [
-        "start",
-        "end",
-        "center"
-      ]
-    },
-    "align_content": {
-      "type": "string",
-      "values": [
-        "start",
-        "end",
-        "center",
-        "spaceBetween"
-      ]
-    },
-    "align_items": {
-      "type": "string",
-      "values": [
-        "start",
-        "end",
-        "center",
-        "flexStart",
-        "flexEnd",
-        "stretch",
-        "baseline"
-      ]
-    },
-    "align_self": {
-      "type": "string",
-      "values": [
-        "start",
-        "end",
-        "center",
-        "auto",
-        "stretch",
-        "baseline"
-      ]
-    },
-    "all_sizes": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl"
-      ]
-    },
-    "aria": {
-      "type": "string"
-    },
-    "border_radius": {
-      "type": "string",
-      "values": [
-        "none",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "rounded"
-      ]
-    },
-    "class_name": {
-      "type": "string"
-    },
-    "cursor": {
-      "type": "string",
-      "values": [
-        "auto",
-        "default",
-        "none",
-        "contextMenu",
-        "help",
-        "pointer",
-        "progress",
-        "wait",
-        "cell",
-        "crosshair",
-        "text",
-        "verticalText",
-        "alias",
-        "copy",
-        "move",
-        "noDrop",
-        "notAllowed",
-        "grab",
-        "grabbing",
-        "eResize",
-        "nResize",
-        "neResize",
-        "nwResize",
-        "sResize",
-        "seResize",
-        "swResize",
-        "wResize",
-        "ewResize",
-        "nsResize",
-        "neswResize",
-        "nwseResize",
-        "colResize",
-        "rowResize",
-        "allScroll",
-        "zoomIn",
-        "zoomOut"
-      ]
-    },
-    "dark": {
-      "type": "boolean"
-    },
-    "flex": {
-      "type": "string",
-      "values": [
-        "auto",
-        "initial",
-        "0",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12",
-        "none"
-      ]
-    },
-    "flex_direction": {
-      "type": "string",
-      "values": [
-        "row",
-        "column",
-        "columnReverse"
-      ]
-    },
-    "flex_grow": {
-      "type": "number",
-      "values": [
-        "0",
-        "1"
-      ]
-    },
-    "flex_shrink": {
-      "type": "number",
-      "values": [
-        "0",
-        "1"
-      ]
-    },
-    "flex_wrap": {
-      "type": "string",
-      "values": [
-        "wrap",
-        "nowrap",
-        "wrapReverse"
-      ]
-    },
-    "gap": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl"
-      ]
-    },
-    "html_options": {
-      "type": "object"
-    },
-    "id": {
-      "type": "string"
-    },
-    "justify_content": {
-      "type": "string",
-      "values": [
-        "start",
-        "end",
-        "center",
-        "spaceBetween",
-        "spaceAround",
-        "spaceEvenly"
-      ]
-    },
-    "justify_self": {
-      "type": "string",
-      "values": [
-        "start",
-        "end",
-        "center",
-        "auto",
-        "stretch"
-      ]
-    },
-    "line_height": {
-      "type": "string",
-      "values": [
-        "loosest",
-        "looser",
-        "loose",
-        "normal",
-        "tight",
-        "tighter",
-        "tightest"
-      ]
-    },
-    "margin": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "margin_bottom": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "margin_left": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "margin_right": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "margin_top": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "margin_x": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "margin_y": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
-    "max_width": {
-      "type": "string",
-      "values": [
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "xxl"
-      ]
-    },
-    "number_spacing": {
-      "type": "string",
-      "values": [
-        "tabular"
-      ]
-    },
-    "order": {
-      "type": "string",
-      "values": [
-        "none",
-        "first",
-        "1",
-        "2",
-        "3",
-        "4",
-        "5",
-        "6",
-        "7",
-        "8",
-        "9",
-        "10",
-        "11",
-        "12"
-      ]
-    },
     "padding": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "padding_top": {
       "type": "string",
       "values": [
         "none",
@@ -420,21 +77,6 @@
         "inherit"
       ]
     },
-    "padding_top": {
-      "type": "string",
-      "values": [
-        "none",
-        "xxs",
-        "xs",
-        "sm",
-        "md",
-        "lg",
-        "xl",
-        "auto",
-        "initial",
-        "inherit"
-      ]
-    },
     "padding_x": {
       "type": "string",
       "values": [
@@ -465,14 +107,109 @@
         "inherit"
       ]
     },
-    "position": {
+    "margin": {
       "type": "string",
       "values": [
-        "relative",
-        "absolute",
-        "fixed",
-        "sticky",
-        "static"
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "margin_top": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "margin_bottom": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "margin_left": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "margin_right": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "margin_x": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ]
+    },
+    "margin_y": {
+      "type": "string",
+      "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
       ]
     },
     "shadow": {
@@ -484,16 +221,68 @@
         "deepest"
       ]
     },
-    "space": {
+    "width": {
+      "type": "string"
+    },
+    "min_width": {
+      "type": "string"
+    },
+    "max_width": {
+      "type": "string"
+    },
+    "height": {
       "type": "string",
       "values": [
-        "spaceBetween",
-        "spaceAround",
-        "spaceEvenly"
+        "auto",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "xxxl"
       ]
     },
+    "min_height": {
+      "type": "string",
+      "values": [
+        "auto",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "xxxl"
+      ]
+    },
+    "max_height": {
+      "type": "string",
+      "values": [
+        "auto",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "xxxl"
+      ]
+    },
+    "position": {
+      "type": "string",
+      "values": [
+        "relative",
+        "absolute",
+        "fixed",
+        "sticky"
+      ]
+    },
+    "vertical_alignment": {
+      "type": "string"
+    },
     "z_index": {
-      "type": "number",
+      "type": "string",
       "values": [
         "1",
         "2",
@@ -506,6 +295,151 @@
         "9",
         "10"
       ]
+    },
+    "line_height": {
+      "type": "string",
+      "values": [
+        "tightest",
+        "tighter",
+        "tight",
+        "normal",
+        "loose",
+        "looser",
+        "loosest"
+      ]
+    },
+    "number_spacing": {
+      "type": "string",
+      "values": [
+        "tabular"
+      ]
+    },
+    "border_radius": {
+      "type": "string",
+      "values": [
+        "none",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "rounded"
+      ]
+    },
+    "text_size": {
+      "type": "string"
+    },
+    "letter_spacing": {
+      "type": "string"
+    },
+    "display": {
+      "type": "string",
+      "values": [
+        "block",
+        "inline_block",
+        "inline",
+        "flex",
+        "inline_flex",
+        "none",
+        "grid"
+      ]
+    },
+    "cursor": {
+      "type": "string",
+      "values": [
+        "auto",
+        "default",
+        "none",
+        "contextMenu",
+        "help",
+        "pointer",
+        "progress",
+        "wait",
+        "cell",
+        "crosshair",
+        "text",
+        "verticalText",
+        "alias",
+        "copy",
+        "move",
+        "noDrop",
+        "notAllowed",
+        "grab",
+        "grabbing",
+        "eResize",
+        "nResize",
+        "neResize",
+        "nwResize",
+        "sResize",
+        "seResize",
+        "swResize",
+        "wResize",
+        "ewResize",
+        "nsResize",
+        "neswResize",
+        "nwseResize",
+        "colResize",
+        "rowResize",
+        "allScroll",
+        "zoomIn",
+        "zoomOut"
+      ]
+    },
+    "hover": {
+      "type": "string"
+    },
+    "text_align": {
+      "type": "string",
+      "values": [
+        "start",
+        "end",
+        "left",
+        "right",
+        "center",
+        "justify",
+        "justify-all",
+        "match-parent"
+      ]
+    },
+    "overflow": {
+      "type": "string",
+      "values": [
+        "visible",
+        "hidden",
+        "scroll",
+        "auto"
+      ]
+    },
+    "overflow_x": {
+      "type": "string",
+      "values": [
+        "visible",
+        "hidden",
+        "scroll",
+        "auto"
+      ]
+    },
+    "overflow_y": {
+      "type": "string",
+      "values": [
+        "visible",
+        "hidden",
+        "scroll",
+        "auto"
+      ]
+    },
+    "truncate": {
+      "type": "string",
+      "values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ]
+    },
+    "group_hover": {
+      "type": "boolean"
     }
   },
   "components": {
@@ -597,7 +531,7 @@
         }
       }
     },
-    "TableActionBar": {
+    "advanced_table/table_action_bar": {
       "rails": "advanced_table/table_action_bar",
       "react": "TableActionBar",
       "description": "Playbook TableActionBar component",
@@ -617,166 +551,184 @@
         }
       }
     },
-    "TableBody": {
-      "rails": "table/table_body",
+    "advanced_table/table_body": {
+      "rails": "advanced_table/table_body",
       "react": "TableBody",
       "description": "Playbook TableBody component",
       "hasChildren": false,
       "props": {
-        "tag": {
+        "id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "table_data": {
+          "type": "array",
+          "default": "[]"
+        },
+        "column_definitions": {
+          "type": "array",
+          "default": "[]"
+        },
+        "enable_toggle_expansion": {
           "type": "enum",
-          "default": "\"table\"",
+          "default": "\"header\"",
           "values": [
-            "table",
-            "div"
+            "all",
+            "header",
+            "none"
           ]
         },
-        "draggable_container": {
+        "subrow_headers": {
+          "type": "array",
+          "default": "[]"
+        },
+        "collapsible_trail": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "loading": {
           "type": "boolean",
           "default": "false"
+        },
+        "responsive": {
+          "type": "enum",
+          "default": "\"scroll\"",
+          "values": [
+            "none",
+            "scroll"
+          ]
+        },
+        "selectable_rows": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "row_styling": {
+          "type": "array",
+          "default": "[]"
         }
       }
     },
-    "TableHeader": {
-      "rails": "table/table_header",
+    "advanced_table/table_header": {
+      "rails": "advanced_table/table_header",
       "react": "TableHeader",
       "description": "Playbook TableHeader component",
       "hasChildren": false,
       "props": {
-        "align": {
-          "type": "enum",
-          "default": "\"start\"",
-          "values": [
-            "start",
-            "center",
-            "end",
-            "stretch",
-            "baseline",
-            "none"
-          ]
-        },
-        "align_content": {
-          "type": "enum",
-          "default": "\"center\"",
-          "values": [
-            "start",
-            "center",
-            "end",
-            "stretch",
-            "baseline",
-            "none"
-          ]
-        },
-        "justify_sort_icon": {
-          "type": "enum",
-          "default": "\"between\"",
-          "values": [
-            "start",
-            "center",
-            "end",
-            "stretch",
-            "around",
-            "between",
-            "evenly",
-            "none"
-          ]
-        },
-        "colspan": {
-          "type": "number",
-          "default": "1"
-        },
-        "placement": {
-          "type": "enum",
-          "default": "\"bottom-end\"",
-          "values": [
-            "top",
-            "bottom",
-            "left",
-            "right",
-            "top-start",
-            "top-end",
-            "bottom-start",
-            "bottom-end",
-            "right-start",
-            "right-end",
-            "left-start",
-            "left-end"
-          ]
-        },
-        "sort_menu": {
-          "type": "hasharray",
-          "default": "[{}]"
-        },
-        "text": {
+        "id": {
           "type": "string",
           "default": "\"\""
         },
-        "sort_dropdown": {
+        "column_definitions": {
+          "type": "array",
+          "default": "[]"
+        },
+        "enable_toggle_expansion": {
+          "type": "enum",
+          "default": "\"header\"",
+          "values": [
+            "all",
+            "header",
+            "none"
+          ]
+        },
+        "loading": {
           "type": "boolean",
           "default": "false"
         },
-        "tag": {
+        "responsive": {
           "type": "enum",
-          "default": "\"table\"",
+          "default": "\"scroll\"",
           "values": [
-            "table",
-            "div"
+            "none",
+            "scroll"
           ]
         },
-        "header_style": {
-          "type": "enum",
-          "default": "\"default\"",
-          "values": [
-            "default",
-            "borderless",
-            "floating"
-          ]
+        "selectable_rows": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "show_actions_bar": {
+          "type": "boolean",
+          "default": "true"
         }
       }
     },
-    "TableRow": {
-      "rails": "table/table_row",
+    "advanced_table/table_row": {
+      "rails": "advanced_table/table_row",
       "react": "TableRow",
       "description": "Playbook TableRow component",
       "hasChildren": false,
       "props": {
-        "side_highlight_color": {
+        "id": {
           "type": "string",
-          "default": "\"none\""
+          "default": "\"\""
         },
-        "tag": {
-          "type": "enum",
-          "default": "\"table\"",
-          "values": [
-            "table",
-            "div"
-          ]
+        "column_definitions": {
+          "type": "array",
+          "default": "[]"
         },
-        "collapsible": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "collapsible_content": {
+        "row": {
           "type": "any"
         },
-        "collapsible_side_highlight": {
+        "depth": {
+          "type": "any"
+        },
+        "collapsible_trail": {
           "type": "boolean",
           "default": "true"
         },
-        "toggle_cell_id": {
-          "type": "string"
+        "table_data_attributes": {
+          "type": "hashprop",
+          "default": "{}"
         },
-        "draggable_item": {
+        "loading": {
           "type": "boolean",
           "default": "false"
         },
-        "drag_id": {
+        "responsive": {
+          "type": "enum",
+          "default": "\"scroll\"",
+          "values": [
+            "none",
+            "scroll"
+          ]
+        },
+        "is_pinned_left": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "selectable_rows": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "row_id": {
           "type": "string",
-          "default": "nil"
+          "default": "\"\""
+        },
+        "enable_toggle_expansion": {
+          "type": "enum",
+          "default": "\"header\"",
+          "values": [
+            "all",
+            "header",
+            "none"
+          ]
+        },
+        "row_styling": {
+          "type": "array",
+          "default": "[]"
+        },
+        "last_row": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "immediate_parent_row_id": {
+          "type": "string",
+          "default": "\"\""
         }
       }
     },
-    "TableSubrowHeader": {
+    "advanced_table/table_subrow_header": {
       "rails": "advanced_table/table_subrow_header",
       "react": "TableSubrowHeader",
       "description": "Playbook TableSubrowHeader component",
@@ -1137,20 +1089,57 @@
       }
     },
     "Body": {
-      "rails": "layout/body",
+      "rails": "body",
       "react": "Body",
       "description": "Playbook Body component",
-      "hasChildren": true,
+      "hasChildren": false,
       "props": {
+        "color": {
+          "type": "enum",
+          "default": "\"default\"",
+          "values": [
+            "default",
+            "light",
+            "lighter",
+            "link",
+            "success",
+            "error"
+          ]
+        },
+        "status": {
+          "type": "enum",
+          "default": "\"neutral\"",
+          "values": [
+            "neutral",
+            "positive",
+            "negative"
+          ]
+        },
         "tag": {
           "type": "enum",
           "default": "\"div\"",
           "values": [
-            "ul",
-            "li",
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "p",
             "span",
             "div"
           ]
+        },
+        "text": {
+          "type": "any"
+        },
+        "highlighting": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "highlighted_text": {
+          "type": "array",
+          "default": "[]"
         }
       }
     },
@@ -1161,7 +1150,7 @@
       "hasChildren": false,
       "props": {}
     },
-    "BreadCrumbItem": {
+    "bread_crumbs/bread_crumb_item": {
       "rails": "bread_crumbs/bread_crumb_item",
       "react": "BreadCrumbItem",
       "description": "Playbook BreadCrumbItem component",
@@ -1460,14 +1449,14 @@
         }
       }
     },
-    "CardBody": {
+    "card/card_body": {
       "rails": "card/card_body",
       "react": "CardBody",
       "description": "Playbook CardBody component",
       "hasChildren": true,
       "props": {}
     },
-    "CardHeader": {
+    "card/card_header": {
       "rails": "card/card_header",
       "react": "CardHeader",
       "description": "Playbook CardHeader component",
@@ -1745,7 +1734,7 @@
         }
       }
     },
-    "CollapsibleContent": {
+    "collapsible/collapsible_content": {
       "rails": "collapsible/collapsible_content",
       "react": "CollapsibleContent",
       "description": "Playbook CollapsibleContent component",
@@ -1757,7 +1746,7 @@
         }
       }
     },
-    "CollapsibleIcon": {
+    "collapsible/collapsible_icon": {
       "rails": "collapsible/collapsible_icon",
       "react": "CollapsibleIcon",
       "description": "Playbook CollapsibleIcon component",
@@ -1803,7 +1792,7 @@
         }
       }
     },
-    "CollapsibleMain": {
+    "collapsible/collapsible_main": {
       "rails": "collapsible/collapsible_main",
       "react": "CollapsibleMain",
       "description": "Playbook CollapsibleMain component",
@@ -2419,11 +2408,46 @@
       }
     },
     "Detail": {
-      "rails": "timeline/detail",
+      "rails": "detail",
       "react": "Detail",
       "description": "Playbook Detail component",
       "hasChildren": false,
-      "props": {}
+      "props": {
+        "bold": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "color": {
+          "type": "enum",
+          "default": "\"light\"",
+          "values": [
+            "light",
+            "default",
+            "lighter",
+            "link",
+            "error",
+            "success"
+          ]
+        },
+        "tag": {
+          "type": "enum",
+          "default": "\"div\"",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "p",
+            "span",
+            "div"
+          ]
+        },
+        "text": {
+          "type": "any"
+        }
+      }
     },
     "Dialog": {
       "rails": "dialog",
@@ -2499,7 +2523,7 @@
         }
       }
     },
-    "DialogBody": {
+    "dialog/dialog_body": {
       "rails": "dialog/dialog_body",
       "react": "DialogBody",
       "description": "Playbook DialogBody component",
@@ -2510,7 +2534,7 @@
         }
       }
     },
-    "DialogFooter": {
+    "dialog/dialog_footer": {
       "rails": "dialog/dialog_footer",
       "react": "DialogFooter",
       "description": "Playbook DialogFooter component",
@@ -2533,7 +2557,7 @@
         }
       }
     },
-    "DialogHeader": {
+    "dialog/dialog_header": {
       "rails": "dialog/dialog_header",
       "react": "DialogHeader",
       "description": "Playbook DialogHeader component",
@@ -2599,7 +2623,7 @@
         }
       }
     },
-    "DraggableContainer": {
+    "draggable/draggable_container": {
       "rails": "draggable/draggable_container",
       "react": "DraggableContainer",
       "description": "Playbook DraggableContainer component",
@@ -2623,7 +2647,7 @@
         }
       }
     },
-    "DraggableItem": {
+    "draggable/draggable_item": {
       "rails": "draggable/draggable_item",
       "react": "DraggableItem",
       "description": "Playbook DraggableItem component",
@@ -2711,7 +2735,7 @@
         }
       }
     },
-    "DropdownContainer": {
+    "dropdown/dropdown_container": {
       "rails": "dropdown/dropdown_container",
       "react": "DropdownContainer",
       "description": "Playbook DropdownContainer component",
@@ -2723,7 +2747,7 @@
         }
       }
     },
-    "DropdownOption": {
+    "dropdown/dropdown_option": {
       "rails": "dropdown/dropdown_option",
       "react": "DropdownOption",
       "description": "Playbook DropdownOption component",
@@ -2737,7 +2761,7 @@
         }
       }
     },
-    "DropdownTrigger": {
+    "dropdown/dropdown_trigger": {
       "rails": "dropdown/dropdown_trigger",
       "react": "DropdownTrigger",
       "description": "Playbook DropdownTrigger component",
@@ -3078,7 +3102,7 @@
         }
       }
     },
-    "FlexItem": {
+    "flex/flex_item": {
       "rails": "flex/flex_item",
       "react": "FlexItem",
       "description": "Playbook FlexItem component",
@@ -3383,7 +3407,7 @@
         }
       }
     },
-    "CityEmphasis": {
+    "home_address_street/city_emphasis": {
       "rails": "home_address_street/city_emphasis",
       "react": "CityEmphasis",
       "description": "Playbook CityEmphasis component",
@@ -3423,7 +3447,7 @@
         }
       }
     },
-    "NoneEmphasis": {
+    "home_address_street/none_emphasis": {
       "rails": "home_address_street/none_emphasis",
       "react": "NoneEmphasis",
       "description": "Playbook NoneEmphasis component",
@@ -3460,7 +3484,7 @@
         }
       }
     },
-    "StreetEmphasis": {
+    "home_address_street/street_emphasis": {
       "rails": "home_address_street/street_emphasis",
       "react": "StreetEmphasis",
       "description": "Playbook StreetEmphasis component",
@@ -3956,7 +3980,25 @@
         }
       }
     },
-    "Footer": {
+    "layout/body": {
+      "rails": "layout/body",
+      "react": "Body",
+      "description": "Playbook Body component",
+      "hasChildren": true,
+      "props": {
+        "tag": {
+          "type": "enum",
+          "default": "\"div\"",
+          "values": [
+            "ul",
+            "li",
+            "span",
+            "div"
+          ]
+        }
+      }
+    },
+    "layout/footer": {
       "rails": "layout/footer",
       "react": "Footer",
       "description": "Playbook Footer component",
@@ -3974,7 +4016,7 @@
         }
       }
     },
-    "Header": {
+    "layout/header": {
       "rails": "layout/header",
       "react": "Header",
       "description": "Playbook Header component",
@@ -3992,44 +4034,24 @@
         }
       }
     },
-    "Item": {
-      "rails": "timeline/item",
+    "layout/item": {
+      "rails": "layout/item",
       "react": "Item",
       "description": "Playbook Item component",
-      "hasChildren": false,
+      "hasChildren": true,
       "props": {
-        "date": {
-          "type": "any"
-        },
-        "icon": {
-          "type": "string",
-          "default": "\"user\""
-        },
-        "icon_color": {
+        "size": {
           "type": "enum",
-          "default": "\"default\"",
+          "default": "\"sm\"",
           "values": [
-            "default",
-            "royal",
-            "blue",
-            "purple",
-            "teal",
-            "red",
-            "yellow",
-            "green"
-          ]
-        },
-        "line_style": {
-          "type": "enum",
-          "default": "\"solid\"",
-          "values": [
-            "solid",
-            "dotted"
+            "sm",
+            "md",
+            "lg"
           ]
         }
       }
     },
-    "Sidebar": {
+    "layout/sidebar": {
       "rails": "layout/sidebar",
       "react": "Sidebar",
       "description": "Playbook Sidebar component",
@@ -4253,6 +4275,24 @@
         }
       }
     },
+    "list/item": {
+      "rails": "list/item",
+      "react": "Item",
+      "description": "Playbook Item component",
+      "hasChildren": false,
+      "props": {
+        "drag_handle": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "drag_id": {
+          "type": "string"
+        },
+        "tabindex": {
+          "type": "any"
+        }
+      }
+    },
     "LoadingInline": {
       "rails": "loading_inline",
       "react": "LoadingInline",
@@ -4331,7 +4371,7 @@
         }
       }
     },
-    "MessageMention": {
+    "message/message_mention": {
       "rails": "message/message_mention",
       "react": "MessageMention",
       "description": "Playbook MessageMention component",
@@ -4542,6 +4582,76 @@
         "extended_underline": {
           "type": "boolean",
           "default": "false"
+        }
+      }
+    },
+    "nav/item": {
+      "rails": "nav/item",
+      "react": "Item",
+      "description": "Playbook Item component",
+      "hasChildren": false,
+      "props": {
+        "active": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "font_size": {
+          "type": "enum",
+          "default": "\"normal\"",
+          "values": [
+            "normal",
+            "small"
+          ]
+        },
+        "font_weight": {
+          "type": "enum",
+          "default": "\"regular\"",
+          "values": [
+            "bold",
+            "regular",
+            "bolder"
+          ]
+        },
+        "highlighted_border": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "collapsible": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "collapsed": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "link": {
+          "type": "any"
+        },
+        "text": {
+          "type": "any"
+        },
+        "collapsible_trail": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "icon_left": {
+          "type": "any"
+        },
+        "icon_right": {
+          "type": "any"
+        },
+        "image_url": {
+          "type": "any"
+        },
+        "target": {
+          "type": "enum",
+          "default": "\"_self\"",
+          "values": [
+            "_blank",
+            "_self",
+            "_parent",
+            "_top"
+          ]
         }
       }
     },
@@ -5000,7 +5110,7 @@
         }
       }
     },
-    "ProgressStepItem": {
+    "progress_step/progress_step_item": {
       "rails": "progress_step/progress_step_item",
       "react": "ProgressStepItem",
       "description": "Playbook ProgressStepItem component",
@@ -5401,7 +5511,7 @@
         }
       }
     },
-    "SelectableListItem": {
+    "selectable_list/selectable_list_item": {
       "rails": "selectable_list/selectable_list_item",
       "react": "SelectableListItem",
       "description": "Playbook SelectableListItem component",
@@ -5756,7 +5866,27 @@
         }
       }
     },
-    "TableCell": {
+    "table/table_body": {
+      "rails": "table/table_body",
+      "react": "TableBody",
+      "description": "Playbook TableBody component",
+      "hasChildren": false,
+      "props": {
+        "tag": {
+          "type": "enum",
+          "default": "\"table\"",
+          "values": [
+            "table",
+            "div"
+          ]
+        },
+        "draggable_container": {
+          "type": "boolean",
+          "default": "false"
+        }
+      }
+    },
+    "table/table_cell": {
       "rails": "table/table_cell",
       "react": "TableCell",
       "description": "Playbook TableCell component",
@@ -5776,7 +5906,7 @@
         }
       }
     },
-    "TableHead": {
+    "table/table_head": {
       "rails": "table/table_head",
       "react": "TableHead",
       "description": "Playbook TableHead component",
@@ -5789,6 +5919,145 @@
             "table",
             "div"
           ]
+        }
+      }
+    },
+    "table/table_header": {
+      "rails": "table/table_header",
+      "react": "TableHeader",
+      "description": "Playbook TableHeader component",
+      "hasChildren": false,
+      "props": {
+        "align": {
+          "type": "enum",
+          "default": "\"start\"",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "stretch",
+            "baseline",
+            "none"
+          ]
+        },
+        "align_content": {
+          "type": "enum",
+          "default": "\"center\"",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "stretch",
+            "baseline",
+            "none"
+          ]
+        },
+        "justify_sort_icon": {
+          "type": "enum",
+          "default": "\"between\"",
+          "values": [
+            "start",
+            "center",
+            "end",
+            "stretch",
+            "around",
+            "between",
+            "evenly",
+            "none"
+          ]
+        },
+        "colspan": {
+          "type": "number",
+          "default": "1"
+        },
+        "placement": {
+          "type": "enum",
+          "default": "\"bottom-end\"",
+          "values": [
+            "top",
+            "bottom",
+            "left",
+            "right",
+            "top-start",
+            "top-end",
+            "bottom-start",
+            "bottom-end",
+            "right-start",
+            "right-end",
+            "left-start",
+            "left-end"
+          ]
+        },
+        "sort_menu": {
+          "type": "hasharray",
+          "default": "[{}]"
+        },
+        "text": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "sort_dropdown": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "tag": {
+          "type": "enum",
+          "default": "\"table\"",
+          "values": [
+            "table",
+            "div"
+          ]
+        },
+        "header_style": {
+          "type": "enum",
+          "default": "\"default\"",
+          "values": [
+            "default",
+            "borderless",
+            "floating"
+          ]
+        }
+      }
+    },
+    "table/table_row": {
+      "rails": "table/table_row",
+      "react": "TableRow",
+      "description": "Playbook TableRow component",
+      "hasChildren": false,
+      "props": {
+        "side_highlight_color": {
+          "type": "string",
+          "default": "\"none\""
+        },
+        "tag": {
+          "type": "enum",
+          "default": "\"table\"",
+          "values": [
+            "table",
+            "div"
+          ]
+        },
+        "collapsible": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "collapsible_content": {
+          "type": "any"
+        },
+        "collapsible_side_highlight": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "toggle_cell_id": {
+          "type": "string"
+        },
+        "draggable_item": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "drag_id": {
+          "type": "string",
+          "default": "nil"
         }
       }
     },
@@ -5858,7 +6127,7 @@
         }
       }
     },
-    "AddOn": {
+    "text_input/add_on": {
       "rails": "text_input/add_on",
       "react": "AddOn",
       "description": "Playbook AddOn component",
@@ -6079,7 +6348,51 @@
         }
       }
     },
-    "Label": {
+    "timeline/detail": {
+      "rails": "timeline/detail",
+      "react": "Detail",
+      "description": "Playbook Detail component",
+      "hasChildren": false,
+      "props": {}
+    },
+    "timeline/item": {
+      "rails": "timeline/item",
+      "react": "Item",
+      "description": "Playbook Item component",
+      "hasChildren": false,
+      "props": {
+        "date": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string",
+          "default": "\"user\""
+        },
+        "icon_color": {
+          "type": "enum",
+          "default": "\"default\"",
+          "values": [
+            "default",
+            "royal",
+            "blue",
+            "purple",
+            "teal",
+            "red",
+            "yellow",
+            "green"
+          ]
+        },
+        "line_style": {
+          "type": "enum",
+          "default": "\"solid\"",
+          "values": [
+            "solid",
+            "dotted"
+          ]
+        }
+      }
+    },
+    "timeline/label": {
       "rails": "timeline/label",
       "react": "Label",
       "description": "Playbook Label component",
@@ -6090,7 +6403,7 @@
         }
       }
     },
-    "Step": {
+    "timeline/step": {
       "rails": "timeline/step",
       "react": "Step",
       "description": "Playbook Step component",

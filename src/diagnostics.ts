@@ -237,7 +237,11 @@ export class PlaybookDiagnostics {
     if (prop.values && prop.values.length > 0) {
       const cleanValue = propValue.replace(/["']/g, "").trim()
 
-      if (cleanValue && !prop.values.includes(cleanValue)) {
+      // Only validate if the original value was quoted (string literal)
+      // If it's not quoted, it's likely a variable or method call and should be allowed
+      const isQuotedString = propValue.includes('"') || propValue.includes("'")
+
+      if (isQuotedString && cleanValue && !prop.values.includes(cleanValue)) {
         const range = new vscode.Range(
           lineIndex,
           startIndex,

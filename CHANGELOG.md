@@ -5,6 +5,31 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.6] - 2026-01-15
+
+### Fixed
+
+- **Component Name Collision** 🔧
+  - Fixed issue where `pb_body` (Body) component was not recognized
+  - Component was being overwritten by `layout/body` subcomponent due to both having React name "Body"
+  - Now using unique keys: subcomponents use full path (e.g., "layout/body"), regular components use React name
+  - Both `pb_rails("body")` and `pb_rails("layout/body")` now work correctly
+
+- **Variable/Method Validation** ✅
+  - Fixed false positive warnings for variables and method calls used as prop values
+  - Diagnostics now only validate quoted string literals
+  - Variables, method calls, and Ruby expressions are no longer flagged as invalid
+  - Example: `variant: current_variant` no longer shows a warning
+
+### Changed
+
+- **Dynamic Global Props Extraction** 🔄
+  - Global props are now dynamically extracted from Playbook source code
+  - Reads from `lib/playbook/pb_forms_global_props_helper.rb` to get complete list
+  - Ensures all global props are always in sync with Playbook
+  - Added support for all missing global props: `vertical_alignment`, `text_size`, `letter_spacing`, `text_align`, `overflow`, `overflow_x`, `overflow_y`, `truncate`, `group_hover`
+  - Total of 38 global props now available
+
 ## [1.0.5] - 2026-01-15
 
 ### Added
