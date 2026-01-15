@@ -1,0 +1,202 @@
+{
+  "$schema": "./playbook-schema.json",
+  "components": {
+    "Button": {
+      "rails": "button",
+      "react": "Button",
+      "description": "Primary action button component",
+      "category": "actions",
+      "props": {
+        "text": {
+          "type": "string",
+          "description": "Button text content",
+          "required": true
+        },
+        "variant": {
+          "type": "enum",
+          "values": ["primary", "secondary", "link"],
+          "default": "primary",
+          "description": "Button style variant"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["sm", "md", "lg"],
+          "default": "md",
+          "description": "Button size"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Disabled state"
+        },
+        "onClick": {
+          "type": "function",
+          "description": "Click handler (React only)"
+        }
+      }
+    },
+    "Card": {
+      "rails": "card",
+      "react": "Card",
+      "description": "Container component for grouping related content",
+      "category": "layout",
+      "props": {
+        "padding": {
+          "type": "enum",
+          "values": ["none", "xs", "sm", "md", "lg", "xl"],
+          "default": "md",
+          "description": "Internal padding"
+        },
+        "borderRadius": {
+          "type": "enum",
+          "values": ["none", "sm", "md", "lg", "rounded"],
+          "default": "md",
+          "description": "Border radius"
+        },
+        "shadow": {
+          "type": "enum",
+          "values": ["none", "sm", "md", "lg", "deep"],
+          "default": "none",
+          "description": "Box shadow depth"
+        }
+      }
+    },
+    "Flex": {
+      "rails": "flex",
+      "react": "Flex",
+      "description": "Flexbox layout container",
+      "category": "layout",
+      "props": {
+        "align": {
+          "type": "enum",
+          "values": ["none", "start", "end", "center", "stretch"],
+          "default": "none",
+          "description": "Align items (cross-axis)"
+        },
+        "justify": {
+          "type": "enum",
+          "values": ["none", "start", "end", "center", "between", "around", "evenly"],
+          "default": "none",
+          "description": "Justify content (main-axis)"
+        },
+        "direction": {
+          "type": "enum",
+          "values": ["row", "column"],
+          "default": "row",
+          "description": "Flex direction"
+        },
+        "wrap": {
+          "type": "boolean",
+          "default": false,
+          "description": "Allow wrapping"
+        }
+      }
+    },
+    "Body": {
+      "rails": "body",
+      "react": "Body",
+      "description": "Body text component with standardized typography",
+      "category": "typography",
+      "props": {
+        "text": {
+          "type": "string",
+          "description": "Body text content",
+          "required": true
+        },
+        "color": {
+          "type": "enum",
+          "values": ["default", "light", "lighter", "link", "error", "success"],
+          "default": "default",
+          "description": "Text color"
+        },
+        "tag": {
+          "type": "enum",
+          "values": ["p", "span", "div", "h1", "h2", "h3", "h4", "h5", "h6"],
+          "default": "p",
+          "description": "HTML tag to render"
+        }
+      }
+    },
+    "Title": {
+      "rails": "title",
+      "react": "Title",
+      "description": "Title/heading component",
+      "category": "typography",
+      "props": {
+        "text": {
+          "type": "string",
+          "description": "Title text",
+          "required": true
+        },
+        "size": {
+          "type": "number",
+          "values": [1, 2, 3, 4],
+          "default": 3,
+          "description": "Title size (1 = largest, 4 = smallest)"
+        },
+        "tag": {
+          "type": "enum",
+          "values": ["h1", "h2", "h3", "h4", "h5", "h6", "div", "span"],
+          "default": "h3",
+          "description": "HTML tag to render"
+        }
+      }
+    },
+    "Avatar": {
+      "rails": "avatar",
+      "react": "Avatar",
+      "description": "User avatar component",
+      "category": "content",
+      "props": {
+        "name": {
+          "type": "string",
+          "description": "User name for fallback initials",
+          "required": true
+        },
+        "imageUrl": {
+          "type": "string",
+          "description": "Avatar image URL"
+        },
+        "size": {
+          "type": "enum",
+          "values": ["xs", "sm", "md", "lg", "xl"],
+          "default": "md",
+          "description": "Avatar size"
+        },
+        "status": {
+          "type": "enum",
+          "values": ["online", "away", "offline"],
+          "description": "Status indicator"
+        }
+      }
+    },
+    "Icon": {
+      "rails": "icon",
+      "react": "Icon",
+      "description": "Icon component using FontAwesome",
+      "category": "content",
+      "props": {
+        "icon": {
+          "type": "string",
+          "description": "FontAwesome icon name",
+          "required": true
+        },
+        "size": {
+          "type": "enum",
+          "values": ["xs", "sm", "lg", "1x", "2x", "3x", "4x", "5x"],
+          "default": "1x",
+          "description": "Icon size"
+        },
+        "color": {
+          "type": "string",
+          "description": "Icon color"
+        },
+        "fixedWidth": {
+          "type": "boolean",
+          "default": false,
+          "description": "Fixed width for alignment"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,63 @@
+{
+  "Playbook Button": {
+    "prefix": "pbButton",
+    "body": [
+      "<Button",
+      "\ttext=\"${1:Button Text}\"",
+      "\tvariant=\"${2|primary,secondary,link|}\"",
+      "\t$0",
+      "/>"
+    ],
+    "description": "Playbook Button component for React"
+  },
+  "Playbook Card": {
+    "prefix": "pbCard",
+    "body": ["<Card $0>", "\t${1:Card content}", "</Card>"],
+    "description": "Playbook Card component for React"
+  },
+  "Playbook Flex": {
+    "prefix": "pbFlex",
+    "body": [
+      "<Flex",
+      "\talign=\"${1|none,start,end,center,stretch|}\"",
+      "\tjustify=\"${2|none,start,end,center,between,around,evenly|}\"",
+      "\t$0",
+      ">",
+      "\t${3:Flex content}",
+      "</Flex>"
+    ],
+    "description": "Playbook Flex layout component for React"
+  },
+  "Playbook Body": {
+    "prefix": "pbBody",
+    "body": ["<Body text=\"${1:Body text}\" $0 />"],
+    "description": "Playbook Body text component for React"
+  },
+  "Playbook Title": {
+    "prefix": "pbTitle",
+    "body": ["<Title", "\ttext=\"${1:Title}\"", "\tsize={${2|1,2,3,4|}}", "\t$0", "/>"],
+    "description": "Playbook Title component for React"
+  },
+  "Playbook Avatar": {
+    "prefix": "pbAvatar",
+    "body": [
+      "<Avatar",
+      "\tname=\"${1:Name}\"",
+      "\timageUrl=\"${2:url}\"",
+      "\tsize=\"${3|sm,md,lg,xl|}\"",
+      "\t$0",
+      "/>"
+    ],
+    "description": "Playbook Avatar component for React"
+  },
+  "Playbook Icon": {
+    "prefix": "pbIcon",
+    "body": ["<Icon icon=\"${1:user}\" $0 />"],
+    "description": "Playbook Icon component for React"
+  },
+  "Playbook import": {
+    "prefix": "pbImport",
+    "body": ["import { ${1:Button} } from 'playbook-ui'$0"],
+    "description": "Import Playbook components"
+  }
+}

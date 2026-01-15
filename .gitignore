@@ -1,0 +1,32 @@
+# Editor configuration
+.vscode/*
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Build output
+out/
+dist/
+*.vsix
+
+# Dependencies
+node_modules/
+
+# TypeScript
+*.tsbuildinfo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+.vscode-test/
+
+# IDE
+.idea/
+*.swp
+*.swo
+*~

@@ -1,0 +1,70 @@
+{
+  "pb_rails button": {
+    "prefix": "pb_button",
+    "body": [
+      "<%= pb_rails(\"button\", props: {",
+      "\ttext: \"${1:Button Text}\",",
+      "\tvariant: \"${2|primary,secondary,link|}\",",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook Button component for Rails/ERB"
+  },
+  "pb_rails card": {
+    "prefix": "pb_card",
+    "body": [
+      "<%= pb_rails(\"card\", props: {",
+      "\t$0",
+      "}) do %>",
+      "\t${1:Card content}",
+      "<% end %>"
+    ],
+    "description": "Playbook Card component for Rails/ERB"
+  },
+  "pb_rails flex": {
+    "prefix": "pb_flex",
+    "body": [
+      "<%= pb_rails(\"flex\", props: {",
+      "\talign: \"${1|none,start,end,center,stretch|}\",",
+      "\tjustify: \"${2|none,start,end,center,between,around,evenly|}\"",
+      "\t$0",
+      "}) do %>",
+      "\t${3:Flex content}",
+      "<% end %>"
+    ],
+    "description": "Playbook Flex layout component for Rails/ERB"
+  },
+  "pb_rails body": {
+    "prefix": "pb_body",
+    "body": ["<%= pb_rails(\"body\", props: {", "\ttext: \"${1:Body text}\",", "\t$0", "}) %>"],
+    "description": "Playbook Body text component for Rails/ERB"
+  },
+  "pb_rails title": {
+    "prefix": "pb_title",
+    "body": [
+      "<%= pb_rails(\"title\", props: {",
+      "\ttext: \"${1:Title}\",",
+      "\tsize: ${2|1,2,3,4|},",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook Title component for Rails/ERB"
+  },
+  "pb_rails avatar": {
+    "prefix": "pb_avatar",
+    "body": [
+      "<%= pb_rails(\"avatar\", props: {",
+      "\tname: \"${1:Name}\",",
+      "\timage_url: \"${2:url}\",",
+      "\tsize: \"${3|sm,md,lg,xl|}\",",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook Avatar component for Rails/ERB"
+  },
+  "pb_rails icon": {
+    "prefix": "pb_icon",
+    "body": ["<%= pb_rails(\"icon\", props: {", "\ticon: \"${1:user}\",", "\t$0", "}) %>"],
+    "description": "Playbook Icon component for Rails/ERB"
+  }
+}
