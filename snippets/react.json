@@ -118,20 +118,6 @@
     ],
     "description": "Playbook Badge component for React"
   },
-  "Playbook BarGraph": {
-    "prefix": "pbBarGraph",
-    "body": [
-      "<BarGraph",
-      "\talign={${1|\\\"left\\\",\\\"right\\\",\\\"center\\\"|}}",
-      "\taxisTitle=\"${2}\"",
-      "\taxisFormat=\"${3}\"",
-      "\tchartData=\"${4:[]}\"",
-      "\tcustomOptions=\"${5:{}}\"",
-      "\t$0",
-      "/>"
-    ],
-    "description": "Playbook BarGraph component for React"
-  },
   "Playbook Body": {
     "prefix": "pbBody",
     "body": [
@@ -258,20 +244,6 @@
     ],
     "description": "Playbook Checkbox component for React"
   },
-  "Playbook CircleChart": {
-    "prefix": "pbCircleChart",
-    "body": [
-      "<CircleChart",
-      "\talign={${1|\\\"left\\\",\\\"right\\\",\\\"center\\\"|}}",
-      "\tborderWidth=\"${2}\"",
-      "\tchartData=\"${3:[]}\"",
-      "\tcustomOptions=\"${4:{}}\"",
-      "\tstyle={${5|\\\"pie\\\"|}}",
-      "\t$0",
-      "/>"
-    ],
-    "description": "Playbook CircleChart component for React"
-  },
   "Playbook CircleIconButton": {
     "prefix": "pbCircleIconButton",
     "body": [
@@ -346,6 +318,8 @@
       "\tcontactType=\"${1}\"",
       "\tcontactValue=\"${2}\"",
       "\tcontactDetail=\"${3}\"",
+      "\ticonEnabled={${4|true,false|}}",
+      "\tunstyled={${5|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -356,10 +330,10 @@
     "body": [
       "<CopyButton",
       "\ttext=\"${1}\"",
-      "\ttooltipPosition={${2|\\\"top\\\",\\\"right\\\",\\\"bottom\\\",\\\"left\\\"|}}",
-      "\ttooltipText=\"${3:Copied!}\"",
-      "\tvalue=\"${4}\"",
-      "\tfrom=\"${5}\"",
+      "\tvariant={${2|\\\"button\\\",\\\"icon\\\"|}}",
+      "\ttooltipPosition={${3|\\\"top\\\",\\\"right\\\",\\\"bottom\\\",\\\"left\\\"|}}",
+      "\ttooltipText=\"${4:Copied!}\"",
+      "\tvalue=\"${5}\"",
       "\t$0",
       "/>"
     ],
@@ -486,6 +460,7 @@
       "\tdateTime=\"${2:::DateTime.current}\"",
       "\tdark={${3|true,false|}}",
       "\ttimezone=\"${4:America/New_York}\"",
+      "\tshowCurrentYear={${5|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -555,6 +530,7 @@
     "body": [
       "<DialogHeader",
       "\ttitle=\"${1}\"",
+      "\tcloseable={${2|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -613,7 +589,7 @@
     "prefix": "pbDropdown",
     "body": [
       "<Dropdown",
-      "\tvariant={${1|\\\"default\\\",\\\"subtle\\\"|}}",
+      "\tvariant={${1|\\\"default\\\",\\\"subtle\\\",\\\"quickpick\\\"|}}",
       "\toptions=\"${2:[]}\"",
       "\tlabel=\"${3}\"",
       "\tname=\"${4}\"",
@@ -657,6 +633,15 @@
       "/>"
     ],
     "description": "Playbook DropdownTrigger component for React"
+  },
+  "Playbook QuickpickHelper": {
+    "prefix": "pbQuickpickHelper",
+    "body": [
+      "<QuickpickHelper",
+      "\t$0",
+      "/>"
+    ],
+    "description": "Playbook QuickpickHelper component for React"
   },
   "Playbook EmptyState": {
     "prefix": "pbEmptyState",
@@ -783,20 +768,6 @@
       "/>"
     ],
     "description": "Playbook FormPill component for React"
-  },
-  "Playbook Gauge": {
-    "prefix": "pbGauge",
-    "body": [
-      "<Gauge",
-      "\tchartData=\"${1:[{ name: Name}\"",
-      "\tcustomOptions=\"${2:{}}\"",
-      "\tstyle={${3|\\\"solidgauge\\\"|}}",
-      "\ttitle=\"${4:}\"",
-      "\tprefix=\"${5:}\"",
-      "\t$0",
-      "/>"
-    ],
-    "description": "Playbook Gauge component for React"
   },
   "Playbook Hashtag": {
     "prefix": "pbHashtag",
@@ -1033,6 +1004,7 @@
       "\ticon=\"${2:user}\"",
       "\ticonColor={${3|\\\"default\\\",\\\"royal\\\",\\\"blue\\\",\\\"purple\\\",\\\"teal\\\",\\\"red\\\",\\\"yellow\\\",\\\"green\\\"|}}",
       "\tlineStyle={${4|\\\"solid\\\",\\\"dotted\\\"|}}",
+      "\tshowCurrentYear={${5|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -1060,20 +1032,6 @@
       "/>"
     ],
     "description": "Playbook Legend component for React"
-  },
-  "Playbook LineGraph": {
-    "prefix": "pbLineGraph",
-    "body": [
-      "<LineGraph",
-      "\talign={${1|\\\"left\\\",\\\"right\\\",\\\"center\\\"|}}",
-      "\taxisTitle=\"${2}\"",
-      "\tchartData=\"${3:[]}\"",
-      "\tcustomOptions=\"${4:{}}\"",
-      "\tgradient={${5|true,false|}}",
-      "\t$0",
-      "/>"
-    ],
-    "description": "Playbook LineGraph component for React"
   },
   "Playbook Link": {
     "prefix": "pbLink",
@@ -1161,6 +1119,7 @@
       "\tsize={${1|\\\"xxs\\\",\\\"xs\\\"|}}",
       "\treverse={${2|true,false|}}",
       "\tusers=\"${3}\"",
+      "\twithTooltip={${4|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -1247,7 +1206,6 @@
     "body": [
       "<PbBarGraph",
       "\toptions=\"${1:{}}\"",
-      "\tcontainerProps=\"${2:{}}\"",
       "\t$0",
       "/>"
     ],
@@ -1258,11 +1216,30 @@
     "body": [
       "<PbCircleChart",
       "\toptions=\"${1:{}}\"",
-      "\tcontainerProps=\"${2:{}}\"",
       "\t$0",
       "/>"
     ],
     "description": "Playbook PbCircleChart component for React"
+  },
+  "Playbook PbGaugeChart": {
+    "prefix": "pbPbGaugeChart",
+    "body": [
+      "<PbGaugeChart",
+      "\toptions=\"${1:{}}\"",
+      "\t$0",
+      "/>"
+    ],
+    "description": "Playbook PbGaugeChart component for React"
+  },
+  "Playbook PbLineGraph": {
+    "prefix": "pbPbLineGraph",
+    "body": [
+      "<PbLineGraph",
+      "\toptions=\"${1:{}}\"",
+      "\t$0",
+      "/>"
+    ],
+    "description": "Playbook PbLineGraph component for React"
   },
   "Playbook Person": {
     "prefix": "pbPerson",
@@ -1587,9 +1564,9 @@
       "<Table",
       "\tsize={${1|\\\"sm\\\",\\\"md\\\",\\\"lg\\\"|}}",
       "\ttext=\"${2}\"",
-      "\tsingleLine={${3|true,false|}}",
-      "\tdisableHover={${4|true,false|}}",
-      "\tdataTable={${5|true,false|}}",
+      "\tvariant={${3|\\\"default\\\",\\\"with_filter\\\"|}}",
+      "\tsingleLine={${4|true,false|}}",
+      "\tdisableHover={${5|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -1622,9 +1599,9 @@
       "<TextInput",
       "\tautocomplete=\"${1:true}\"",
       "\tdisabled={${2|true,false|}}",
-      "\terror=\"${3}\"",
-      "\tinline={${4|true,false|}}",
-      "\tinputOptions=\"${5:{}}\"",
+      "\temojiMask={${3|true,false|}}",
+      "\terror=\"${4}\"",
+      "\tinline={${5|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -1646,11 +1623,11 @@
     "prefix": "pbTextarea",
     "body": [
       "<Textarea",
-      "\terror=\"${1}\"",
-      "\tinline={${2|true,false|}}",
-      "\tlabel=\"${3}\"",
-      "\tmethod=\"${4}\"",
-      "\tname=\"${5}\"",
+      "\temojiMask={${1|true,false|}}",
+      "\terror=\"${2}\"",
+      "\tinline={${3|true,false|}}",
+      "\tlabel=\"${4}\"",
+      "\tmethod=\"${5}\"",
       "\t$0",
       "/>"
     ],
@@ -1669,6 +1646,20 @@
       "/>"
     ],
     "description": "Playbook Time component for React"
+  },
+  "Playbook TimePicker": {
+    "prefix": "pbTimePicker",
+    "body": [
+      "<TimePicker",
+      "\tdefaultTime=\"${1}\"",
+      "\tdisabled={${2|true,false|}}",
+      "\terror=\"${3}\"",
+      "\tinputOptions=\"${4:{}}\"",
+      "\tlabel=\"${5:Time Picker}\"",
+      "\t$0",
+      "/>"
+    ],
+    "description": "Playbook TimePicker component for React"
   },
   "Playbook TimeRangeInline": {
     "prefix": "pbTimeRangeInline",
@@ -1713,6 +1704,7 @@
     "body": [
       "<Label",
       "\tdate=\"${1}\"",
+      "\tshowCurrentYear={${2|true,false|}}",
       "\t$0",
       "/>"
     ],

@@ -29,7 +29,7 @@
     "prefix": "pb_advanced_table/table_body",
     "body": [
       "<%= pb_rails(\"advanced_table/table_body\", props: {",
-      "\tid: \"${1:}\",",
+      "\ttable_id: \"${1:}\",",
       "\ttable_data: \"${2:[]}\",",
       "\tcolumn_definitions: \"${3:[]}\",",
       "\tenable_toggle_expansion: \"${4|all,header,none|}\",",
@@ -43,7 +43,7 @@
     "prefix": "pb_advanced_table/table_header",
     "body": [
       "<%= pb_rails(\"advanced_table/table_header\", props: {",
-      "\tid: \"${1:}\",",
+      "\ttable_id: \"${1:}\",",
       "\tcolumn_definitions: \"${2:[]}\",",
       "\tenable_toggle_expansion: \"${3|all,header,none|}\",",
       "\tloading: \"${4}\",",
@@ -57,7 +57,7 @@
     "prefix": "pb_advanced_table/table_row",
     "body": [
       "<%= pb_rails(\"advanced_table/table_row\", props: {",
-      "\tid: \"${1:}\",",
+      "\ttable_id: \"${1:}\",",
       "\tcolumn_definitions: \"${2:[]}\",",
       "\trow: \"${3}\",",
       "\tdepth: \"${4}\",",
@@ -120,20 +120,6 @@
       "}) %>"
     ],
     "description": "Playbook Badge component for Rails/ERB"
-  },
-  "Playbook BarGraph": {
-    "prefix": "pb_bar_graph",
-    "body": [
-      "<%= pb_rails(\"bar_graph\", props: {",
-      "\talign: \"${1|left,right,center|}\",",
-      "\taxis_title: \"${2}\",",
-      "\taxis_format: \"${3}\",",
-      "\tchart_data: \"${4:[]}\",",
-      "\tcustom_options: \"${5:{}}\",",
-      "\t$0",
-      "}) %>"
-    ],
-    "description": "Playbook BarGraph component for Rails/ERB"
   },
   "Playbook Body": {
     "prefix": "pb_body",
@@ -263,20 +249,6 @@
     ],
     "description": "Playbook Checkbox component for Rails/ERB"
   },
-  "Playbook CircleChart": {
-    "prefix": "pb_circle_chart",
-    "body": [
-      "<%= pb_rails(\"circle_chart\", props: {",
-      "\talign: \"${1|left,right,center|}\",",
-      "\tborder_width: \"${2}\",",
-      "\tchart_data: \"${3:[]}\",",
-      "\tcustom_options: \"${4:{}}\",",
-      "\tstyle: \"${5|pie|}\",",
-      "\t$0",
-      "}) %>"
-    ],
-    "description": "Playbook CircleChart component for Rails/ERB"
-  },
   "Playbook CircleIconButton": {
     "prefix": "pb_circle_icon_button",
     "body": [
@@ -351,6 +323,8 @@
       "\tcontact_type: \"${1}\",",
       "\tcontact_value: \"${2}\",",
       "\tcontact_detail: \"${3}\",",
+      "\ticon_enabled: \"${4:true}\",",
+      "\tunstyled: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -361,10 +335,10 @@
     "body": [
       "<%= pb_rails(\"copy_button\", props: {",
       "\ttext: \"${1}\",",
-      "\ttooltip_position: \"${2|top,right,bottom,left|}\",",
-      "\ttooltip_text: \"${3:Copied!}\",",
-      "\tvalue: \"${4}\",",
-      "\tfrom: \"${5}\",",
+      "\tvariant: \"${2|button,icon|}\",",
+      "\ttooltip_position: \"${3|top,right,bottom,left|}\",",
+      "\ttooltip_text: \"${4:Copied!}\",",
+      "\tvalue: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -491,6 +465,7 @@
       "\tdate_time: \"${2:::DateTime.current}\",",
       "\tdark: \"${3}\",",
       "\ttimezone: \"${4:America/New_York}\",",
+      "\tshow_current_year: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -564,6 +539,7 @@
     "body": [
       "<%= pb_rails(\"dialog/dialog_header\", props: {",
       "\ttitle: \"${1}\",",
+      "\tcloseable: \"${2:true}\",",
       "\t$0",
       "}) %>"
     ],
@@ -622,7 +598,7 @@
     "prefix": "pb_dropdown",
     "body": [
       "<%= pb_rails(\"dropdown\", props: {",
-      "\tvariant: \"${1|default,subtle|}\",",
+      "\tvariant: \"${1|default,subtle,quickpick|}\",",
       "\toptions: \"${2:[]}\",",
       "\tlabel: \"${3}\",",
       "\tname: \"${4}\",",
@@ -666,6 +642,15 @@
       "}) %>"
     ],
     "description": "Playbook DropdownTrigger component for Rails/ERB"
+  },
+  "Playbook DropdownQuickpick_helper": {
+    "prefix": "pb_dropdown/quickpick_helper",
+    "body": [
+      "<%= pb_rails(\"dropdown/quickpick_helper\", props: {",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook QuickpickHelper component for Rails/ERB"
   },
   "Playbook EmptyState": {
     "prefix": "pb_empty_state",
@@ -792,20 +777,6 @@
       "}) %>"
     ],
     "description": "Playbook FormPill component for Rails/ERB"
-  },
-  "Playbook Gauge": {
-    "prefix": "pb_gauge",
-    "body": [
-      "<%= pb_rails(\"gauge\", props: {",
-      "\tchart_data: \"${1:[{ name: Name}\",",
-      "\tcustom_options: \"${2:{}}\",",
-      "\tstyle: \"${3|solidgauge|}\",",
-      "\ttitle: \"${4:}\",",
-      "\tprefix: \"${5:}\",",
-      "\t$0",
-      "}) %>"
-    ],
-    "description": "Playbook Gauge component for Rails/ERB"
   },
   "Playbook Hashtag": {
     "prefix": "pb_hashtag",
@@ -1081,20 +1052,6 @@
     ],
     "description": "Playbook Legend component for Rails/ERB"
   },
-  "Playbook LineGraph": {
-    "prefix": "pb_line_graph",
-    "body": [
-      "<%= pb_rails(\"line_graph\", props: {",
-      "\talign: \"${1|left,right,center|}\",",
-      "\taxis_title: \"${2}\",",
-      "\tchart_data: \"${3:[]}\",",
-      "\tcustom_options: \"${4:{}}\",",
-      "\tgradient: \"${5}\",",
-      "\t$0",
-      "}) %>"
-    ],
-    "description": "Playbook LineGraph component for Rails/ERB"
-  },
   "Playbook Link": {
     "prefix": "pb_link",
     "body": [
@@ -1193,6 +1150,7 @@
       "\tsize: \"${1|xxs,xs|}\",",
       "\treverse: \"${2}\",",
       "\tusers: \"${3}\",",
+      "\twith_tooltip: \"${4}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1230,9 +1188,9 @@
       "<%= pb_rails(\"nav/item\", props: {",
       "\ttext: \"${1}\",",
       "\tactive: \"${2}\",",
-      "\tfont_size: \"${3|normal,small|}\",",
-      "\tfont_weight: \"${4|bold,regular,bolder|}\",",
-      "\thighlighted_border: \"${5:true}\",",
+      "\tdisabled: \"${3}\",",
+      "\tfont_size: \"${4|normal,small|}\",",
+      "\tfont_weight: \"${5|bold,regular,bolder|}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1293,7 +1251,6 @@
     "body": [
       "<%= pb_rails(\"pb_bar_graph\", props: {",
       "\toptions: \"${1:{}}\",",
-      "\tcontainer_props: \"${2:{}}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1304,11 +1261,30 @@
     "body": [
       "<%= pb_rails(\"pb_circle_chart\", props: {",
       "\toptions: \"${1:{}}\",",
-      "\tcontainer_props: \"${2:{}}\",",
       "\t$0",
       "}) %>"
     ],
     "description": "Playbook PbCircleChart component for Rails/ERB"
+  },
+  "Playbook PbGaugeChart": {
+    "prefix": "pb_pb_gauge_chart",
+    "body": [
+      "<%= pb_rails(\"pb_gauge_chart\", props: {",
+      "\toptions: \"${1:{}}\",",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook PbGaugeChart component for Rails/ERB"
+  },
+  "Playbook PbLineGraph": {
+    "prefix": "pb_pb_line_graph",
+    "body": [
+      "<%= pb_rails(\"pb_line_graph\", props: {",
+      "\toptions: \"${1:{}}\",",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook PbLineGraph component for Rails/ERB"
   },
   "Playbook Person": {
     "prefix": "pb_person",
@@ -1633,9 +1609,9 @@
       "<%= pb_rails(\"table\", props: {",
       "\tsize: \"${1|sm,md,lg|}\",",
       "\ttext: \"${2}\",",
-      "\tsingle_line: \"${3}\",",
-      "\tdisable_hover: \"${4}\",",
-      "\tdata_table: \"${5}\",",
+      "\tvariant: \"${3|default,with_filter|}\",",
+      "\tsingle_line: \"${4}\",",
+      "\tdisable_hover: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1707,9 +1683,9 @@
       "<%= pb_rails(\"text_input\", props: {",
       "\tautocomplete: \"${1:true}\",",
       "\tdisabled: \"${2}\",",
-      "\terror: \"${3}\",",
-      "\tinline: \"${4}\",",
-      "\tinput_options: \"${5:{}}\",",
+      "\temoji_mask: \"${3}\",",
+      "\terror: \"${4}\",",
+      "\tinline: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1731,11 +1707,11 @@
     "prefix": "pb_textarea",
     "body": [
       "<%= pb_rails(\"textarea\", props: {",
-      "\terror: \"${1}\",",
-      "\tinline: \"${2}\",",
-      "\tlabel: \"${3}\",",
-      "\tmethod: \"${4}\",",
-      "\tname: \"${5}\",",
+      "\temoji_mask: \"${1}\",",
+      "\terror: \"${2}\",",
+      "\tinline: \"${3}\",",
+      "\tlabel: \"${4}\",",
+      "\tmethod: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1754,6 +1730,20 @@
       "}) %>"
     ],
     "description": "Playbook Time component for Rails/ERB"
+  },
+  "Playbook TimePicker": {
+    "prefix": "pb_time_picker",
+    "body": [
+      "<%= pb_rails(\"time_picker\", props: {",
+      "\tdefault_time: \"${1}\",",
+      "\tdisabled: \"${2}\",",
+      "\terror: \"${3}\",",
+      "\tinput_options: \"${4:{}}\",",
+      "\tlabel: \"${5:Time Picker}\",",
+      "\t$0",
+      "}) %>"
+    ],
+    "description": "Playbook TimePicker component for Rails/ERB"
   },
   "Playbook TimeRangeInline": {
     "prefix": "pb_time_range_inline",
@@ -1810,6 +1800,7 @@
       "\ticon: \"${2:user}\",",
       "\ticon_color: \"${3|default,royal,blue,purple,teal,red,yellow,green|}\",",
       "\tline_style: \"${4|solid,dotted|}\",",
+      "\tshow_current_year: \"${5}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1820,6 +1811,7 @@
     "body": [
       "<%= pb_rails(\"timeline/label\", props: {",
       "\tdate: \"${1}\",",
+      "\tshow_current_year: \"${2}\",",
       "\t$0",
       "}) %>"
     ],

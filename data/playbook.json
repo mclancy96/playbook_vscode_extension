@@ -1,6 +1,6 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-01-15T15:55:18.206Z",
+  "generatedAt": "2026-01-15T16:26:29.876Z",
   "globalProps": {
     "align_content": {
       "type": "string"
@@ -403,7 +403,7 @@
       "description": "Playbook TableBody component",
       "hasChildren": false,
       "props": {
-        "id": {
+        "table_id": {
           "type": "string",
           "default": "\"\""
         },
@@ -460,7 +460,7 @@
       "description": "Playbook TableHeader component",
       "hasChildren": false,
       "props": {
-        "id": {
+        "table_id": {
           "type": "string",
           "default": "\"\""
         },
@@ -505,7 +505,7 @@
       "description": "Playbook TableRow component",
       "hasChildren": false,
       "props": {
-        "id": {
+        "table_id": {
           "type": "string",
           "default": "\"\""
         },
@@ -831,106 +831,6 @@
             "notification_error",
             "primary"
           ]
-        }
-      }
-    },
-    "BarGraph": {
-      "rails": "bar_graph",
-      "react": "BarGraph",
-      "description": "Playbook BarGraph component",
-      "hasChildren": false,
-      "props": {
-        "align": {
-          "type": "enum",
-          "default": "\"center\"",
-          "values": [
-            "left",
-            "right",
-            "center"
-          ]
-        },
-        "axis_title": {
-          "type": "any"
-        },
-        "axis_format": {
-          "type": "any"
-        },
-        "chart_data": {
-          "type": "array",
-          "default": "[]"
-        },
-        "custom_options": {
-          "type": "any",
-          "default": "{}"
-        },
-        "orientation": {
-          "type": "enum",
-          "default": "\"vertical\"",
-          "values": [
-            "vertical",
-            "horizontal"
-          ]
-        },
-        "point_start": {
-          "type": "numeric"
-        },
-        "stacking": {
-          "type": "any"
-        },
-        "subtitle": {
-          "type": "any"
-        },
-        "title": {
-          "type": "any"
-        },
-        "x_axis_categories": {
-          "type": "array",
-          "default": "[]"
-        },
-        "y_axis_min": {
-          "type": "numeric"
-        },
-        "y_axis_max": {
-          "type": "numeric"
-        },
-        "legend": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "toggle_legend_click": {
-          "type": "boolean",
-          "default": "true"
-        },
-        "height": {
-          "type": "any"
-        },
-        "colors": {
-          "type": "array",
-          "default": "[]"
-        },
-        "layout": {
-          "type": "enum",
-          "default": "\"horizontal\"",
-          "values": [
-            "horizontal",
-            "vertical",
-            "proximate"
-          ]
-        },
-        "vertical_align": {
-          "type": "enum",
-          "default": "\"bottom\"",
-          "values": [
-            "top",
-            "middle",
-            "bottom"
-          ]
-        },
-        "x": {
-          "type": "numeric"
-        },
-        "y": {
-          "type": "numeric"
         }
       }
     },
@@ -1377,122 +1277,6 @@
         }
       }
     },
-    "CircleChart": {
-      "rails": "circle_chart",
-      "react": "CircleChart",
-      "description": "Playbook CircleChart component",
-      "hasChildren": false,
-      "props": {
-        "align": {
-          "type": "enum",
-          "default": "\"center\"",
-          "values": [
-            "left",
-            "right",
-            "center"
-          ]
-        },
-        "border_width": {
-          "type": "numeric"
-        },
-        "chart_data": {
-          "type": "array",
-          "default": "[]"
-        },
-        "custom_options": {
-          "type": "any",
-          "default": "{}"
-        },
-        "style": {
-          "type": "enum",
-          "default": "\"pie\"",
-          "values": [
-            "pie"
-          ]
-        },
-        "data_labels": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "min_point_size": {
-          "type": "numeric"
-        },
-        "max_point_size": {
-          "type": "numeric"
-        },
-        "inner_size": {
-          "type": "enum",
-          "default": "\"md\"",
-          "values": [
-            "sm",
-            "md",
-            "lg",
-            "none"
-          ]
-        },
-        "z_min": {
-          "type": "numeric"
-        },
-        "start_angle": {
-          "type": "numeric"
-        },
-        "data_label_html": {
-          "type": "any",
-          "default": "\"<div>{point.name}</div>\""
-        },
-        "tooltip_html": {
-          "type": "any",
-          "default": "'<span style=\"font-weight: bold; color:{point.color};\">&#9679; </span>                                       {point.name}: ' + '<b>{point.y}                                     </b>'"
-        },
-        "use_html": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "legend": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "title": {
-          "type": "any",
-          "default": "\"\""
-        },
-        "height": {
-          "type": "any"
-        },
-        "rounded": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "colors": {
-          "type": "array",
-          "default": "[]"
-        },
-        "layout": {
-          "type": "enum",
-          "default": "\"horizontal\"",
-          "values": [
-            "horizontal",
-            "vertical",
-            "proximate"
-          ]
-        },
-        "vertical_align": {
-          "type": "enum",
-          "default": "\"bottom\"",
-          "values": [
-            "top",
-            "middle",
-            "bottom"
-          ]
-        },
-        "x": {
-          "type": "numeric"
-        },
-        "y": {
-          "type": "numeric"
-        }
-      }
-    },
     "CircleIconButton": {
       "rails": "circle_icon_button",
       "react": "CircleIconButton",
@@ -1694,6 +1478,14 @@
         },
         "contact_detail": {
           "type": "any"
+        },
+        "icon_enabled": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "unstyled": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -1725,6 +1517,14 @@
         },
         "from": {
           "type": "any"
+        },
+        "variant": {
+          "type": "enum",
+          "default": "\"icon\"",
+          "values": [
+            "button",
+            "icon"
+          ]
         }
       }
     },
@@ -1761,7 +1561,7 @@
           "default": "\"$\""
         },
         "amount": {
-          "type": "string"
+          "type": "any"
         },
         "unit": {
           "type": "string"
@@ -2062,6 +1862,10 @@
         "sync_end_with": {
           "type": "string",
           "default": "\"\""
+        },
+        "cursor": {
+          "type": "string",
+          "default": "\"pointer\""
         }
       }
     },
@@ -2100,6 +1904,10 @@
             "center",
             "right"
           ]
+        },
+        "show_current_year": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -2158,6 +1966,10 @@
         "bold": {
           "type": "boolean",
           "default": "false"
+        },
+        "show_current_year": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -2203,6 +2015,10 @@
         "show_day_of_week": {
           "type": "boolean",
           "default": "false"
+        },
+        "show_current_year": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -2226,6 +2042,10 @@
         "timezone": {
           "type": "string",
           "default": "\"America/New_York\""
+        },
+        "show_current_year": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -2366,6 +2186,10 @@
         "custom_event_type": {
           "type": "string",
           "default": "\"\""
+        },
+        "closeable": {
+          "type": "boolean",
+          "default": "true"
         }
       }
     },
@@ -2411,6 +2235,10 @@
       "props": {
         "title": {
           "type": "any"
+        },
+        "closeable": {
+          "type": "boolean",
+          "default": "true"
         }
       }
     },
@@ -2551,12 +2379,17 @@
           "type": "string",
           "default": "\"\""
         },
+        "custom_quick_pick_dates": {
+          "type": "hashprop",
+          "default": "{}"
+        },
         "variant": {
           "type": "enum",
           "default": "\"default\"",
           "values": [
             "default",
-            "subtle"
+            "subtle",
+            "quickpick"
           ]
         },
         "separators": {
@@ -2578,6 +2411,34 @@
         "form_pill_props": {
           "type": "hashprop",
           "default": "{}"
+        },
+        "range_ends_today": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "controls_end_id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "controls_start_id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "start_date_id": {
+          "type": "string",
+          "default": "\"start_date_id\""
+        },
+        "start_date_name": {
+          "type": "string",
+          "default": "\"start_date_name\""
+        },
+        "end_date_id": {
+          "type": "string",
+          "default": "\"end_date_id\""
+        },
+        "end_date_name": {
+          "type": "string",
+          "default": "\"end_date_name\""
         }
       }
     },
@@ -2636,6 +2497,13 @@
           "default": "false"
         }
       }
+    },
+    "dropdown/quickpick_helper": {
+      "rails": "dropdown/quickpick_helper",
+      "react": "QuickpickHelper",
+      "description": "Playbook QuickpickHelper component",
+      "hasChildren": false,
+      "props": {}
     },
     "EmptyState": {
       "rails": "empty_state",
@@ -3082,73 +2950,6 @@
         "wrapped": {
           "type": "boolean",
           "default": "false"
-        }
-      }
-    },
-    "Gauge": {
-      "rails": "gauge",
-      "react": "Gauge",
-      "description": "Playbook Gauge component",
-      "hasChildren": false,
-      "props": {
-        "chart_data": {
-          "type": "array",
-          "default": "[{ name: \"Name\""
-        },
-        "custom_options": {
-          "type": "any",
-          "default": "{}"
-        },
-        "style": {
-          "type": "enum",
-          "default": "\"solidgauge\"",
-          "values": [
-            "solidgauge"
-          ]
-        },
-        "title": {
-          "type": "string",
-          "default": "\"\""
-        },
-        "prefix": {
-          "type": "string",
-          "default": "\"\""
-        },
-        "suffix": {
-          "type": "string",
-          "default": "\"\""
-        },
-        "height": {
-          "type": "string",
-          "default": "nil"
-        },
-        "tooltip_html": {
-          "type": "any",
-          "default": "'<span style=\"font-weight: bold; color:{point.color};\">●</span>                                       {point.name}: ' + '<b>{point.y}                                     </b>'"
-        },
-        "full_circle": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "show_labels": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "disable_animation": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "min": {
-          "type": "numeric",
-          "default": "0"
-        },
-        "max": {
-          "type": "numeric",
-          "default": "100"
-        },
-        "colors": {
-          "type": "array",
-          "default": "[]"
         }
       }
     },
@@ -3922,96 +3723,6 @@
         }
       }
     },
-    "LineGraph": {
-      "rails": "line_graph",
-      "react": "LineGraph",
-      "description": "Playbook LineGraph component",
-      "hasChildren": false,
-      "props": {
-        "align": {
-          "type": "enum",
-          "default": "\"center\"",
-          "values": [
-            "left",
-            "right",
-            "center"
-          ]
-        },
-        "axis_title": {
-          "type": "any"
-        },
-        "chart_data": {
-          "type": "array",
-          "default": "[]"
-        },
-        "custom_options": {
-          "type": "any",
-          "default": "{}"
-        },
-        "gradient": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "point_start": {
-          "type": "numeric"
-        },
-        "subtitle": {
-          "type": "any"
-        },
-        "title": {
-          "type": "any"
-        },
-        "x_axis_categories": {
-          "type": "array",
-          "default": "[]"
-        },
-        "y_axis_min": {
-          "type": "numeric"
-        },
-        "y_axis_max": {
-          "type": "numeric"
-        },
-        "legend": {
-          "type": "boolean",
-          "default": "false"
-        },
-        "toggle_legend_click": {
-          "type": "boolean",
-          "default": "true"
-        },
-        "height": {
-          "type": "any"
-        },
-        "colors": {
-          "type": "array",
-          "default": "[]"
-        },
-        "layout": {
-          "type": "enum",
-          "default": "\"horizontal\"",
-          "values": [
-            "horizontal",
-            "vertical",
-            "proximate"
-          ]
-        },
-        "vertical_align": {
-          "type": "enum",
-          "default": "\"bottom\"",
-          "values": [
-            "top",
-            "middle",
-            "bottom"
-          ]
-        },
-        "x": {
-          "type": "numeric"
-        },
-        "y": {
-          "type": "numeric"
-        }
-      }
-    },
     "Link": {
       "rails": "link",
       "react": "Link",
@@ -4351,6 +4062,10 @@
         },
         "users": {
           "type": "hasharray"
+        },
+        "with_tooltip": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -4438,6 +4153,10 @@
       "hasChildren": false,
       "props": {
         "active": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "disabled": {
           "type": "boolean",
           "default": "false"
         },
@@ -4628,10 +4347,6 @@
         "options": {
           "type": "any",
           "default": "{}"
-        },
-        "container_props": {
-          "type": "any",
-          "default": "{}"
         }
       }
     },
@@ -4644,8 +4359,28 @@
         "options": {
           "type": "any",
           "default": "{}"
-        },
-        "container_props": {
+        }
+      }
+    },
+    "PbGaugeChart": {
+      "rails": "pb_gauge_chart",
+      "react": "PbGaugeChart",
+      "description": "Playbook PbGaugeChart component",
+      "hasChildren": false,
+      "props": {
+        "options": {
+          "type": "any",
+          "default": "{}"
+        }
+      }
+    },
+    "PbLineGraph": {
+      "rails": "pb_line_graph",
+      "react": "PbLineGraph",
+      "description": "Playbook PbLineGraph component",
+      "hasChildren": false,
+      "props": {
+        "options": {
           "type": "any",
           "default": "{}"
         }
@@ -5153,6 +4888,10 @@
         "inline": {
           "type": "boolean",
           "default": "false"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
         },
         "label": {
           "type": "any"
@@ -5709,6 +5448,28 @@
             "borderless",
             "floating"
           ]
+        },
+        "variant": {
+          "type": "enum",
+          "default": "\"default\"",
+          "values": [
+            "default",
+            "with_filter"
+          ]
+        },
+        "filter_props": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "filter_content": {
+          "type": "any"
+        },
+        "pagination": {
+          "type": "any"
+        },
+        "title": {
+          "type": "string",
+          "default": "nil"
         }
       }
     },
@@ -5921,6 +5682,10 @@
           "type": "boolean",
           "default": "false"
         },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
         "error": {
           "type": "any"
         },
@@ -5970,6 +5735,10 @@
             "credit_card",
             "cvv"
           ]
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -6002,6 +5771,10 @@
       "description": "Playbook Textarea component",
       "hasChildren": false,
       "props": {
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
         "error": {
           "type": "any"
         },
@@ -6093,6 +5866,64 @@
         "unstyled": {
           "type": "boolean",
           "default": "false"
+        }
+      }
+    },
+    "TimePicker": {
+      "rails": "time_picker",
+      "react": "TimePicker",
+      "description": "Playbook TimePicker component",
+      "hasChildren": false,
+      "props": {
+        "default_time": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "label": {
+          "type": "string",
+          "default": "\"Time Picker\""
+        },
+        "max_time": {
+          "type": "string"
+        },
+        "min_time": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "show_timezone": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "time_format": {
+          "type": "enum",
+          "default": "\"AMPM\"",
+          "values": [
+            "AMPM",
+            "24hour"
+          ]
+        },
+        "validation_message": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "value": {
+          "type": "string"
         }
       }
     },
@@ -6235,6 +6066,10 @@
             "solid",
             "dotted"
           ]
+        },
+        "show_current_year": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -6246,6 +6081,10 @@
       "props": {
         "date": {
           "type": "any"
+        },
+        "show_current_year": {
+          "type": "boolean",
+          "default": "false"
         }
       }
     },
@@ -6614,6 +6453,14 @@
         "is_multi": {
           "type": "boolean",
           "default": "true"
+        },
+        "input_display": {
+          "type": "enum",
+          "default": "\"pills\"",
+          "values": [
+            "none",
+            "pills"
+          ]
         },
         "pills": {
           "type": "boolean",
