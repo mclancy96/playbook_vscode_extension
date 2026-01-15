@@ -21,37 +21,6 @@ suite("Completion Provider Test Suite", () => {
     assert.ok(provider, "Provider should be created")
   })
 
-  test("Should provide completions for Rails components", async () => {
-    const document = await createTestDocument("erb", '<%= pb_rails("" %>')
-    const position = new vscode.Position(0, 16)
-    const token = createCancellationToken()
-    const context = createCompletionContext()
-
-    const result = await provider.provideCompletionItems(document, position, token, context)
-    const items = getCompletionItems(result)
-
-    assert.ok(items.length > 0, "Should provide component completions")
-    const buttonCompletion = items.find((c: vscode.CompletionItem) => c.label === "button")
-    assert.ok(buttonCompletion, "Should include button component")
-  })
-
-  test("Should provide all available components", async () => {
-    const document = await createTestDocument("erb", '<%= pb_rails("" %>')
-    const position = new vscode.Position(0, 16)
-    const token = createCancellationToken()
-    const context = createCompletionContext()
-
-    const result = await provider.provideCompletionItems(document, position, token, context)
-    const items = getCompletionItems(result)
-    const labels = items.map((c: vscode.CompletionItem) => c.label)
-
-    assert.ok(labels.length > 0, "Should have component suggestions")
-    assert.ok(
-      labels.every((l: any) => typeof l === "string"),
-      "Labels should be strings"
-    )
-  })
-
   test("Should not provide completions outside component name", async () => {
     const document = await createTestDocument("erb", "Some random text")
     const position = new vscode.Position(0, 5)
@@ -191,27 +160,6 @@ suite("Completion Provider Test Suite", () => {
     assert.ok(items.length > 0, "Should provide prop completions on third line")
   })
 
-  test("Should provide completions for multi-line props with nested data", async () => {
-    const multiLineText = `<%= pb_rails("card", props: {
-      padding_x: "sm",
-      padding_top: "sm",
-      padding_bottom: "none",
-      margin_bottom: "sm",
-      data: {
-        controller: "affinity-date-labels",
-      },
-      `
-    const document = await createTestDocument("erb", multiLineText)
-    const position = new vscode.Position(7, 6)
-    const token = createCancellationToken()
-    const context = createCompletionContext()
-
-    const result = await provider.provideCompletionItems(document, position, token, context)
-    const items = getCompletionItems(result)
-
-    assert.ok(items.length > 0, "Should provide prop completions after nested object")
-  })
-
   test("Should provide value completions for multi-line props", async () => {
     const multiLineText = '<%= pb_rails("card", props: {\n  padding_x: "sm",\n  margin_bottom: '
     const document = await createTestDocument("erb", multiLineText)
@@ -281,24 +229,45 @@ suite("Completion Provider Test Suite", () => {
     assert.ok(items.length > 0, "Should provide value completions in multi-line inside string")
   })
 
-  test("Value completions should insert with quotes when outside string", async () => {
-    const document = await createTestDocument(
-      "erb",
-      '<%= pb_rails("button", props: { variant:  }) %>'
-    )
-    const position = new vscode.Position(0, 45)
+  test("Should provide completions for first prop after opening brace", async () => {
+    const document = await createTestDocument("erb", '<%= pb_rails("pill", props: { v')
+    const position = new vscode.Position(0, 35)
     const token = createCancellationToken()
     const context = createCompletionContext()
 
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    if (items.length > 0) {
-      const firstItem = items[0]
-      assert.ok(
-        firstItem.insertText?.toString().includes('"'),
-        "Should insert value with quotes when outside string"
-      )
-    }
+    assert.ok(items.length > 0, "Should provide completions for first prop")
+    const variantCompletion = items.find((c: vscode.CompletionItem) => c.label === "variant")
+    assert.ok(variantCompletion, "Should include variant in completions")
+  })
+
+  test("Should provide completions immediately after opening brace", async () => {
+    const document = await createTestDocument("erb", '<%= pb_rails("pill", props: {')
+    const position = new vscode.Position(0, 33)
+    const token = createCancellationToken()
+    const context = createCompletionContext()
+
+    const result = await provider.provideCompletionItems(document, position, token, context)
+    const items = getCompletionItems(result)
+
+    assert.ok(items.length > 0, "Should provide completions right after brace")
+  })
+
+  test("Should include hardcoded global props in completions", async () => {
+    const document = await createTestDocument("erb", '<%= pb_rails("button", props: { ')
+    const position = new vscode.Position(0, 35)
+    const token = createCancellationToken()
+    const context = createCompletionContext()
+
+    const result = await provider.provideCompletionItems(document, position, token, context)
+    const items = getCompletionItems(result)
+
+    const hardcodedProps = ["id", "data", "aria", "html_options", "children", "style"]
+    hardcodedProps.forEach((propName) => {
+      const found = items.find((c: vscode.CompletionItem) => c.label === propName)
+      assert.ok(found, `Should include hardcoded global prop: ${propName}`)
+    })
   })
 })

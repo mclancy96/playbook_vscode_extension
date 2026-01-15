@@ -163,6 +163,7 @@ export class PlaybookDiagnostics {
               propName,
               propValue,
               prop,
+              match[0],
               position.character,
               position.line,
               diagnostics
@@ -204,6 +205,7 @@ export class PlaybookDiagnostics {
               propName,
               propValue || "",
               prop,
+              match[0],
               match.index,
               startLineIndex,
               diagnostics
@@ -218,7 +220,8 @@ export class PlaybookDiagnostics {
     propName: string,
     propValue: string,
     prop: PropMetadata,
-    startIndex: number,
+    fullMatch: string,
+    startCharacter: number,
     lineIndex: number,
     diagnostics: vscode.Diagnostic[]
   ): void {
@@ -228,11 +231,17 @@ export class PlaybookDiagnostics {
       const isQuotedString = propValue.startsWith('"') || propValue.startsWith("'")
 
       if (isQuotedString && cleanValue && !prop.values.includes(cleanValue)) {
+        // Find where the value starts within the full match (propName: "value")
+        // We want to highlight just the quoted value
+        const valueMatch = fullMatch.match(/("([^"]*)"|'([^']*)')/)
+        const valueStartOffset = valueMatch ? fullMatch.indexOf(valueMatch[0]) : 0
+        const valueLength = valueMatch ? valueMatch[0].length : propValue.length
+
         const range = new vscode.Range(
           lineIndex,
-          startIndex,
+          startCharacter + valueStartOffset,
           lineIndex,
-          startIndex + propName.length + propValue.length + 5
+          startCharacter + valueStartOffset + valueLength
         )
 
         const validValues = prop.values.map((v) => `"${v}"`).join(", ")

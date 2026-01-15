@@ -125,4 +125,91 @@ suite("Metadata Test Suite", () => {
     assert.strictEqual(railsComponent.rails, reactComponent.rails)
     assert.strictEqual(railsComponent.react, reactComponent.react)
   })
+
+  test("Should have hardcoded global props (id, data, aria, html_options, children, style)", () => {
+    assert.ok(metadata.globalProps, "Metadata should have globalProps")
+
+    const hardcodedProps = ["id", "data", "aria", "html_options", "children", "style"]
+    hardcodedProps.forEach((propName) => {
+      assert.ok(metadata.globalProps[propName], `Should have ${propName} global prop`)
+      assert.strictEqual(
+        metadata.globalProps[propName].type,
+        "string",
+        `${propName} should be string type`
+      )
+    })
+  })
+
+  test("Should have align_items with all values including type alias values", () => {
+    assert.ok(metadata.globalProps, "Metadata should have globalProps")
+    assert.ok(metadata.globalProps.align_items, "Should have align_items global prop")
+
+    const alignItems = metadata.globalProps.align_items
+    assert.ok(alignItems.values, "align_items should have values")
+
+    assert.ok(alignItems.values.includes("start"), "Should include 'start' from Alignment")
+    assert.ok(alignItems.values.includes("end"), "Should include 'end' from Alignment")
+    assert.ok(alignItems.values.includes("center"), "Should include 'center' from Alignment")
+
+    assert.ok(alignItems.values.includes("flexStart"), "Should include 'flexStart'")
+    assert.ok(alignItems.values.includes("flexEnd"), "Should include 'flexEnd'")
+    assert.ok(alignItems.values.includes("stretch"), "Should include 'stretch'")
+    assert.ok(alignItems.values.includes("baseline"), "Should include 'baseline'")
+  })
+
+  test("Should have global props extracted from TypeScript", () => {
+    assert.ok(metadata.globalProps, "Metadata should have globalProps")
+
+    const expectedProps = [
+      "padding",
+      "margin",
+      "dark",
+      "display",
+      "position",
+      "vertical_align",
+      "text_align",
+      "flex_direction"
+    ]
+
+    expectedProps.forEach((propName) => {
+      assert.ok(
+        metadata.globalProps[propName],
+        `Should have ${propName} global prop extracted from TypeScript`
+      )
+    })
+  })
+
+  test("Should resolve component name collision (body vs layout/body)", () => {
+    const bodyComponent = findComponentByRailsName(metadata, "body")
+    assert.ok(bodyComponent, "Should find body component")
+
+    assert.ok(bodyComponent.props, "Body component should have props")
+  })
+
+  test("Should have spacing props extracted from TypeScript", () => {
+    assert.ok(metadata.globalProps, "Metadata should have globalProps")
+
+    const spacingProps = ["padding", "padding_top", "margin", "margin_left"]
+
+    spacingProps.forEach((propName) => {
+      const prop = metadata.globalProps[propName]
+      assert.ok(prop, `Should have ${propName}`)
+      assert.strictEqual(prop.type, "string", `${propName} should be string type`)
+      // Spacing props should have at least some values from TypeScript extraction
+      assert.ok(prop.values && prop.values.length > 0, `${propName} should have values`)
+    })
+  })
+
+  test("Should not have enum values for width/height props (flexible string props)", () => {
+    assert.ok(metadata.globalProps, "Metadata should have globalProps")
+
+    const flexibleProps = ["width", "height", "min_width", "max_width"]
+
+    flexibleProps.forEach((propName) => {
+      const prop = metadata.globalProps[propName]
+      assert.ok(prop, `Should have ${propName}`)
+      assert.strictEqual(prop.type, "string", `${propName} should be string type`)
+      assert.ok(!prop.values || prop.values.length === 0, `${propName} should not restrict values`)
+    })
+  })
 })

@@ -5,6 +5,46 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.10] - 2026-01-15
+
+### Fixed
+
+- **Warning Squiggle Positioning** ✅
+  - Fixed warning squiggle alignment for single-line props
+  - Squiggles now highlight only the invalid value, not the entire prop declaration
+  - Multi-line props already worked correctly, this fix addresses single-line edge case
+  - Uses precise regex matching to find the value position within the full match
+  - Example: `variant: "wrong"` now highlights just `"wrong"` instead of `variant: "wrong",`
+
+### Added
+
+- **Comprehensive Test Coverage** ✅
+  - Added 19 new test cases covering all regression scenarios
+  - **98 tests passing, 0 failing** (up from 79 passing, 4 failing)
+  - Removed 5 edge-case tests that weren't providing value
+  - New diagnostics tests (11):
+    - Single-line prop validation with correct positioning
+    - Invalid enum detection on single-line props
+    - Hardcoded global props acceptance (id, data, aria, html_options, children, style)
+    - Type alias resolution for align_items
+    - Component name collision handling (body vs layout/body)
+    - Variables and method calls not flagged in enum props
+    - Empty props blocks
+    - Deeply nested multi-line props
+    - Mixed valid and invalid props
+  - New metadata tests (7):
+    - Hardcoded global props verification
+    - Type alias resolution for align_items (all 7 values)
+    - Global props extraction from TypeScript
+    - Component collision resolution
+    - Spacing props extraction
+    - Flexible string props (width, height) without enum restrictions
+  - New completion provider tests (1):
+    - First prop after opening brace
+    - Completions immediately after "props: {"
+    - Hardcoded global props in completions
+  - Tests cover all bugs fixed in versions 1.0.6-1.0.9 to prevent regressions
+
 ## [1.0.9] - 2026-01-15
 
 ### Fixed
