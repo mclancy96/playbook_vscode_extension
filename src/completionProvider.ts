@@ -53,23 +53,20 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
       return "rails-component"
     }
 
-    // Rails prop name: props: { ... }
-    if (linePrefix.match(/props:\s*\{[^}]*$/)) {
-      const hasColon = linePrefix.match(/(\w+):\s*$/)
-      if (!hasColon) {
-        // We're typing a prop name
-        return "rails-prop-name"
-      } else {
-        // We're typing a prop value
-        return "rails-prop-value"
-      }
-    }
+    // Check if we're inside a multi-line props block
+    const propsContext = this.findPropsContext(document, position)
 
-    // Rails prop value after colon
-    if (linePrefix.match(/(\w+):\s*["']?$/)) {
-      if (linePrefix.includes("pb_rails")) {
+    // Rails prop name: props: { ... }
+    // Check current line first
+    if (linePrefix.match(/props:\s*\{[^}]*$/) || propsContext) {
+      // Check if we're typing a prop value (after colon, with or without quotes)
+      // Matches: "variant: ", "variant: \"", "variant: \"primary", etc.
+      const propValueMatch = linePrefix.match(/(\w+):\s*["']?([^",}]*)$/)
+      if (propValueMatch) {
         return "rails-prop-value"
       }
+      // Otherwise we're typing a prop name
+      return "rails-prop-name"
     }
 
     // React component: < at start of tag
@@ -94,6 +91,54 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
     }
 
     return "none"
+  }
+
+  /**
+   * Find if the current position is inside a Rails props block
+   * by searching backwards for the opening props: {
+   */
+  private findPropsContext(document: vscode.TextDocument, position: vscode.Position): boolean {
+    let openBraces = 0
+    let foundPropsStart = false
+
+    // Search backwards from current line
+    for (let lineNum = position.line; lineNum >= Math.max(0, position.line - 20); lineNum--) {
+      const line = document.lineAt(lineNum).text
+      const searchText = lineNum === position.line ? line.substring(0, position.character) : line
+
+      // Count braces on this line (from right to left for current line, all for previous lines)
+      for (let i = searchText.length - 1; i >= 0; i--) {
+        const char = searchText[i]
+        if (char === "}") {
+          openBraces++
+        } else if (char === "{") {
+          openBraces--
+
+          // Check if this is the props opening brace
+          if (openBraces < 0) {
+            // Found an unmatched opening brace, check if it's props:
+            const beforeBrace = searchText.substring(0, i).trim()
+            if (beforeBrace.endsWith("props:")) {
+              foundPropsStart = true
+              break
+            }
+            // If not props:, we're not in props context
+            return false
+          }
+        }
+      }
+
+      if (foundPropsStart) {
+        break
+      }
+
+      // If we found a pb_rails without finding props context, stop
+      if (line.includes("pb_rails") && !foundPropsStart) {
+        return false
+      }
+    }
+
+    return foundPropsStart
   }
 
   /**
@@ -177,38 +222,75 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
     const items: vscode.CompletionItem[] = []
 
-    for (const [componentName, component] of Object.entries<ComponentMetadata>(
-      metadata.components
-    )) {
-      if (component.rails === componentContext.componentName) {
-        for (const [propName, prop] of Object.entries(component.props)) {
-          const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
-          item.detail = `${prop.type}${prop.required ? " (required)" : ""}`
-
-          let doc = `Type: \`${prop.type}\``
-          if (prop.values && prop.values.length > 0) {
-            doc += `\nValues: ${prop.values.map((v) => `\`${v}\``).join(", ")}`
-          }
-          if (prop.default !== undefined) {
-            doc += `\nDefault: \`${prop.default}\``
-          }
-
-          item.documentation = new vscode.MarkdownString(doc)
-
-          // Add snippet with value placeholder
-          if (prop.values && prop.values.length > 0) {
-            const choices = prop.values.join(",")
-            item.insertText = new vscode.SnippetString(`${propName}: "\${1|${choices}|}"`)
-          } else if (prop.type === "boolean") {
-            item.insertText = new vscode.SnippetString(`${propName}: \${1|true,false|}`)
-          } else {
-            item.insertText = new vscode.SnippetString(`${propName}: "\${1}"`)
-          }
-
-          item.kind = vscode.CompletionItemKind.Snippet
-          items.push(item)
-        }
+    // Find the component
+    let component: ComponentMetadata | undefined
+    for (const [componentName, comp] of Object.entries<ComponentMetadata>(metadata.components)) {
+      if (comp.rails === componentContext.componentName) {
+        component = comp
         break
+      }
+    }
+
+    if (!component) {
+      return []
+    }
+
+    // Add component-specific props
+    for (const [propName, prop] of Object.entries(component.props)) {
+      const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
+      item.detail = `${prop.type}${prop.required ? " (required)" : ""}`
+
+      let doc = `Type: \`${prop.type}\``
+      if (prop.values && prop.values.length > 0) {
+        doc += `\nValues: ${prop.values.map((v) => `\`${v}\``).join(", ")}`
+      }
+      if (prop.default !== undefined) {
+        doc += `\nDefault: \`${prop.default}\``
+      }
+
+      item.documentation = new vscode.MarkdownString(doc)
+
+      // Add snippet with value placeholder
+      if (prop.values && prop.values.length > 0) {
+        const choices = prop.values.join(",")
+        item.insertText = new vscode.SnippetString(`${propName}: "\${1|${choices}|}"`)
+      } else if (prop.type === "boolean") {
+        item.insertText = new vscode.SnippetString(`${propName}: \${1|true,false|}`)
+      } else {
+        item.insertText = new vscode.SnippetString(`${propName}: "\${1}"`)
+      }
+
+      item.kind = vscode.CompletionItemKind.Snippet
+      items.push(item)
+    }
+
+    // Add global props
+    if (metadata.globalProps) {
+      for (const [propName, prop] of Object.entries(metadata.globalProps)) {
+        const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
+        item.detail = `${(prop as any).type} (global)`
+
+        let doc = `Type: \`${(prop as any).type}\` (global prop)`
+        if ((prop as any).values && (prop as any).values.length > 0) {
+          doc += `\nValues: ${(prop as any).values.map((v: string) => `\`${v}\``).join(", ")}`
+        }
+
+        item.documentation = new vscode.MarkdownString(doc)
+
+        // Add snippet with value placeholder
+        if ((prop as any).values && (prop as any).values.length > 0) {
+          const choices = (prop as any).values.join(",")
+          item.insertText = new vscode.SnippetString(`${propName}: "\${1|${choices}|}"`)
+        } else if ((prop as any).type === "boolean") {
+          item.insertText = new vscode.SnippetString(`${propName}: \${1|true,false|}`)
+        } else {
+          item.insertText = new vscode.SnippetString(`${propName}: "\${1}"`)
+        }
+
+        item.kind = vscode.CompletionItemKind.Snippet
+        // Sort global props after component-specific props
+        item.sortText = "z" + propName
+        items.push(item)
       }
     }
 
@@ -235,6 +317,7 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
     const items: vscode.CompletionItem[] = []
 
+    // Add component-specific props
     for (const [propName, prop] of Object.entries(component.props)) {
       const camelProp = propName.replace(/_([a-z])/g, (_, letter: string) => letter.toUpperCase())
       const item = new vscode.CompletionItem(camelProp, vscode.CompletionItemKind.Property)
@@ -262,6 +345,37 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
       item.kind = vscode.CompletionItemKind.Snippet
       items.push(item)
+    }
+
+    // Add global props (converted to camelCase for React)
+    if (metadata.globalProps) {
+      for (const [propName, prop] of Object.entries(metadata.globalProps)) {
+        const camelProp = propName.replace(/_([a-z])/g, (_, letter: string) => letter.toUpperCase())
+        const item = new vscode.CompletionItem(camelProp, vscode.CompletionItemKind.Property)
+        item.detail = `${(prop as any).type} (global)`
+
+        let doc = `Type: \`${(prop as any).type}\` (global prop)`
+        if ((prop as any).values && (prop as any).values.length > 0) {
+          doc += `\nValues: ${(prop as any).values.map((v: string) => `\`${v}\``).join(", ")}`
+        }
+
+        item.documentation = new vscode.MarkdownString(doc)
+
+        // Add snippet with value placeholder
+        if ((prop as any).values && (prop as any).values.length > 0) {
+          const choices = (prop as any).values.map((v: string) => `"${v}"`).join(",")
+          item.insertText = new vscode.SnippetString(`${camelProp}={\${1|${choices}|}}`)
+        } else if ((prop as any).type === "boolean") {
+          item.insertText = new vscode.SnippetString(`${camelProp}={$\{1|true,false|}}`)
+        } else {
+          item.insertText = new vscode.SnippetString(`${camelProp}="\${1}"`)
+        }
+
+        item.kind = vscode.CompletionItemKind.Snippet
+        // Sort global props after component-specific props
+        item.sortText = "z" + camelProp
+        items.push(item)
+      }
     }
 
     return items
@@ -297,25 +411,40 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
     const beforeCursor = line.substring(0, position.character)
 
     let propName: string | null = null
+    let insideString = false
 
     if (type === "rails") {
-      const match = beforeCursor.match(/(\w+):\s*["']?$/)
+      // Match prop name even if we're inside the string value
+      // Matches: "variant: ", "variant: \"", "variant: \"pri", etc.
+      const match = beforeCursor.match(/(\w+):\s*["']?([^",}]*)$/)
       if (match) {
         propName = match[1]
+        // Check if we're inside a quote
+        const afterColon = beforeCursor.substring(
+          beforeCursor.lastIndexOf(propName) + propName.length + 1
+        )
+        insideString = /["']/.test(afterColon)
       }
     } else {
-      const match = beforeCursor.match(/(\w+)\s*=\s*["'{]?$/)
+      const match = beforeCursor.match(/(\w+)\s*=\s*["'{]?([^"'}]*)$/)
       if (match) {
         // Convert camelCase to snake_case
         propName = match[1].replace(/([A-Z])/g, "_$1").toLowerCase()
+        const afterEquals = beforeCursor.substring(beforeCursor.lastIndexOf("=") + 1)
+        insideString = /["']/.test(afterEquals)
       }
     }
 
-    if (!propName || !component.props[propName]) {
+    if (!propName || (!component.props[propName] && !metadata.globalProps?.[propName])) {
       return []
     }
 
-    const prop = component.props[propName]
+    // Check component props first, then global props
+    const prop = component.props[propName] || metadata.globalProps?.[propName]
+    if (!prop) {
+      return []
+    }
+
     const items: vscode.CompletionItem[] = []
 
     // Provide enum value completions
@@ -323,7 +452,14 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
       for (const value of prop.values) {
         const item = new vscode.CompletionItem(value, vscode.CompletionItemKind.EnumMember)
         item.detail = `Valid value for ${propName}`
-        item.insertText = value
+
+        // If we're inside a string, just insert the value
+        // If not, insert with quotes
+        if (insideString) {
+          item.insertText = value
+        } else {
+          item.insertText = `"${value}"`
+        }
 
         if (value === prop.default?.replace(/["']/g, "")) {
           item.detail += " (default)"

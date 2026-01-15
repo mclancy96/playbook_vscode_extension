@@ -5,6 +5,59 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.3] - 2026-01-15
+
+### Added
+
+- **Subcomponent Support** 🎯
+  - Detect and provide autocomplete for subcomponents (e.g., `flex/flex_item`)
+  - Rails syntax: `<%= pb_rails("flex/flex_item") do %>`
+  - React syntax: `<FlexItem>`
+  - Updated sync script to scan for `.rb` files in component subdirectories
+  - Subcomponents now appear in snippets and autocomplete
+
+- **Global Props** 🌍
+  - Added 40+ global props that apply to all Playbook components
+  - Includes: padding, margin, flex properties, positioning, shadows, and more
+  - Global props appear in autocomplete for both Rails and React
+  - Sorted after component-specific props for better organization
+  - Full type information and enum values for all global props
+  - Examples: `padding`, `margin`, `flex_direction`, `position`, `z_index`, etc.
+
+### Changed
+
+- Updated sync script to handle nested component structures
+- React component name conversion now handles subcomponents (e.g., `flex/flex_item` → `FlexItem`)
+- Metadata structure updated to include `globalProps` field
+- Completion provider now merges component props with global props
+
+## [1.0.2] - 2026-01-15
+
+### Fixed
+
+- **Multi-line Tag Support** 🔧
+  - Fixed autocomplete and prop suggestions for multi-line `pb_rails` calls
+  - Completion provider now searches backwards through up to 20 lines to find props context
+  - Properly detects when cursor is inside a props block across multiple lines
+  - Brace matching logic ensures completions work even with nested objects (e.g., `data: {}`)
+
+- **Prop Value Completions Inside Strings** 🎯
+  - Fixed prop value suggestions to work when cursor is inside a string (`variant: "primary"`)
+  - Previously only worked immediately after colon (`variant:`)
+  - Now works at any position: `variant:`, `variant: "`, `variant: "pri"`
+  - Automatically inserts quotes when not already inside a string
+  - Inserts plain value when already inside quotes
+
+### Added
+
+- New `findPropsContext()` method to intelligently detect multi-line props blocks
+- Improved regex matching for prop value detection
+- Test cases for value completions inside strings (empty, partial, and multi-line)
+- Test cases for multi-line prop completion on 2nd, 3rd, and subsequent lines
+- Test for nested object support within props blocks
+- Test to ensure completions don't appear outside props blocks
+- Test to verify quotes are added when inserting values outside strings
+
 ## [1.0.0] - 2026-01-14
 
 ### Added

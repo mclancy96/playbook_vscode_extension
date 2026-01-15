@@ -134,10 +134,15 @@ function parseRubyComponent(filePath: string, componentName: string): ComponentM
       content.includes("yield") ||
       componentName.match(/card|flex|layout|section|collapsible/i) !== null
 
-    // Convert pb_button to Button
+    // Convert pb_button to Button, or flex/flex_item to FlexItem
     const reactName = componentName
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .split("/")
+      .map((part) =>
+        part
+          .split("_")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join("")
+      )
       .join("")
 
     return {
@@ -178,10 +183,26 @@ function scanPlaybookComponents(): ComponentMetadata[] {
 
     if (!stats.isDirectory()) continue
 
-    // Look for the Ruby class file
+    // Look for the Ruby class file (main component)
     const rubyFile = path.join(componentDir, `${entry.replace("pb_", "")}.rb`)
     if (fs.existsSync(rubyFile)) {
       const metadata = parseRubyComponent(rubyFile, entry.replace("pb_", ""))
+      if (metadata) {
+        components.push(metadata)
+      }
+    }
+
+    // Look for subcomponents in the same directory
+    const subComponentFiles = fs
+      .readdirSync(componentDir)
+      .filter((file) => file.endsWith(".rb") && file !== `${entry.replace("pb_", "")}.rb`)
+
+    for (const subFile of subComponentFiles) {
+      const subComponentPath = path.join(componentDir, subFile)
+      const subComponentName = subFile.replace(".rb", "")
+      const fullComponentName = `${entry.replace("pb_", "")}/${subComponentName}`
+
+      const metadata = parseRubyComponent(subComponentPath, fullComponentName)
       if (metadata) {
         components.push(metadata)
       }
@@ -348,6 +369,167 @@ function generateMetadata(components: ComponentMetadata[]): void {
   const metadata: any = {
     $schema: "./playbook-schema.json",
     generatedAt: new Date().toISOString(),
+    globalProps: {
+      alignment: { type: "string", values: ["start", "end", "center"] },
+      align_content: { type: "string", values: ["start", "end", "center", "spaceBetween"] },
+      align_items: {
+        type: "string",
+        values: ["start", "end", "center", "flexStart", "flexEnd", "stretch", "baseline"]
+      },
+      align_self: {
+        type: "string",
+        values: ["start", "end", "center", "auto", "stretch", "baseline"]
+      },
+      all_sizes: { type: "string", values: ["none", "xxs", "xs", "sm", "md", "lg", "xl"] },
+      aria: { type: "string" },
+      border_radius: { type: "string", values: ["none", "xs", "sm", "md", "lg", "xl", "rounded"] },
+      class_name: { type: "string" },
+      cursor: {
+        type: "string",
+        values: [
+          "auto",
+          "default",
+          "none",
+          "contextMenu",
+          "help",
+          "pointer",
+          "progress",
+          "wait",
+          "cell",
+          "crosshair",
+          "text",
+          "verticalText",
+          "alias",
+          "copy",
+          "move",
+          "noDrop",
+          "notAllowed",
+          "grab",
+          "grabbing",
+          "eResize",
+          "nResize",
+          "neResize",
+          "nwResize",
+          "sResize",
+          "seResize",
+          "swResize",
+          "wResize",
+          "ewResize",
+          "nsResize",
+          "neswResize",
+          "nwseResize",
+          "colResize",
+          "rowResize",
+          "allScroll",
+          "zoomIn",
+          "zoomOut"
+        ]
+      },
+      dark: { type: "boolean" },
+      flex: {
+        type: "string",
+        values: [
+          "auto",
+          "initial",
+          "0",
+          "1",
+          "2",
+          "3",
+          "4",
+          "5",
+          "6",
+          "7",
+          "8",
+          "9",
+          "10",
+          "11",
+          "12",
+          "none"
+        ]
+      },
+      flex_direction: { type: "string", values: ["row", "column", "columnReverse"] },
+      flex_grow: { type: "number", values: ["0", "1"] },
+      flex_shrink: { type: "number", values: ["0", "1"] },
+      flex_wrap: { type: "string", values: ["wrap", "nowrap", "wrapReverse"] },
+      gap: { type: "string", values: ["none", "xxs", "xs", "sm", "md", "lg", "xl"] },
+      html_options: { type: "object" },
+      id: { type: "string" },
+      justify_content: {
+        type: "string",
+        values: ["start", "end", "center", "spaceBetween", "spaceAround", "spaceEvenly"]
+      },
+      justify_self: { type: "string", values: ["start", "end", "center", "auto", "stretch"] },
+      line_height: {
+        type: "string",
+        values: ["loosest", "looser", "loose", "normal", "tight", "tighter", "tightest"]
+      },
+      margin: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      margin_bottom: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      margin_left: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      margin_right: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      margin_top: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      margin_x: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      margin_y: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      max_width: { type: "string", values: ["xxs", "xs", "sm", "md", "lg", "xl", "xxl"] },
+      number_spacing: { type: "string", values: ["tabular"] },
+      order: {
+        type: "string",
+        values: ["none", "first", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"]
+      },
+      padding: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      padding_bottom: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      padding_left: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      padding_right: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      padding_top: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      padding_x: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      padding_y: {
+        type: "string",
+        values: ["none", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+      },
+      position: { type: "string", values: ["relative", "absolute", "fixed", "sticky", "static"] },
+      shadow: { type: "string", values: ["none", "deep", "deeper", "deepest"] },
+      space: { type: "string", values: ["spaceBetween", "spaceAround", "spaceEvenly"] },
+      z_index: { type: "number", values: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] }
+    },
     components: {}
   }
 

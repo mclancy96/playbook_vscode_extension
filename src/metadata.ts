@@ -17,6 +17,7 @@ export interface ComponentMetadata {
 }
 
 export interface PlaybookMetadata {
+  globalProps?: Record<string, PropMetadata>
   components: Record<string, ComponentMetadata>
 }
 
@@ -39,7 +40,7 @@ export function loadMetadata(extensionPath: string): PlaybookMetadata {
     return data
   } catch (error) {
     console.error("Failed to load Playbook metadata:", error)
-    return { components: {} }
+    return { components: {}, globalProps: {} }
   }
 }
 
@@ -137,10 +138,14 @@ export function generateComponentDocs(componentName: string, component: Componen
 /**
  * Generate markdown documentation for a specific prop
  */
-export function generatePropDocs(propName: string, prop: PropMetadata): string {
+export function generatePropDocs(
+  propName: string,
+  prop: PropMetadata,
+  isGlobal: boolean = false
+): string {
   const lines: string[] = []
 
-  lines.push(`**${propName}**`)
+  lines.push(`**${propName}**${isGlobal ? " *(global prop)*" : ""}`)
   lines.push(`Type: \`${prop.type}\``)
 
   if (prop.values && prop.values.length > 0) {

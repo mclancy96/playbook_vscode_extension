@@ -56,9 +56,19 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
             ? findComponentByRailsName(metadata, componentContext.componentName)
             : findComponentByReactName(metadata, componentContext.componentName)
 
-        if (component && component.props[railsProp.propName]) {
-          const propDocs = generatePropDocs(railsProp.propName, component.props[railsProp.propName])
-          return new vscode.Hover(new vscode.MarkdownString(propDocs), railsProp.range)
+        if (component) {
+          // Check component props first, then global props
+          const prop =
+            component.props[railsProp.propName] ||
+            (metadata as any).globalProps?.[railsProp.propName]
+          if (prop) {
+            const propDocs = generatePropDocs(
+              railsProp.propName,
+              prop,
+              !component.props[railsProp.propName]
+            )
+            return new vscode.Hover(new vscode.MarkdownString(propDocs), railsProp.range)
+          }
         }
       }
     }
@@ -73,8 +83,15 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
           // Convert camelCase to snake_case to find prop
           const snakeCaseProp = reactProp.propName.replace(/([A-Z])/g, "_$1").toLowerCase()
 
-          if (component.props[snakeCaseProp]) {
-            const propDocs = generatePropDocs(reactProp.propName, component.props[snakeCaseProp])
+          // Check component props first, then global props
+          const prop =
+            component.props[snakeCaseProp] || (metadata as any).globalProps?.[snakeCaseProp]
+          if (prop) {
+            const propDocs = generatePropDocs(
+              reactProp.propName,
+              prop,
+              !component.props[snakeCaseProp]
+            )
             return new vscode.Hover(new vscode.MarkdownString(propDocs), reactProp.range)
           }
         }

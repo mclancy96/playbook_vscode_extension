@@ -95,7 +95,7 @@ export class PlaybookDiagnostics {
         diagnostics.push(diagnostic)
       } else {
         // Validate props
-        this.validateProps(line, lineIndex, component, diagnostics, "rails")
+        this.validateProps(line, lineIndex, component, metadata, diagnostics, "rails")
       }
     }
   }
@@ -120,7 +120,7 @@ export class PlaybookDiagnostics {
 
       // Only validate if it's a known Playbook component
       if (component) {
-        this.validateProps(line, lineIndex, component, diagnostics, "react")
+        this.validateProps(line, lineIndex, component, metadata, diagnostics, "react")
       }
     }
   }
@@ -132,6 +132,7 @@ export class PlaybookDiagnostics {
     line: string,
     lineIndex: number,
     component: ComponentMetadata,
+    metadata: any,
     diagnostics: vscode.Diagnostic[],
     type: "rails" | "react"
   ): void {
@@ -149,7 +150,8 @@ export class PlaybookDiagnostics {
           continue
         }
 
-        if (!component.props[propName]) {
+        // Check if prop exists in component or global props
+        if (!component.props[propName] && !metadata.globalProps?.[propName]) {
           const startIndex = match.index
           const range = new vscode.Range(
             lineIndex,
@@ -166,9 +168,11 @@ export class PlaybookDiagnostics {
           diagnostic.source = "Playbook"
           diagnostics.push(diagnostic)
         } else {
-          // Validate enum values
-          const prop = component.props[propName]
-          this.validatePropValue(propName, propValue, prop, match.index, lineIndex, diagnostics)
+          // Validate enum values (check both component props and global props)
+          const prop = component.props[propName] || metadata.globalProps?.[propName]
+          if (prop) {
+            this.validatePropValue(propName, propValue, prop, match.index, lineIndex, diagnostics)
+          }
         }
       }
     } else {
@@ -183,7 +187,8 @@ export class PlaybookDiagnostics {
         // Convert camelCase to snake_case
         const snakeCaseProp = propName.replace(/([A-Z])/g, "_$1").toLowerCase()
 
-        if (!component.props[snakeCaseProp]) {
+        // Check if prop exists in component or global props
+        if (!component.props[snakeCaseProp] && !metadata.globalProps?.[snakeCaseProp]) {
           const startIndex = match.index
           const range = new vscode.Range(
             lineIndex,
@@ -200,16 +205,18 @@ export class PlaybookDiagnostics {
           diagnostic.source = "Playbook"
           diagnostics.push(diagnostic)
         } else {
-          // Validate enum values
-          const prop = component.props[snakeCaseProp]
-          this.validatePropValue(
-            propName,
-            propValue || "",
-            prop,
-            match.index,
-            lineIndex,
-            diagnostics
-          )
+          // Validate enum values (check both component props and global props)
+          const prop = component.props[snakeCaseProp] || metadata.globalProps?.[snakeCaseProp]
+          if (prop) {
+            this.validatePropValue(
+              propName,
+              propValue || "",
+              prop,
+              match.index,
+              lineIndex,
+              diagnostics
+            )
+          }
         }
       }
     }
