@@ -3,7 +3,7 @@
   "displayName": "Playbook UI",
   "description": "Developer experience enhancements for Playbook UI design system - snippets, autocomplete, and hover documentation for Rails and React",
   "version": "1.0.0",
-  "publisher": "mclancy96",
+  "publisher": "ClancyTools",
   "icon": "icon.png",
   "engines": {
     "vscode": "^1.75.0"
