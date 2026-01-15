@@ -23,9 +23,6 @@ export interface PlaybookMetadata {
 
 let cachedMetadata: PlaybookMetadata | null = null
 
-/**
- * Load Playbook component metadata from data/playbook.json
- */
 export function loadMetadata(extensionPath: string): PlaybookMetadata {
   if (cachedMetadata) {
     return cachedMetadata
@@ -44,9 +41,6 @@ export function loadMetadata(extensionPath: string): PlaybookMetadata {
   }
 }
 
-/**
- * Find component metadata by Rails name (e.g., "button")
- */
 export function findComponentByRailsName(
   metadata: PlaybookMetadata,
   railsName: string
@@ -59,9 +53,6 @@ export function findComponentByRailsName(
   return null
 }
 
-/**
- * Find component metadata by React name (e.g., "Button")
- */
 export function findComponentByReactName(
   metadata: PlaybookMetadata,
   reactName: string
@@ -69,9 +60,6 @@ export function findComponentByReactName(
   return metadata.components[reactName] || null
 }
 
-/**
- * Generate markdown documentation for a component
- */
 export function generateComponentDocs(
   componentName: string,
   component: ComponentMetadata,
@@ -84,7 +72,6 @@ export function generateComponentDocs(
   lines.push(component.description)
   lines.push("")
 
-  // Rails usage
   lines.push("**Rails/ERB:**")
   lines.push("```erb")
   if (component.hasChildren) {
@@ -97,7 +84,6 @@ export function generateComponentDocs(
   lines.push("```")
   lines.push("")
 
-  // React usage
   lines.push("**React:**")
   lines.push("```tsx")
   if (component.hasChildren) {
@@ -110,7 +96,6 @@ export function generateComponentDocs(
   lines.push("```")
   lines.push("")
 
-  // Component-specific Props
   if (Object.keys(component.props).length > 0) {
     lines.push("## Props")
     lines.push("")
@@ -136,7 +121,6 @@ export function generateComponentDocs(
     }
   }
 
-  // Global Props
   if (metadata.globalProps && Object.keys(metadata.globalProps).length > 0) {
     lines.push("## Global Props")
     lines.push("")
@@ -149,7 +133,6 @@ export function generateComponentDocs(
       let propDesc = `**${propName}** (${camelCaseProp})`
 
       if (prop.values && prop.values.length > 0) {
-        // For props with many values, show type and first few values
         if (prop.values.length > 5) {
           propDesc += ` - \`${prop.type}\`: ${prop.values
             .slice(0, 5)
@@ -165,7 +148,6 @@ export function generateComponentDocs(
       globalPropsList.push(propDesc)
     }
 
-    // Display in columns for better readability
     lines.push(globalPropsList.join("  \n"))
     lines.push("")
   }
@@ -173,9 +155,6 @@ export function generateComponentDocs(
   return lines.join("\n")
 }
 
-/**
- * Generate markdown documentation for a specific prop
- */
 export function generatePropDocs(
   propName: string,
   prop: PropMetadata,

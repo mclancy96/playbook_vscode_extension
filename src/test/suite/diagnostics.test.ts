@@ -18,7 +18,6 @@ suite("Diagnostics Test Suite", () => {
   test("Should update diagnostics for ERB document", async () => {
     const document = await createTestDocument("erb", '<%= pb_rails("button", props: {}) %>');
 
-    // Should not throw
     diagnosticsInstance.updateDiagnostics(document);
     assert.ok(true, "Diagnostics updated successfully");
   });
@@ -26,7 +25,6 @@ suite("Diagnostics Test Suite", () => {
   test("Should update diagnostics for React document", async () => {
     const document = await createTestDocument("typescriptreact", '<Button text="Click" />');
 
-    // Should not throw
     diagnosticsInstance.updateDiagnostics(document);
     assert.ok(true, "Diagnostics updated successfully");
   });
@@ -37,7 +35,6 @@ suite("Diagnostics Test Suite", () => {
       '<%= pb_rails("unknown_component", props: {}) %>'
     );
 
-    // Should not throw
     diagnosticsInstance.updateDiagnostics(document);
     assert.ok(true, "Diagnostics handles unknown component");
   });
@@ -48,7 +45,6 @@ suite("Diagnostics Test Suite", () => {
       '<%= pb_rails("button", props: { invalid_prop: "value" }) %>'
     );
 
-    // Should not throw
     diagnosticsInstance.updateDiagnostics(document);
     assert.ok(true, "Diagnostics handles invalid props");
   });
@@ -56,7 +52,6 @@ suite("Diagnostics Test Suite", () => {
   test("Should skip validation for unsupported languages", async () => {
     const document = await createTestDocument("plaintext", "Some text");
 
-    // Should not throw
     diagnosticsInstance.updateDiagnostics(document);
     assert.ok(true, "Skips unsupported languages");
   });

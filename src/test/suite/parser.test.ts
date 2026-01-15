@@ -55,7 +55,6 @@ suite("Parser Test Suite", () => {
 
       const result = parseRailsComponent(doc, position);
 
-      // Should either parse partial or return null gracefully
       assert.ok(true, "Should handle incomplete code without crashing");
     });
 
@@ -133,7 +132,6 @@ suite("Parser Test Suite", () => {
 
       const result = parseReactComponent(doc, position);
 
-      // May return null or still parse - depends on implementation
       assert.ok(true, "Should handle HTML tags");
     });
 
@@ -156,7 +154,6 @@ suite("Parser Test Suite", () => {
 
       const result = parseReactComponent(doc, position);
 
-      // Should handle gracefully
       assert.ok(true, "Should handle incomplete component");
     });
 
@@ -176,7 +173,6 @@ suite("Parser Test Suite", () => {
 
       const result = parseReactComponent(doc, position);
 
-      // Fragments may or may not be parsed
       assert.ok(true, "Should handle fragments");
     });
   });

@@ -17,7 +17,7 @@ suite("Hover Provider Test Suite", () => {
   suite("Rails Component Hover", () => {
     test("Should provide hover for Rails component name", async () => {
       const document = await createTestDocument("erb", '<%= pb_rails("button", props: {}) %>');
-      const position = new vscode.Position(0, 16); // On "button"
+      const position = new vscode.Position(0, 16);
 
       const hover = await provider.provideHover(document, position);
 
@@ -56,7 +56,7 @@ suite("Hover Provider Test Suite", () => {
   suite("React Component Hover", () => {
     test("Should provide hover for React component", async () => {
       const document = await createTestDocument("typescriptreact", '<Button text="Click" />');
-      const position = new vscode.Position(0, 3); // On "Button"
+      const position = new vscode.Position(0, 3);
 
       const hover = await provider.provideHover(document, position);
 
@@ -72,7 +72,6 @@ suite("Hover Provider Test Suite", () => {
 
       if (hover && hover.contents.length > 0) {
         const content = (hover.contents[0] as vscode.MarkdownString).value;
-        // Should include examples or prop info
         assert.ok(content.length > 0, "Should have detailed content");
       }
     });
@@ -84,7 +83,7 @@ suite("Hover Provider Test Suite", () => {
         "erb",
         '<%= pb_rails("button", props: { variant: "primary" }) %>'
       );
-      const position = new vscode.Position(0, 34); // On "variant"
+      const position = new vscode.Position(0, 34);
 
       const hover = await provider.provideHover(document, position);
 
@@ -108,7 +107,6 @@ suite("Hover Provider Test Suite", () => {
 
       if (hover && hover.contents.length > 0) {
         const content = (hover.contents[0] as vscode.MarkdownString).value;
-        // Should show valid values for enum props
         if (content.includes("Values:")) {
           assert.ok(true, "Shows valid values for enum");
         }
@@ -126,7 +124,6 @@ suite("Hover Provider Test Suite", () => {
 
       if (hover && hover.contents.length > 0) {
         const content = (hover.contents[0] as vscode.MarkdownString).value;
-        // May or may not have default, just verify structure
         assert.ok(content.length > 0, "Has prop documentation");
       }
     });
@@ -135,7 +132,7 @@ suite("Hover Provider Test Suite", () => {
   suite("React Prop Hover", () => {
     test("Should provide hover for React prop", async () => {
       const document = await createTestDocument("typescriptreact", '<Button variant="primary" />');
-      const position = new vscode.Position(0, 10); // On "variant"
+      const position = new vscode.Position(0, 10);
 
       const hover = await provider.provideHover(document, position);
 
@@ -150,11 +147,10 @@ suite("Hover Provider Test Suite", () => {
         "typescriptreact",
         '<Component verticalAlign="top" />'
       );
-      const position = new vscode.Position(0, 15); // On "verticalAlign"
+      const position = new vscode.Position(0, 15);
 
       const hover = await provider.provideHover(document, position);
 
-      // Should handle camelCase to snake_case conversion
       assert.ok(true, "Should handle camelCase props");
     });
   });

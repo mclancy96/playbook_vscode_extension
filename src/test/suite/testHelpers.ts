@@ -1,8 +1,5 @@
 import * as vscode from "vscode";
 
-/**
- * Helper to create a test document from text content
- */
 export async function createTestDocument(
   languageId: string,
   content: string
@@ -15,9 +12,6 @@ export async function createTestDocument(
   return document;
 }
 
-/**
- * Helper to get items from completion result (handles both array and CompletionList)
- */
 export function getCompletionItems(
   completions: vscode.CompletionList | vscode.CompletionItem[] | undefined | null
 ): vscode.CompletionItem[] {
@@ -27,16 +21,10 @@ export function getCompletionItems(
   return Array.isArray(completions) ? completions : completions.items;
 }
 
-/**
- * Helper to create a cancellation token for tests
- */
 export function createCancellationToken(): vscode.CancellationToken {
   return new vscode.CancellationTokenSource().token;
 }
 
-/**
- * Helper to create completion context for tests
- */
 export function createCompletionContext(triggerCharacter?: string): vscode.CompletionContext {
   return {
     triggerKind: vscode.CompletionTriggerKind.Invoke,

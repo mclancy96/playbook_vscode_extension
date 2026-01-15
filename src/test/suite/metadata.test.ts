@@ -13,7 +13,6 @@ suite("Metadata Test Suite", () => {
   let metadata: any
 
   suiteSetup(async () => {
-    // Load metadata before running tests
     const extensionPath = path.resolve(__dirname, "../../../")
     metadata = await loadMetadata(extensionPath)
   })
@@ -60,7 +59,6 @@ suite("Metadata Test Suite", () => {
     const component = findComponentByRailsName(metadata, "button")
     assert.ok(component, "Button component should exist")
 
-    // Button should have variant prop which is an enum
     const variantProp = component.props.variant
     if (variantProp && variantProp.values && variantProp.values.length > 0) {
       const docs = generatePropDocs("variant", variantProp)
@@ -76,7 +74,6 @@ suite("Metadata Test Suite", () => {
     const component = findComponentByRailsName(metadata, "button")
     assert.ok(component, "Button component should exist")
 
-    // Find any boolean prop
     const boolProp = Object.entries(component.props).find(
       ([_, prop]: [string, any]) => prop.type === "boolean"
     )
@@ -95,7 +92,6 @@ suite("Metadata Test Suite", () => {
     const component = findComponentByRailsName(metadata, "button")
     assert.ok(component, "Button component should exist")
 
-    // Find a prop with a default value
     const propWithDefault = Object.entries(component.props).find(
       ([_, prop]: [string, any]) => prop.default !== undefined
     )
@@ -120,14 +116,12 @@ suite("Metadata Test Suite", () => {
   })
 
   test("Should handle Rails and React name mapping", () => {
-    // Both should find the same component
     const railsComponent = findComponentByRailsName(metadata, "button")
     const reactComponent = findComponentByReactName(metadata, "Button")
 
     assert.ok(railsComponent, "Should find component by Rails name")
     assert.ok(reactComponent, "Should find component by React name")
 
-    // They should reference the same component data
     assert.strictEqual(railsComponent.rails, reactComponent.rails)
     assert.strictEqual(railsComponent.react, reactComponent.react)
   })

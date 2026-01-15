@@ -27,7 +27,6 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
   ): vscode.ProviderResult<vscode.Hover> {
     const metadata = loadMetadata(this.extensionPath)
 
-    // Try to parse as component name
     const railsComponent = parseRailsComponent(document, position)
     if (railsComponent) {
       const component = findComponentByRailsName(metadata, railsComponent.componentName)
@@ -46,7 +45,6 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
       }
     }
 
-    // Try to parse as prop name
     const railsProp = parseRailsProps(document, position)
     if (railsProp) {
       const componentContext = findComponentContext(document, position)
@@ -57,7 +55,6 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
             : findComponentByReactName(metadata, componentContext.componentName)
 
         if (component) {
-          // Check component props first, then global props
           const prop =
             component.props[railsProp.propName] ||
             (metadata as any).globalProps?.[railsProp.propName]
@@ -80,10 +77,8 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
         const component = findComponentByReactName(metadata, componentContext.componentName)
 
         if (component) {
-          // Convert camelCase to snake_case to find prop
           const snakeCaseProp = reactProp.propName.replace(/([A-Z])/g, "_$1").toLowerCase()
 
-          // Check component props first, then global props
           const prop =
             component.props[snakeCaseProp] || (metadata as any).globalProps?.[snakeCaseProp]
           if (prop) {

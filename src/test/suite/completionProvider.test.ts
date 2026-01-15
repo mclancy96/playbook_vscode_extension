@@ -61,7 +61,6 @@ suite("Completion Provider Test Suite", () => {
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    // May return empty array or undefined
     assert.ok(items.length === 0, "Should not provide completions outside component")
   })
 
@@ -100,7 +99,6 @@ suite("Completion Provider Test Suite", () => {
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    // Should either provide prop completions or handle gracefully
     assert.ok(true, "Handles React prop completions")
   })
 
@@ -115,7 +113,6 @@ suite("Completion Provider Test Suite", () => {
 
     if (items.length > 0) {
       const buttonCompletion = items.find((c: vscode.CompletionItem) => c.label === "button")
-      // May or may not filter - just checking it works
       assert.ok(true, "Handles partial match filtering")
     }
   })
@@ -132,7 +129,6 @@ suite("Completion Provider Test Suite", () => {
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    // Should handle enum value completions
     assert.ok(true, "Handles enum value completions")
   })
 
@@ -145,7 +141,6 @@ suite("Completion Provider Test Suite", () => {
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    // Should not crash on incomplete code
     assert.ok(true, "Handles incomplete code")
   })
 
@@ -160,7 +155,6 @@ suite("Completion Provider Test Suite", () => {
 
     if (items.length > 0) {
       const firstItem = items[0]
-      // Items should have kind and may have documentation
       assert.ok(firstItem.kind !== undefined, "Items should have completion kind")
     }
   })
@@ -228,7 +222,6 @@ suite("Completion Provider Test Suite", () => {
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    // Should provide enum value completions for props with defined values
     assert.ok(items.length >= 0, "Should handle value completions in multi-line context")
   })
 
@@ -242,7 +235,6 @@ suite("Completion Provider Test Suite", () => {
     const result = await provider.provideCompletionItems(document, position, token, context)
     const items = getCompletionItems(result)
 
-    // Should not provide prop completions after props block is closed
     assert.ok(items.length === 0, "Should not provide completions outside props block")
   })
 
@@ -303,7 +295,6 @@ suite("Completion Provider Test Suite", () => {
 
     if (items.length > 0) {
       const firstItem = items[0]
-      // When not inside a string, insertText should include quotes
       assert.ok(
         firstItem.insertText?.toString().includes('"'),
         "Should insert value with quotes when outside string"
