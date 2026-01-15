@@ -50,8 +50,12 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
     const propsContext = this.findPropsContext(document, position)
 
-    if (linePrefix.match(/props:\s*\{[^}]*$/) || propsContext) {
-      const propValueMatch = linePrefix.match(/(\w+):\s*["']?([^",}]*)$/)
+    if ((linePrefix.includes("props:") && linePrefix.includes("{")) || propsContext) {
+      const lastBraceIndex = linePrefix.lastIndexOf("{")
+      const afterBrace =
+        lastBraceIndex !== -1 ? linePrefix.substring(lastBraceIndex + 1) : linePrefix
+      const propValueMatch = afterBrace.match(/(\w+):\s*["']?([^",}]*)$/)
+
       if (propValueMatch) {
         return "rails-prop-value"
       }

@@ -1,6 +1,5 @@
 #!/usr/bin/env ts-node
 
-
 import * as fs from "fs"
 import * as path from "path"
 
@@ -40,6 +39,54 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
   const content = fs.readFileSync(globalPropsPath, "utf-8")
   const globalProps: Record<string, any> = {}
 
+  // First pass: Extract type aliases
+  const typeAliases: Record<string, string[]> = {}
+  const typeAliasRegex = /type\s+(\w+)\s*=\s*([^;\n]+)/g
+  let aliasMatch
+
+  while ((aliasMatch = typeAliasRegex.exec(content)) !== null) {
+    const typeName = aliasMatch[1]
+    const typeDef = aliasMatch[2].trim()
+
+    // Extract quoted values from the type definition
+    const values: string[] = []
+    const quotedValuesRegex = /"([^"]+)"/g
+    let valueMatch
+
+    while ((valueMatch = quotedValuesRegex.exec(typeDef)) !== null) {
+      values.push(valueMatch[1])
+    }
+
+    if (values.length > 0) {
+      typeAliases[typeName] = values
+    }
+  }
+
+  // Helper function to resolve type references and extract values
+  function extractEnumValues(valuesDef: string): string[] {
+    const enumValues: string[] = []
+
+    // First, extract directly quoted values
+    const quotedValuesRegex = /"([^"]+)"/g
+    let valueMatch
+    while ((valueMatch = quotedValuesRegex.exec(valuesDef)) !== null) {
+      enumValues.push(valueMatch[1])
+    }
+
+    // Then check for type references (e.g., "Alignment |")
+    const typeRefRegex = /\b([A-Z]\w+)\b/g
+    let typeMatch
+    while ((typeMatch = typeRefRegex.exec(valuesDef)) !== null) {
+      const referencedType = typeMatch[1]
+      if (typeAliases[referencedType]) {
+        enumValues.push(...typeAliases[referencedType])
+      }
+    }
+
+    return enumValues
+  }
+
+  // Second pass: Extract props from type definitions
   const typeDefRegex = /type\s+\w+\s*=\s*\{([^}]+)\}/g
   let typeMatch
 
@@ -67,13 +114,7 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
         continue
       }
 
-      const enumValues: string[] = []
-
-      const quotedValuesRegex = /"([^"]+)"/g
-      let valueMatch
-      while ((valueMatch = quotedValuesRegex.exec(valuesDef)) !== null) {
-        enumValues.push(valueMatch[1])
-      }
+      const enumValues = extractEnumValues(valuesDef)
 
       let propType = "string"
       if (valuesDef.includes("boolean")) {
@@ -163,6 +204,15 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
   if (!globalProps.bottom) globalProps.bottom = { type: "string" }
   if (!globalProps.left) globalProps.left = { type: "string" }
   if (!globalProps.hover) globalProps.hover = { type: "string" }
+
+  // Hardcoded global props that should always exist and not be validated for specific values
+  // These accept any value and are treated as string type
+  if (!globalProps.id) globalProps.id = { type: "string" }
+  if (!globalProps.data) globalProps.data = { type: "string" }
+  if (!globalProps.aria) globalProps.aria = { type: "string" }
+  if (!globalProps.html_options) globalProps.html_options = { type: "string" }
+  if (!globalProps.children) globalProps.children = { type: "string" }
+  if (!globalProps.style) globalProps.style = { type: "string" }
 
   return globalProps
 }

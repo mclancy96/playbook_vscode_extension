@@ -5,6 +5,52 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.9] - 2026-01-15
+
+### Fixed
+
+- **Prop Value Validation** ✅
+  - Fixed validation to properly detect quoted string literals using alternation regex
+  - Changed from backreference pattern to explicit alternation: `"value"|'value'|unquoted`
+  - Now correctly warns when invalid enum values are used (e.g., `variant: "asdf"`)
+  - Captures quoted values with quotes intact, unquoted values as-is
+  - Variables and method calls still properly ignored (no false positives)
+
+- **First-Line Autocomplete** ✅
+  - Fixed autocomplete suggestions for props on the first line after `props: {`
+  - Extracts content after opening brace before checking for prop:value pattern
+  - Prevents false matches on the `props:` keyword itself
+  - Now correctly distinguishes between typing prop names vs typing prop values
+  - Changed detection from regex match to simple string includes check
+  - First prop now gets proper autocomplete just like subsequent props
+  - Works even when typing immediately after opening brace
+
+- **Multi-Line Props Validation** ✅
+  - Props are now validated across multiple lines, not just single-line components
+  - Invalid enum values now detected even when props span multiple lines
+  - Fixed bug where props from one component were incorrectly attributed to previous component
+  - Added safety check to prevent crossing component boundaries during prop extraction
+  - Example: `pb_rails("section_separator")` followed by `pb_rails("pagination", props: {...})` now correctly validates pagination props only
+
+- **Type Alias Resolution in Global Props** ✅
+  - Sync script now resolves TypeScript type aliases when extracting global props
+  - Fixed `align_items` to include all valid values: flexStart, flexEnd, start, end, center, baseline, stretch
+  - Previously only extracted direct quoted values, missing referenced types like `Alignment`
+  - Now correctly combines union types with type aliases for complete enum value lists
+
+### Added
+
+- **Comprehensive Test Suite** ✅
+  - Added 6 new test cases for multi-line props validation scenarios
+  - Tests cover: multi-line props, invalid enum detection, component boundary detection
+  - Tests verify variables vs quoted strings are handled correctly
+  - All new tests passing (79 total tests passing)
+
+- **Hardcoded Global Props** ✅
+  - Added always-available global props: id, data, aria, html_options, children, style
+  - These props accept any value and are treated as string type (no enum validation)
+  - Useful for framework-specific props that don't have predefined values
+
 ## [1.0.8] - 2026-01-15
 
 ### Changed

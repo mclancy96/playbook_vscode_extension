@@ -81,7 +81,7 @@ export class PlaybookDiagnostics {
         diagnostic.source = "Playbook"
         diagnostics.push(diagnostic)
       } else {
-        this.validateProps(line, lineIndex, component, metadata, diagnostics, "rails")
+        this.validateProps(document, lineIndex, component, metadata, diagnostics, "rails")
       }
     }
   }
@@ -101,38 +101,52 @@ export class PlaybookDiagnostics {
       const component = findComponentByReactName(metadata, componentName)
 
       if (component) {
-        this.validateProps(line, lineIndex, component, metadata, diagnostics, "react")
+        this.validateProps(document, lineIndex, component, metadata, diagnostics, "react")
       }
     }
   }
 
   private validateProps(
-    line: string,
-    lineIndex: number,
+    document: vscode.TextDocument,
+    startLineIndex: number,
     component: ComponentMetadata,
     metadata: any,
     diagnostics: vscode.Diagnostic[],
     type: "rails" | "react"
   ): void {
     if (type === "rails") {
-      const propRegex = /(\w+):\s*["']?([^"',}]+)["']?/g
+      const propsBlock = this.extractPropsBlock(document, startLineIndex)
+      if (!propsBlock) return
+
+      const propRegex = /(\w+):\s*("([^"]*)"|'([^']*)'|([^,}\s]+))/g
       let match
 
-      while ((match = propRegex.exec(line)) !== null) {
+      while ((match = propRegex.exec(propsBlock.text)) !== null) {
         const propName = match[1]
-        const propValue = match[2].trim()
+        const fullValue = match[2]
+        const doubleQuotedValue = match[3]
+        const singleQuotedValue = match[4]
+        const unquotedValue = match[5]
+
+        const propValue =
+          doubleQuotedValue !== undefined
+            ? `"${doubleQuotedValue}"`
+            : singleQuotedValue !== undefined
+              ? `'${singleQuotedValue}'`
+              : unquotedValue
 
         if (["props", "do", "end", "if", "unless"].includes(propName)) {
           continue
         }
 
+        const position = this.getPositionInPropsBlock(propsBlock, match.index)
+
         if (!component.props[propName] && !metadata.globalProps?.[propName]) {
-          const startIndex = match.index
           const range = new vscode.Range(
-            lineIndex,
-            startIndex,
-            lineIndex,
-            startIndex + propName.length
+            position.line,
+            position.character,
+            position.line,
+            position.character + propName.length
           )
 
           const diagnostic = new vscode.Diagnostic(
@@ -145,11 +159,19 @@ export class PlaybookDiagnostics {
         } else {
           const prop = component.props[propName] || metadata.globalProps?.[propName]
           if (prop) {
-            this.validatePropValue(propName, propValue, prop, match.index, lineIndex, diagnostics)
+            this.validatePropValue(
+              propName,
+              propValue,
+              prop,
+              position.character,
+              position.line,
+              diagnostics
+            )
           }
         }
       }
     } else {
+      const line = document.lineAt(startLineIndex).text
       const propRegex = /(\w+)=(?:["']([^"']+)["']|\{([^}]+)\})/g
       let match
 
@@ -162,9 +184,9 @@ export class PlaybookDiagnostics {
         if (!component.props[snakeCaseProp] && !metadata.globalProps?.[snakeCaseProp]) {
           const startIndex = match.index
           const range = new vscode.Range(
-            lineIndex,
+            startLineIndex,
             startIndex,
-            lineIndex,
+            startLineIndex,
             startIndex + propName.length
           )
 
@@ -183,7 +205,7 @@ export class PlaybookDiagnostics {
               propValue || "",
               prop,
               match.index,
-              lineIndex,
+              startLineIndex,
               diagnostics
             )
           }
@@ -203,7 +225,7 @@ export class PlaybookDiagnostics {
     if (prop.values && prop.values.length > 0) {
       const cleanValue = propValue.replace(/["']/g, "").trim()
 
-      const isQuotedString = propValue.includes('"') || propValue.includes("'")
+      const isQuotedString = propValue.startsWith('"') || propValue.startsWith("'")
 
       if (isQuotedString && cleanValue && !prop.values.includes(cleanValue)) {
         const range = new vscode.Range(
@@ -223,6 +245,92 @@ export class PlaybookDiagnostics {
         diagnostics.push(diagnostic)
       }
     }
+  }
+
+  private extractPropsBlock(
+    document: vscode.TextDocument,
+    startLineIndex: number
+  ): { text: string; startLine: number; lines: string[] } | null {
+    let propsStartLine = -1
+    let propsStartChar = -1
+
+    for (let i = startLineIndex; i < Math.min(startLineIndex + 10, document.lineCount); i++) {
+      const line = document.lineAt(i).text
+
+      if (i > startLineIndex && line.includes("pb_rails(")) {
+        return null
+      }
+
+      const propsMatch = line.match(/props:\s*\{/)
+      if (propsMatch) {
+        propsStartLine = i
+        propsStartChar = propsMatch.index! + propsMatch[0].length
+        break
+      }
+    }
+
+    if (propsStartLine === -1) return null
+
+    let braceCount = 1
+    let endLine = propsStartLine
+    let endChar = propsStartChar
+    const lines: string[] = []
+
+    for (let i = propsStartLine; i < Math.min(propsStartLine + 50, document.lineCount); i++) {
+      const line = document.lineAt(i).text
+      const startChar = i === propsStartLine ? propsStartChar : 0
+
+      for (let j = startChar; j < line.length; j++) {
+        if (line[j] === "{") braceCount++
+        if (line[j] === "}") {
+          braceCount--
+          if (braceCount === 0) {
+            endLine = i
+            endChar = j
+            if (i === propsStartLine) {
+              lines.push(line.substring(propsStartChar, endChar))
+            } else {
+              lines.push(line.substring(0, endChar))
+            }
+            return {
+              text: lines.join("\n"),
+              startLine: propsStartLine,
+              lines: lines
+            }
+          }
+        }
+      }
+
+      if (i === propsStartLine) {
+        lines.push(line.substring(propsStartChar))
+      } else {
+        lines.push(line)
+      }
+    }
+
+    return null
+  }
+
+  private getPositionInPropsBlock(
+    propsBlock: { text: string; startLine: number; lines: string[] },
+    matchIndex: number
+  ): { line: number; character: number } {
+    let currentIndex = 0
+    let currentLine = propsBlock.startLine
+
+    for (let i = 0; i < propsBlock.lines.length; i++) {
+      const lineLength = propsBlock.lines[i].length
+      const lineEndIndex = currentIndex + lineLength
+
+      if (matchIndex >= currentIndex && matchIndex < lineEndIndex) {
+        const character = matchIndex - currentIndex
+        return { line: currentLine + i, character }
+      }
+
+      currentIndex = lineEndIndex + 1
+    }
+
+    return { line: propsBlock.startLine, character: 0 }
   }
 
   public clear(): void {

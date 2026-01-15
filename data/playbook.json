@@ -1,9 +1,17 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-01-15T16:26:29.876Z",
+  "generatedAt": "2026-01-15T18:49:32.948Z",
   "globalProps": {
     "align_content": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "start",
+        "end",
+        "center",
+        "spaceBetween",
+        "spaceAround",
+        "spaceEvenly"
+      ]
     },
     "align_items": {
       "type": "string",
@@ -11,7 +19,10 @@
         "flexStart",
         "flexEnd",
         "stretch",
-        "baseline"
+        "baseline",
+        "start",
+        "end",
+        "center"
       ]
     },
     "align_self": {
@@ -19,7 +30,10 @@
       "values": [
         "auto",
         "stretch",
-        "baseline"
+        "baseline",
+        "start",
+        "end",
+        "center"
       ]
     },
     "border_radius": {
@@ -99,13 +113,24 @@
       "type": "boolean"
     },
     "justify_content": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "start",
+        "end",
+        "center",
+        "spaceBetween",
+        "spaceAround",
+        "spaceEvenly"
+      ]
     },
     "justify_self": {
       "type": "string",
       "values": [
         "auto",
-        "stretch"
+        "stretch",
+        "start",
+        "end",
+        "center"
       ]
     },
     "line_height": {
@@ -121,25 +146,60 @@
       ]
     },
     "margin_right": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "margin_left": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "margin_top": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "margin_bottom": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "margin_x": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "margin_y": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "margin": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "width": {
       "type": "string"
@@ -172,25 +232,60 @@
       ]
     },
     "padding_right": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "padding_left": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "padding_top": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "padding_bottom": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "padding_x": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "padding_y": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "padding": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "auto",
+        "initial",
+        "inherit"
+      ]
     },
     "position": {
       "type": "string",
@@ -237,13 +332,31 @@
       ]
     },
     "overflow_x": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "scroll",
+        "visible",
+        "hidden",
+        "auto"
+      ]
     },
     "overflow_y": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "scroll",
+        "visible",
+        "hidden",
+        "auto"
+      ]
     },
     "overflow": {
-      "type": "string"
+      "type": "string",
+      "values": [
+        "scroll",
+        "visible",
+        "hidden",
+        "auto"
+      ]
     },
     "truncate": {
       "type": "string"
@@ -285,6 +398,24 @@
       ]
     },
     "hover": {
+      "type": "string"
+    },
+    "id": {
+      "type": "string"
+    },
+    "data": {
+      "type": "string"
+    },
+    "aria": {
+      "type": "string"
+    },
+    "html_options": {
+      "type": "string"
+    },
+    "children": {
+      "type": "string"
+    },
+    "style": {
       "type": "string"
     }
   },
