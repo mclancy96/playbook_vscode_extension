@@ -1,6 +1,6 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-01-15T18:49:32.948Z",
+  "generatedAt": "2026-01-16T02:40:58.520Z",
   "globalProps": {
     "align_content": {
       "type": "string",
@@ -400,19 +400,22 @@
     "hover": {
       "type": "string"
     },
-    "id": {
+    "aria": {
+      "type": "string"
+    },
+    "children": {
+      "type": "string"
+    },
+    "classname": {
       "type": "string"
     },
     "data": {
       "type": "string"
     },
-    "aria": {
-      "type": "string"
-    },
     "html_options": {
       "type": "string"
     },
-    "children": {
+    "id": {
       "type": "string"
     },
     "style": {
