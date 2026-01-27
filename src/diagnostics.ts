@@ -14,18 +14,32 @@ export class PlaybookDiagnostics {
   constructor(extensionPath: string) {
     this.extensionPath = extensionPath
     this.diagnosticCollection = vscode.languages.createDiagnosticCollection("playbook")
+    console.log(
+      `[PlaybookDiagnostics] Created diagnostic collection with extension path: ${extensionPath}`
+    )
   }
 
   public updateDiagnostics(document: vscode.TextDocument): void {
+    console.log(
+      `[PlaybookDiagnostics] updateDiagnostics called for: ${document.languageId} - ${document.uri.toString()}`
+    )
+
     if (!this.shouldValidate(document)) {
+      console.log(
+        `[PlaybookDiagnostics] Skipping validation - language not supported: ${document.languageId}`
+      )
       return
     }
 
     const diagnostics: vscode.Diagnostic[] = []
     const metadata = loadMetadata(this.extensionPath)
+    console.log(
+      `[PlaybookDiagnostics] Loaded metadata with ${Object.keys(metadata.components || {}).length} components`
+    )
 
     const text = document.getText()
     const lines = text.split("\n")
+    console.log(`[PlaybookDiagnostics] Analyzing ${lines.length} lines of code`)
 
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
       const line = lines[lineIndex]
@@ -36,12 +50,24 @@ export class PlaybookDiagnostics {
     }
 
     this.diagnosticCollection.set(document.uri, diagnostics)
+    console.log(
+      `[PlaybookDiagnostics] Found ${diagnostics.length} diagnostic(s) for ${document.uri.toString()}`
+    )
+    if (diagnostics.length > 0) {
+      diagnostics.forEach((d, i) => {
+        console.log(
+          `[PlaybookDiagnostics]   ${i + 1}. ${d.severity === vscode.DiagnosticSeverity.Warning ? "WARNING" : "ERROR"}: ${d.message} at line ${d.range.start.line + 1}`
+        )
+      })
+    }
   }
 
   private shouldValidate(document: vscode.TextDocument): boolean {
     const validLanguages = [
       "ruby",
       "erb",
+      "html.erb",
+      "html",
       "javascript",
       "javascriptreact",
       "typescript",

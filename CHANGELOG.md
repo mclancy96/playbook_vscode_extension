@@ -5,6 +5,43 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.18] - 2026-01-27
+
+### Added
+
+- **Comprehensive Debugging Logs** 🔍
+  - Extension activation now logs with timestamps and detailed provider registration info
+  - Diagnostics logs show document analysis progress, metadata loading, and findings
+  - Completion provider logs include position, trigger character, and detected completion type
+  - Hover provider logs track hover requests with positions
+  - All logs prefixed with component names (e.g., `[PlaybookDiagnostics]`) for easy filtering
+  - Timestamps help identify timing-related issues during development
+  - Helps diagnose extension behavior without guessing
+
+- **Comprehensive Integration Test Suite** 🧪
+  - Added 11 new integration tests for complete feature coverage
+  - **127 total tests passing** (up from 116)
+  - New test coverage:
+    - Go-to-definition feature for documentation links
+    - Unknown component detection and warnings
+    - Unknown prop detection and warnings
+    - React component name completion
+    - React prop name completion
+    - React component hover documentation
+    - Prop hover documentation
+    - Rails component name completion
+    - Nested props handling (aria, data, html_options)
+    - Multiline component parsing
+    - Global props validation (id, classname, margin, padding, etc.)
+  - Tests validate all major features before shipping
+  - Easier to catch regressions and broken functionality
+
+### Fixed
+
+- Improved test reliability using direct provider instantiation
+- Better test document creation with proper untitled URIs
+- Enhanced diagnostic verification with provider-level assertions
+
 ## [1.0.17] - 2026-01-19
 
 ### Fixed

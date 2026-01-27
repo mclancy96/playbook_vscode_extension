@@ -7,6 +7,7 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
   constructor(extensionPath: string) {
     this.extensionPath = extensionPath
+    console.log(`[PlaybookCompletionProvider] Created with extension path: ${extensionPath}`)
   }
 
   provideCompletionItems(
@@ -15,11 +16,17 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
     token: vscode.CancellationToken,
     context: vscode.CompletionContext
   ): vscode.ProviderResult<vscode.CompletionItem[] | vscode.CompletionList> {
+    console.log(
+      `[PlaybookCompletionProvider] Completion requested at ${document.languageId}:${position.line}:${position.character}, trigger: ${context.triggerCharacter || "manual"}`
+    )
+
     const metadata = loadMetadata(this.extensionPath)
     const line = document.lineAt(position.line).text
     const linePrefix = line.substring(0, position.character)
+    console.log(`[PlaybookCompletionProvider] Line prefix: "${linePrefix}"`)
 
     const completionType = this.detectCompletionType(linePrefix, document, position)
+    console.log(`[PlaybookCompletionProvider] Detected completion type: ${completionType}`)
 
     switch (completionType) {
       case "rails-component":
@@ -35,6 +42,7 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
       case "react-prop-value":
         return this.providePropValueCompletions(document, position, metadata, "react")
       default:
+        console.log(`[PlaybookCompletionProvider] No completions for type: ${completionType}`)
         return []
     }
   }

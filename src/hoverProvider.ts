@@ -19,12 +19,17 @@ export class PlaybookHoverProvider implements vscode.HoverProvider {
 
   constructor(extensionPath: string) {
     this.extensionPath = extensionPath
+    console.log(`[PlaybookHoverProvider] Created with extension path: ${extensionPath}`)
   }
 
   provideHover(
     document: vscode.TextDocument,
     position: vscode.Position
   ): vscode.ProviderResult<vscode.Hover> {
+    console.log(
+      `[PlaybookHoverProvider] Hover requested at ${document.languageId}:${position.line}:${position.character}`
+    )
+
     const metadata = loadMetadata(this.extensionPath)
 
     const railsComponent = parseRailsComponent(document, position)
