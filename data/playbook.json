@@ -1,6 +1,6 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-01-26T21:52:43.893Z",
+  "generatedAt": "2026-02-10T19:49:39.672Z",
   "globalProps": {
     "align_content": {
       "type": "string",
@@ -1807,6 +1807,10 @@
         "hidden_value": {
           "type": "any"
         },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
         "dark": {
           "type": "boolean"
         },
@@ -2453,6 +2457,10 @@
           "type": "boolean",
           "default": "false"
         },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
         "year_range": {
           "type": "array",
           "default": "[1900"
@@ -3082,6 +3090,9 @@
         "error": {
           "type": "string"
         },
+        "id": {
+          "type": "string"
+        },
         "required": {
           "type": "boolean",
           "default": "false"
@@ -3138,6 +3149,10 @@
           "type": "string",
           "default": "\"\""
         },
+        "clearable": {
+          "type": "boolean",
+          "default": "true"
+        },
         "start_date_id": {
           "type": "string",
           "default": "\"start_date_id\""
@@ -3154,11 +3169,19 @@
           "type": "string",
           "default": "\"end_date_name\""
         },
+        "placeholder": {
+          "type": "string"
+        },
+        "constrain_height": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
         "dark": {
           "type": "boolean"
-        },
-        "id": {
-          "type": "string"
         },
         "is_closed": {
           "type": "boolean"
@@ -3184,6 +3207,10 @@
       "hasChildren": false,
       "props": {
         "searchbar": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "constrain_height": {
           "type": "boolean",
           "default": "false"
         }
@@ -3230,6 +3257,18 @@
         "multi_select": {
           "type": "boolean",
           "default": "false"
+        },
+        "select_id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "error_id": {
+          "type": "string"
+        },
+        "error": {
+          "type": "string"
         }
       }
     },
@@ -4935,6 +4974,10 @@
           "type": "string",
           "default": "\"\""
         },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
         "show_checked_children": {
           "type": "boolean",
           "default": "true"
@@ -5307,6 +5350,10 @@
           "type": "array",
           "default": "[]"
         },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
         "value": {
           "type": "string"
         },
@@ -5436,6 +5483,10 @@
           "default": "false"
         },
         "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
           "type": "boolean",
           "default": "false"
         },
@@ -7140,6 +7191,10 @@
           "type": "boolean",
           "default": "false"
         },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
         "show_timezone": {
           "type": "boolean",
           "default": "false"
@@ -7848,6 +7903,10 @@
           "default": "false"
         },
         "preserve_search_input": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
           "type": "boolean",
           "default": "false"
         },

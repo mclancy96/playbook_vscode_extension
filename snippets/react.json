@@ -621,6 +621,7 @@
     "body": [
       "<DropdownContainer",
       "\tsearchbar={${1|true,false|}}",
+      "\tconstrainHeight={${2|true,false|}}",
       "\t$0",
       "/>"
     ],
@@ -1313,9 +1314,9 @@
       "<PhoneNumberInput",
       "\tdisabled={${1|true,false|}}",
       "\trequired={${2|true,false|}}",
-      "\tinitialCountry=\"${3:}\"",
-      "\tlabel=\"${4:}\"",
-      "\tname=\"${5:}\"",
+      "\trequiredIndicator={${3|true,false|}}",
+      "\tinitialCountry=\"${4:}\"",
+      "\tlabel=\"${5:}\"",
       "\t$0",
       "/>"
     ],

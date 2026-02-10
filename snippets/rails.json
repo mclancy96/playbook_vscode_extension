@@ -633,6 +633,7 @@
     "body": [
       "<%= pb_rails(\"dropdown/dropdown_container\", props: {",
       "\tsearchbar: \"${1}\",",
+      "\tconstrain_height: \"${2}\",",
       "\t$0",
       "}) %>"
     ],
@@ -1361,9 +1362,9 @@
       "<%= pb_rails(\"phone_number_input\", props: {",
       "\tdisabled: \"${1}\",",
       "\trequired: \"${2}\",",
-      "\tinitial_country: \"${3:}\",",
-      "\tlabel: \"${4:}\",",
-      "\tname: \"${5:}\",",
+      "\trequired_indicator: \"${3}\",",
+      "\tinitial_country: \"${4:}\",",
+      "\tlabel: \"${5:}\",",
       "\t$0",
       "}) %>"
     ],
