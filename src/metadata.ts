@@ -16,9 +16,20 @@ export interface ComponentMetadata {
   props: Record<string, PropMetadata>
 }
 
+export interface FormBuilderField {
+  name: string
+  kit: string
+  props: Record<string, PropMetadata>
+}
+
+export interface FormBuilderMetadata {
+  fields: FormBuilderField[]
+}
+
 export interface PlaybookMetadata {
   globalProps?: Record<string, PropMetadata>
   components: Record<string, ComponentMetadata>
+  formBuilders?: FormBuilderMetadata
 }
 
 let cachedMetadata: PlaybookMetadata | null = null
@@ -58,6 +69,33 @@ export function findComponentByReactName(
   reactName: string
 ): ComponentMetadata | null {
   return metadata.components[reactName] || null
+}
+
+let cachedFormBuilderMetadata: FormBuilderMetadata | null = null
+
+export function loadFormBuilderMetadata(extensionPath: string): FormBuilderMetadata {
+  if (cachedFormBuilderMetadata) {
+    return cachedFormBuilderMetadata
+  }
+
+  const metadataPath = path.join(extensionPath, "data", "form-builders.json")
+
+  try {
+    const content = fs.readFileSync(metadataPath, "utf-8")
+    const data = JSON.parse(content)
+    cachedFormBuilderMetadata = data
+    return data
+  } catch (error) {
+    console.error("Failed to load form builder metadata:", error)
+    return { fields: [] }
+  }
+}
+
+export function findFormBuilderField(
+  metadata: FormBuilderMetadata,
+  fieldName: string
+): FormBuilderField | null {
+  return metadata.fields.find((field) => field.name === fieldName) || null
 }
 
 export function generateComponentDocs(

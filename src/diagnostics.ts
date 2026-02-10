@@ -4,7 +4,11 @@ import {
   findComponentByRailsName,
   findComponentByReactName,
   ComponentMetadata,
-  PropMetadata
+  PropMetadata,
+  loadFormBuilderMetadata,
+  findFormBuilderField,
+  FormBuilderMetadata,
+  FormBuilderField
 } from "./metadata"
 
 export class PlaybookDiagnostics {
@@ -33,13 +37,18 @@ export class PlaybookDiagnostics {
 
     const diagnostics: vscode.Diagnostic[] = []
     const metadata = loadMetadata(this.extensionPath)
+    const formBuilderMetadata = loadFormBuilderMetadata(this.extensionPath)
     console.log(
       `[PlaybookDiagnostics] Loaded metadata with ${Object.keys(metadata.components || {}).length} components`
+    )
+    console.log(
+      `[PlaybookDiagnostics] Loaded ${formBuilderMetadata.fields.length} form builder fields`
     )
 
     const text = document.getText()
     const lines = text.split("\n")
     console.log(`[PlaybookDiagnostics] Analyzing ${lines.length} lines of code`)
+
 
     for (let lineIndex = 0; lineIndex < lines.length; lineIndex++) {
       const line = lines[lineIndex]
@@ -47,6 +56,8 @@ export class PlaybookDiagnostics {
       this.validateRailsLine(line, lineIndex, document, metadata, diagnostics)
 
       this.validateReactLine(line, lineIndex, document, metadata, diagnostics)
+
+      this.validateFormBuilderLine(line, lineIndex, document, formBuilderMetadata, metadata, diagnostics)
     }
 
     this.diagnosticCollection.set(document.uri, diagnostics)
@@ -375,7 +386,7 @@ export class PlaybookDiagnostics {
 
       const propsMatch = line.match(/props:\s*\{/)
       if (propsMatch) {
-        // Check if this props block belongs to a different method call (like render_app)
+        // Check if this props block belongs to a different method call (like render_app or form builder)
         const beforeProps = line.substring(0, propsMatch.index!)
         // If we're on a line AFTER the pb_rails line and there's another method call, skip it
         if (i > startLineIndex) {
@@ -384,7 +395,277 @@ export class PlaybookDiagnostics {
           if (otherMethodMatch && !beforeProps.includes("pb_rails(")) {
             continue
           }
+          // Also check for form builder methods (e.g., f.text_field, f.select, etc.)
+          // These are identified by pattern: f.<method_name> or other_var.<method_name>
+          const formBuilderMatch = beforeProps.match(/\w+\.\w+/)
+          if (formBuilderMatch) {
+            continue
+          }
         }
+        propsStartLine = i
+        propsStartChar = propsMatch.index! + propsMatch[0].length
+        break
+      }
+    }
+
+    if (propsStartLine === -1) {
+      return null
+    }
+
+    let braceCount = 1
+    let endLine = propsStartLine
+    let endChar = propsStartChar
+    const lines: string[] = []
+
+    for (let i = propsStartLine; i < Math.min(propsStartLine + 50, document.lineCount); i++) {
+      const line = document.lineAt(i).text
+      const startChar = i === propsStartLine ? propsStartChar : 0
+
+      for (let j = startChar; j < line.length; j++) {
+        if (line[j] === "{") {
+          braceCount++
+        }
+        if (line[j] === "}") {
+          braceCount--
+          if (braceCount === 0) {
+            endLine = i
+            endChar = j
+            if (i === propsStartLine) {
+              lines.push(line.substring(propsStartChar, endChar))
+            } else {
+              lines.push(line.substring(0, endChar))
+            }
+            return {
+              text: lines.join("\n"),
+              startLine: propsStartLine,
+              lines: lines
+            }
+          }
+        }
+      }
+
+      if (i === propsStartLine) {
+        lines.push(line.substring(propsStartChar))
+      } else {
+        lines.push(line)
+      }
+    }
+
+    return null
+  }
+
+  private validateFormBuilderLine(
+    line: string,
+    lineIndex: number,
+    document: vscode.TextDocument,
+    formBuilderMetadata: FormBuilderMetadata,
+    playbookMetadata: any,
+    diagnostics: vscode.Diagnostic[]
+  ): void {
+    // Match form builder method calls: f.text_field, form.select, etc.
+    // Pattern: <variable>.<method_name>
+    const formBuilderRegex = /(\w+)\.(\w+)\s*\(/g
+    let match
+
+    console.log(`[FormBuilder] Checking line ${lineIndex +1}: ${line.substring(0, 50)}`)
+
+    while ((match = formBuilderRegex.exec(line)) !== null) {
+      const variableName = match[1]
+      const methodName = match[2]
+
+      console.log(`[FormBuilder] Found method call: ${variableName}.${methodName}`)
+
+      // Common form variable names
+      const formVariables = ["f", "form", "builder"]
+
+      // Only validate if it looks like a form variable
+      if (!formVariables.includes(variableName)) {
+        console.log(`[FormBuilder] Skipping - not a form variable: ${variableName}`)
+        continue
+      }
+
+      const field = findFormBuilderField(formBuilderMetadata, methodName)
+
+      if (!field) {
+        // Don't warn for unknown methods - they might be Rails form helpers we haven't mapped yet
+        console.log(`[FormBuilder] Skipping - unknown form builder method: ${methodName}`)
+        continue
+      }
+
+      console.log(
+        `[PlaybookDiagnostics] Found form builder field: ${variableName}.${methodName} on line ${lineIndex + 1}`
+      )
+
+      // Validate props for this form builder field
+      this.validateFormBuilderProps(
+        document,
+        lineIndex,
+        field,
+        playbookMetadata,
+        diagnostics
+      )
+    }
+  }
+
+  private validateFormBuilderProps(
+    document: vscode.TextDocument,
+    startLineIndex: number,
+    field: FormBuilderField,
+    metadata: any,
+    diagnostics: vscode.Diagnostic[]
+  ): void {
+    const propsBlock = this.extractFormBuilderPropsBlock(document, startLineIndex)
+    if (!propsBlock) {
+      console.log(`[PlaybookDiagnostics] No props block found for form builder field: ${field.name}`)
+      return
+    }
+
+    console.log(
+      `[PlaybookDiagnostics] Validating form builder props for ${field.name}: ${propsBlock.text.substring(0, 50)}...`
+    )
+
+    const propRegex = /(\w+):\s*("([^"]*)"|'([^']*)'|([^,}\s]+)|\{)/g
+    let match
+    let parenDepth = 0
+    let braceDepth = 0
+    let lastIndex = 0
+
+    while (
+      (match = propRegex.exec(propRegex.lastIndex > 0 ? propsBlock.text : propsBlock.text)) !==
+      null
+    ) {
+      const betweenText = propsBlock.text.substring(lastIndex, match.index)
+      for (const char of betweenText) {
+        if (char === "(") {
+          parenDepth++
+        }
+        if (char === ")") {
+          parenDepth--
+        }
+        if (char === "{") {
+          braceDepth++
+        }
+        if (char === "}") {
+          braceDepth--
+        }
+      }
+      lastIndex = match.index
+
+      const propName = match[1]
+      const fullValue = match[2]
+      const doubleQuotedValue = match[3]
+      const singleQuotedValue = match[4]
+      const unquotedValue = match[5]
+
+      if (parenDepth > 0 || braceDepth > 0) {
+        continue
+      }
+
+      if (propName === "props") {
+        continue
+      }
+
+      if (["do", "end", "if", "unless"].includes(propName)) {
+        continue
+      }
+
+      if (fullValue === "{") {
+        // This prop has a nested object value
+        const isValidProp = field.props[propName] || metadata.globalProps?.[propName]
+
+        if (!isValidProp) {
+          const position = this.getPositionInPropsBlock(propsBlock, match.index)
+          const range = new vscode.Range(
+            position.line,
+            position.character,
+            position.line,
+            position.character + propName.length
+          )
+
+          const diagnostic = new vscode.Diagnostic(
+            range,
+            `Unknown prop "${propName}" for form builder field "${field.name}"`,
+            vscode.DiagnosticSeverity.Warning
+          )
+          diagnostic.source = "Playbook"
+          diagnostics.push(diagnostic)
+        }
+
+        // Skip the nested object contents
+        let nestedBraceCount = 1
+        let searchIndex = propRegex.lastIndex
+
+        while (nestedBraceCount > 0 && searchIndex < propsBlock.text.length) {
+          const char = propsBlock.text[searchIndex]
+          if (char === "{") {
+            nestedBraceCount++
+          }
+          if (char === "}") {
+            nestedBraceCount--
+          }
+          searchIndex++
+        }
+
+        propRegex.lastIndex = searchIndex
+        continue
+      }
+
+      const propValue =
+        doubleQuotedValue !== undefined
+          ? `"${doubleQuotedValue}"`
+          : singleQuotedValue !== undefined
+            ? `'${singleQuotedValue}'`
+            : unquotedValue
+
+      const position = this.getPositionInPropsBlock(propsBlock, match.index)
+
+      if (!field.props[propName] && !metadata.globalProps?.[propName]) {
+        const range = new vscode.Range(
+          position.line,
+          position.character,
+          position.line,
+          position.character + propName.length
+        )
+
+        const diagnostic = new vscode.Diagnostic(
+          range,
+          `Unknown prop "${propName}" for form builder field "${field.name}"`,
+          vscode.DiagnosticSeverity.Warning
+        )
+        diagnostic.source = "Playbook"
+        diagnostics.push(diagnostic)
+      } else {
+        const prop = field.props[propName] || metadata.globalProps?.[propName]
+        if (prop) {
+          this.validatePropValue(
+            propName,
+            propValue,
+            prop,
+            match[0],
+            position.character,
+            position.line,
+            diagnostics
+          )
+        }
+      }
+    }
+  }
+
+  private extractFormBuilderPropsBlock(
+    document: vscode.TextDocument,
+    startLineIndex: number
+  ): { text: string; startLine: number; lines: string[] } | null {
+    let propsStartLine = -1
+    let propsStartChar = -1
+
+    // Look for props: { on the same line or within the next few lines
+    for (let i = startLineIndex; i < Math.min(startLineIndex + 10, document.lineCount); i++) {
+      const line = document.lineAt(i).text
+
+      const propsMatch = line.match(/props:\s*\{/)
+      if (propsMatch) {
+        // Make sure this props block belongs to the form builder call on startLineIndex
+        // by checking it's on the same line or directly after with proper continuation
         propsStartLine = i
         propsStartChar = propsMatch.index! + propsMatch[0].length
         break

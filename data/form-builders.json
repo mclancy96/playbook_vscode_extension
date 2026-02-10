@@ -1,0 +1,2607 @@
+{
+  "fields": [
+    {
+      "name": "email_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "number_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "search_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "telephone_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "text_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "password_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "url_field",
+      "kit": "text_input",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "any",
+          "default": "true"
+        },
+        "mask": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any",
+          "default": "\"text\""
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "add_on": {
+          "type": "nestedprops"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "alignment": {
+          "type": "enum",
+          "values": [
+            "right",
+            "left"
+          ]
+        },
+        "border": {
+          "type": "boolean"
+        },
+        "auto_complete": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "text_area",
+      "kit": "textarea",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "required_indicator": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "method": {
+          "type": "any"
+        },
+        "name": {
+          "type": "any"
+        },
+        "resize": {
+          "type": "enum",
+          "default": "\"none\"",
+          "values": [
+            "none",
+            "both",
+            "horizontal",
+            "vertical",
+            "auto"
+          ]
+        },
+        "rows": {
+          "type": "number",
+          "default": "4"
+        },
+        "character_count": {
+          "type": "any"
+        },
+        "onkeyup": {
+          "type": "any"
+        },
+        "max_characters": {
+          "type": "any"
+        },
+        "id": {
+          "type": "string"
+        },
+        "object": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "action_area",
+      "kit": "button",
+      "props": {
+        "label": {
+          "type": "string | boolean"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "any"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "full_width": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "icon": {
+          "type": "any"
+        },
+        "icon_right": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "link": {
+          "type": "any"
+        },
+        "loading": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "new_window": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "variant": {
+          "type": "enum",
+          "default": "\"primary\"",
+          "values": [
+            "primary",
+            "secondary",
+            "link",
+            "danger",
+            "reaction"
+          ]
+        },
+        "count": {
+          "type": "number"
+        },
+        "highlight": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "target": {
+          "type": "any"
+        },
+        "text": {
+          "type": "any"
+        },
+        "size": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        "form": {
+          "type": "any",
+          "default": "nil"
+        },
+        "icon_font_family": {
+          "type": "enum",
+          "default": "\"far\"",
+          "values": [
+            "far",
+            "fas",
+            "fab",
+            "fak"
+          ]
+        }
+      }
+    },
+    {
+      "name": "checkbox_field",
+      "kit": "caption",
+      "props": {
+        "label": {
+          "type": "string | boolean"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "size": {
+          "type": "enum",
+          "default": "\"md\"",
+          "values": [
+            "xs",
+            "sm",
+            "md",
+            "base",
+            "lg",
+            "xl"
+          ]
+        },
+        "tag": {
+          "type": "enum",
+          "default": "\"div\"",
+          "values": [
+            "h1",
+            "h2",
+            "h3",
+            "h4",
+            "h5",
+            "h6",
+            "p",
+            "span",
+            "div",
+            "caption"
+          ]
+        },
+        "text": {
+          "type": "any"
+        },
+        "variant": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "link"
+          ]
+        },
+        "color": {
+          "type": "enum",
+          "default": "nil",
+          "values": [
+            "default",
+            "light",
+            "lighter",
+            "success",
+            "error",
+            "link"
+          ]
+        },
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "collection_select_field",
+      "kit": "select",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "attributes": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "blank_selection": {
+          "type": "any"
+        },
+        "compact": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "include_blank": {
+          "type": "any"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "multiple": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "onchange": {
+          "type": "any"
+        },
+        "options": {
+          "type": "hasharray",
+          "default": "[]"
+        },
+        "show_arrow": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "validation_message": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "id": {
+          "type": "string"
+        },
+        "margin": {
+          "type": "string"
+        },
+        "margin_bottom": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "date_picker_field",
+      "kit": "date_picker",
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "\"Date Picker\""
+        },
+        "placeholder": {
+          "type": "string",
+          "default": "\"Select Date\""
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_aria": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "allow_input": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "custom_quick_pick_dates": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "dark": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "default_date": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "disable_date": {
+          "type": "array",
+          "default": "[]"
+        },
+        "disable_input": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "disable_range": {
+          "type": "array",
+          "default": "[]"
+        },
+        "disable_weekdays": {
+          "type": "array",
+          "default": "[]"
+        },
+        "enable_time": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "end_date_id": {
+          "type": "string",
+          "default": "\"end_date_id\""
+        },
+        "end_date_name": {
+          "type": "string",
+          "default": "\"end_date_name\""
+        },
+        "format": {
+          "type": "string",
+          "default": "\"m/d/Y\""
+        },
+        "hide_icon": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "hide_label": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "max_date": {
+          "type": "string"
+        },
+        "min_date": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string",
+          "default": "\"single\""
+        },
+        "picker_id": {
+          "type": "string"
+        },
+        "plugins": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "position": {
+          "type": "string",
+          "default": "\"auto\""
+        },
+        "position_element": {
+          "type": "string"
+        },
+        "scroll_container": {
+          "type": "string"
+        },
+        "selection_type": {
+          "type": "enum",
+          "default": "\"none\"",
+          "values": [
+            "week",
+            "month",
+            "quickpick",
+            "none"
+          ]
+        },
+        "show_timezone": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "start_date_id": {
+          "type": "string",
+          "default": "\"start_date_id\""
+        },
+        "start_date_name": {
+          "type": "string",
+          "default": "\"start_date_name\""
+        },
+        "static_position": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "this_ranges_end_today": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "year_range": {
+          "type": "array",
+          "default": "[1900"
+        },
+        "custom_event_type": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "validation_message": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "controls_start_id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "controls_end_id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "sync_start_with": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "sync_end_with": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "cursor": {
+          "type": "string",
+          "default": "\"pointer\""
+        },
+        "id": {
+          "type": "string"
+        },
+        "initialize_once": {
+          "type": "boolean"
+        },
+        "in_line": {
+          "type": "boolean"
+        },
+        "input_on_change": {
+          "type": "any"
+        },
+        "input_value": {
+          "type": "string"
+        },
+        "time_format": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "dropdown_field",
+      "kit": "dropdown",
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "autocomplete": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "options": {
+          "type": "array",
+          "default": "[]"
+        },
+        "name": {
+          "type": "string"
+        },
+        "default_value": {
+          "type": "any"
+        },
+        "blank_selection": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "custom_quick_pick_dates": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "variant": {
+          "type": "enum",
+          "default": "\"default\"",
+          "values": [
+            "default",
+            "subtle",
+            "quickpick"
+          ]
+        },
+        "separators": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "searchbar": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "multi_select": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "form_pill_props": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "range_ends_today": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "controls_end_id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "controls_start_id": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "start_date_id": {
+          "type": "string",
+          "default": "\"start_date_id\""
+        },
+        "start_date_name": {
+          "type": "string",
+          "default": "\"start_date_name\""
+        },
+        "end_date_id": {
+          "type": "string",
+          "default": "\"end_date_id\""
+        },
+        "end_date_name": {
+          "type": "string",
+          "default": "\"end_date_name\""
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "is_closed": {
+          "type": "boolean"
+        },
+        "on_select": {
+          "type": "any"
+        },
+        "active_style": {
+          "type": "any"
+        },
+        "background_color": {
+          "type": "string"
+        },
+        "font_color": {
+          "type": "string"
+        }
+      }
+    },
+    {
+      "name": "intl_telephone_field",
+      "kit": "phone_number_input",
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "initial_country": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "name": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "only_countries": {
+          "type": "array",
+          "default": "[]"
+        },
+        "exclude_countries": {
+          "type": "array",
+          "default": "[]"
+        },
+        "preferred_countries": {
+          "type": "array",
+          "default": "[]"
+        },
+        "format_as_you_type": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "strict_mode": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "hidden_inputs": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "country_search": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "is_valid": {
+          "type": "any"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "on_validate": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "multi_level_select_field",
+      "kit": "multi_level_select",
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "id": {
+          "type": "any"
+        },
+        "name": {
+          "type": "any"
+        },
+        "tree_data": {
+          "type": "array",
+          "default": "[]"
+        },
+        "return_all_selected": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "selected_ids": {
+          "type": "array",
+          "default": "[]"
+        },
+        "input_display": {
+          "type": "enum",
+          "default": "\"pills\"",
+          "values": [
+            "pills",
+            "none"
+          ]
+        },
+        "input_name": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "variant": {
+          "type": "enum",
+          "default": "\"multi\"",
+          "values": [
+            "multi",
+            "single"
+          ]
+        },
+        "pill_color": {
+          "type": "enum",
+          "default": "\"primary\"",
+          "values": [
+            "primary",
+            "neutral",
+            "success",
+            "warning",
+            "error",
+            "info",
+            "data_1",
+            "data_2",
+            "data_3",
+            "data_4",
+            "data_5",
+            "data_6",
+            "data_7",
+            "data_8",
+            "windows",
+            "siding",
+            "roofing",
+            "doors",
+            "gutters",
+            "solar",
+            "insulation",
+            "accessories"
+          ]
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "show_checked_children": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "on_select": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "phone_number_field",
+      "kit": "phone_number_input",
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hash"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "initial_country": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "name": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "only_countries": {
+          "type": "array",
+          "default": "[]"
+        },
+        "exclude_countries": {
+          "type": "array",
+          "default": "[]"
+        },
+        "preferred_countries": {
+          "type": "array",
+          "default": "[]"
+        },
+        "format_as_you_type": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "strict_mode": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "hidden_inputs": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "country_search": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "is_valid": {
+          "type": "any"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "on_validate": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "select_field",
+      "kit": "select",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "attributes": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "blank_selection": {
+          "type": "any"
+        },
+        "compact": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "include_blank": {
+          "type": "any"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "multiple": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "onchange": {
+          "type": "any"
+        },
+        "options": {
+          "type": "hasharray",
+          "default": "[]"
+        },
+        "show_arrow": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "validation_message": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "id": {
+          "type": "string"
+        },
+        "margin": {
+          "type": "string"
+        },
+        "margin_bottom": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "star_rating_field",
+      "kit": "star_rating",
+      "props": {
+        "label": {
+          "type": "string"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "rating": {
+          "type": "numeric",
+          "default": "0"
+        },
+        "denominator": {
+          "type": "numeric",
+          "default": "5"
+        },
+        "layout_option": {
+          "type": "enum",
+          "default": "\"default\"",
+          "values": [
+            "default",
+            "onestar",
+            "number"
+          ]
+        },
+        "color_option": {
+          "type": "enum",
+          "default": "\"yellow\"",
+          "values": [
+            "yellow",
+            "primary",
+            "subtle"
+          ]
+        },
+        "size": {
+          "type": "enum",
+          "default": "\"sm\"",
+          "values": [
+            "xs",
+            "sm",
+            "md",
+            "lg"
+          ]
+        },
+        "background_type": {
+          "type": "enum",
+          "default": "\"fill\"",
+          "values": [
+            "fill",
+            "outline"
+          ]
+        },
+        "variant": {
+          "type": "enum",
+          "default": "\"display\"",
+          "values": [
+            "display",
+            "interactive"
+          ]
+        },
+        "name": {
+          "type": "string"
+        },
+        "default_value": {
+          "type": "any"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "fixed_width": {
+          "type": "boolean"
+        },
+        "icon": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_click": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "time_picker_field",
+      "kit": "time_picker",
+      "props": {
+        "label": {
+          "type": "string",
+          "default": "\"Time Picker\""
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "default_time": {
+          "type": "string"
+        },
+        "max_time": {
+          "type": "string"
+        },
+        "min_time": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "show_timezone": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "time_format": {
+          "type": "enum",
+          "default": "\"AMPM\"",
+          "values": [
+            "AMPM",
+            "24hour"
+          ]
+        },
+        "validation_message": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        },
+        "on_close": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "time_zone_select_field",
+      "kit": "select",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "string"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "any"
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hash"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "attributes": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "blank_selection": {
+          "type": "any"
+        },
+        "compact": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "include_blank": {
+          "type": "any"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "multiple": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "name": {
+          "type": "any"
+        },
+        "onchange": {
+          "type": "any"
+        },
+        "options": {
+          "type": "hasharray",
+          "default": "[]"
+        },
+        "show_arrow": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "validation_message": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "id": {
+          "type": "string"
+        },
+        "margin": {
+          "type": "string"
+        },
+        "margin_bottom": {
+          "type": "string"
+        },
+        "on_change": {
+          "type": "any"
+        }
+      }
+    },
+    {
+      "name": "typeahead_field",
+      "kit": "typeahead",
+      "props": {
+        "label": {
+          "type": "any"
+        },
+        "placeholder": {
+          "type": "any"
+        },
+        "required": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "required_indicator": {
+          "type": "boolean"
+        },
+        "error": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "disabled": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "autocomplete": {
+          "type": "string | boolean"
+        },
+        "mask": {
+          "type": "enum",
+          "values": [
+            "currency",
+            "zip_code",
+            "postal_code",
+            "ssn",
+            "credit_card",
+            "cvv"
+          ]
+        },
+        "validation": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "emoji_mask": {
+          "type": "boolean"
+        },
+        "value": {
+          "type": "any"
+        },
+        "type": {
+          "type": "string"
+        },
+        "input_options": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "input_data": {
+          "type": "hash"
+        },
+        "input_aria": {
+          "type": "hash"
+        },
+        "async": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "default_options": {
+          "type": "hasharray",
+          "default": "[]"
+        },
+        "get_option_label": {
+          "type": "any"
+        },
+        "get_option_value": {
+          "type": "any"
+        },
+        "id": {
+          "type": "any"
+        },
+        "inline": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "load_options": {
+          "type": "any"
+        },
+        "multi_kit": {
+          "type": "string",
+          "default": "\"\""
+        },
+        "name": {
+          "type": "any"
+        },
+        "options": {
+          "type": "hasharray",
+          "default": "[]"
+        },
+        "is_multi": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "input_display": {
+          "type": "enum",
+          "default": "\"pills\"",
+          "values": [
+            "none",
+            "pills"
+          ]
+        },
+        "pills": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "plus_icon": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "search_term_minimum_length": {
+          "type": "any",
+          "default": "3"
+        },
+        "search_debounce_timeout": {
+          "type": "any",
+          "default": "250"
+        },
+        "margin_bottom": {
+          "type": "enum",
+          "default": "\"sm\"",
+          "values": [
+            "none",
+            "xxs",
+            "xs",
+            "sm",
+            "md",
+            "lg",
+            "xl"
+          ]
+        },
+        "pill_color": {
+          "type": "enum",
+          "default": "\"primary\"",
+          "values": [
+            "primary",
+            "neutral",
+            "success",
+            "warning",
+            "error",
+            "info",
+            "data_1",
+            "data_2",
+            "data_3",
+            "data_4",
+            "data_5",
+            "data_6",
+            "data_7",
+            "data_8",
+            "windows",
+            "siding",
+            "roofing",
+            "doors",
+            "gutters",
+            "solar",
+            "insulation",
+            "accessories"
+          ]
+        },
+        "wrapped": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "clear_on_context_change": {
+          "type": "boolean",
+          "default": "true"
+        },
+        "options_by_context": {
+          "type": "hashprop",
+          "default": "{}"
+        },
+        "search_context_selector": {
+          "type": "string",
+          "default": "nil"
+        },
+        "preserve_search_input": {
+          "type": "boolean",
+          "default": "false"
+        },
+        "components": {
+          "type": "any"
+        },
+        "createable": {
+          "type": "boolean"
+        },
+        "dark": {
+          "type": "boolean"
+        },
+        "on_change": {
+          "type": "any"
+        }
+      }
+    }
+  ]
+}

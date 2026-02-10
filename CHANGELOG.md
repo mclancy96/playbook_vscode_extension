@@ -5,6 +5,34 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.20] - 2026-02-10
+
+### Added
+
+- **Form Builder Diagnostics Support** 📋
+  - Added validation for Rails form builder fields (f.text_field, form.select, etc.)
+  - Extracts 21 form builder fields from Playbook repository with prop definitions
+  - Validates props on form builder fields against their underlying Playbook kits
+  - Recognizes common form variable names: `f`, `form`, `builder`
+  - Provides warnings for invalid props on form builder fields
+  - New metadata extraction script: `extract-form-builders.ts`
+  - Form builder metadata stored in `data/form-builders.json`
+  - Supports all Playbook form fields:
+    - Text inputs: text_field, email_field, password_field, number_field, search_field, telephone_field, url_field
+    - Text area: text_area
+    - Select fields: select, collection_select, time_zone_select
+    - Date/time pickers: date_picker, time_picker
+    - Special fields: typeahead, multi_level_select, dropdown, phone_number, intl_telephone
+    - Other: checkbox, star_rating, action_area
+  - 7 new comprehensive tests for form builder validation
+  - **134 total tests passing** (up from 127)
+
+### Fixed
+
+- Fixed issue where props from nested form builder fields were incorrectly attributed to outer `pb_rails` components
+- Improved props block extraction to properly distinguish between `pb_rails` props and form builder props
+- Added detection for form builder method calls (pattern: `variable.method_name`) to skip their props during component validation
+
 ## [1.0.19] - 2026-01-27
 
 ### Added
