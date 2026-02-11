@@ -5,6 +5,8 @@ export interface PropMetadata {
   type: string
   default?: string
   values?: string[]
+  railsValues?: string[]
+  reactValues?: string[]
   required?: boolean
 }
 
@@ -96,6 +98,30 @@ export function findFormBuilderField(
   fieldName: string
 ): FormBuilderField | null {
   return metadata.fields.find((field) => field.name === fieldName) || null
+}
+
+/**
+ * Get the appropriate prop values based on the language context
+ * @param prop The prop metadata
+ * @param languageId The VS Code language ID (e.g., 'erb', 'typescriptreact')
+ * @returns The appropriate values array for the context
+ */
+export function getPropValues(prop: PropMetadata, languageId: string): string[] | undefined {
+  // Determine if this is a Rails or React context
+  const isRailsContext = ['ruby', 'erb', 'html.erb', 'html'].includes(languageId)
+  const isReactContext = ['javascript', 'javascriptreact', 'typescript', 'typescriptreact'].includes(languageId)
+
+  // If we have context-specific values, use them
+  if (isRailsContext && prop.railsValues) {
+    return prop.railsValues
+  }
+
+  if (isReactContext && prop.reactValues) {
+    return prop.reactValues
+  }
+
+  // Otherwise, fall back to generic values
+  return prop.values
 }
 
 export function generateComponentDocs(

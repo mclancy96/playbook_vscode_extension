@@ -1,5 +1,5 @@
 import * as vscode from "vscode"
-import { loadMetadata, ComponentMetadata } from "./metadata"
+import { loadMetadata, ComponentMetadata, getPropValues } from "./metadata"
 import { findComponentContext } from "./parser"
 
 export class PlaybookCompletionProvider implements vscode.CompletionItemProvider {
@@ -213,9 +213,11 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
       const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
       item.detail = `${prop.type}${prop.required ? " (required)" : ""}`
 
+      // Get context-appropriate values
+      const validValues = getPropValues(prop, document.languageId)
       let doc = `Type: \`${prop.type}\``
-      if (prop.values && prop.values.length > 0) {
-        doc += `\nValues: ${prop.values.map((v) => `\`${v}\``).join(", ")}`
+      if (validValues && validValues.length > 0) {
+        doc += `\nValues: ${validValues.map((v) => `\`${v}\``).join(", ")}`
       }
       if (prop.default !== undefined) {
         doc += `\nDefault: \`${prop.default}\``
@@ -223,8 +225,8 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
       item.documentation = new vscode.MarkdownString(doc)
 
-      if (prop.values && prop.values.length > 0) {
-        const choices = prop.values.join(",")
+      if (validValues && validValues.length > 0) {
+        const choices = validValues.join(",")
         item.insertText = new vscode.SnippetString(`${propName}: "\${1|${choices}|}"`)
       } else if (prop.type === "boolean") {
         item.insertText = new vscode.SnippetString(`${propName}: \${1|true,false|}`)
@@ -241,15 +243,17 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
         const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
         item.detail = `${(prop as any).type} (global)`
 
+        // Get context-appropriate values
+        const validValues = getPropValues(prop as any, document.languageId)
         let doc = `Type: \`${(prop as any).type}\` (global prop)`
-        if ((prop as any).values && (prop as any).values.length > 0) {
-          doc += `\nValues: ${(prop as any).values.map((v: string) => `\`${v}\``).join(", ")}`
+        if (validValues && validValues.length > 0) {
+          doc += `\nValues: ${validValues.map((v: string) => `\`${v}\``).join(", ")}`
         }
 
         item.documentation = new vscode.MarkdownString(doc)
 
-        if ((prop as any).values && (prop as any).values.length > 0) {
-          const choices = (prop as any).values.join(",")
+        if (validValues && validValues.length > 0) {
+          const choices = validValues.join(",")
           item.insertText = new vscode.SnippetString(`${propName}: "\${1|${choices}|}"`)
         } else if ((prop as any).type === "boolean") {
           item.insertText = new vscode.SnippetString(`${propName}: \${1|true,false|}`)
@@ -399,8 +403,10 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
     const items: vscode.CompletionItem[] = []
 
-    if (prop.values && prop.values.length > 0) {
-      for (const value of prop.values) {
+    // Get context-appropriate values
+    const validValues = getPropValues(prop, document.languageId)
+    if (validValues && validValues.length > 0) {
+      for (const value of validValues) {
         const item = new vscode.CompletionItem(value, vscode.CompletionItemKind.EnumMember)
         item.detail = `Valid value for ${propName}`
 

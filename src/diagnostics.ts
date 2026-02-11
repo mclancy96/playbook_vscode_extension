@@ -8,7 +8,8 @@ import {
   loadFormBuilderMetadata,
   findFormBuilderField,
   FormBuilderMetadata,
-  FormBuilderField
+  FormBuilderField,
+  getPropValues
 } from "./metadata"
 
 export class PlaybookDiagnostics {
@@ -282,7 +283,8 @@ export class PlaybookDiagnostics {
               match[0],
               position.character,
               position.line,
-              diagnostics
+              diagnostics,
+              document
             )
           }
         }
@@ -324,7 +326,8 @@ export class PlaybookDiagnostics {
               match[0],
               match.index,
               startLineIndex,
-              diagnostics
+              diagnostics,
+              document
             )
           }
         }
@@ -339,14 +342,18 @@ export class PlaybookDiagnostics {
     fullMatch: string,
     startCharacter: number,
     lineIndex: number,
-    diagnostics: vscode.Diagnostic[]
+    diagnostics: vscode.Diagnostic[],
+    document: vscode.TextDocument
   ): void {
-    if (prop.values && prop.values.length > 0) {
+    // Get context-appropriate values based on file type
+    const validValues = getPropValues(prop, document.languageId)
+
+    if (validValues && validValues.length > 0) {
       const cleanValue = propValue.replace(/["']/g, "").trim()
 
       const isQuotedString = propValue.startsWith('"') || propValue.startsWith("'")
 
-      if (isQuotedString && cleanValue && !prop.values.includes(cleanValue)) {
+      if (isQuotedString && cleanValue && !validValues.includes(cleanValue)) {
         const valueMatch = fullMatch.match(/("([^"]*)"|'([^']*)')/)
         const valueStartOffset = valueMatch ? fullMatch.indexOf(valueMatch[0]) : 0
         const valueLength = valueMatch ? valueMatch[0].length : propValue.length
@@ -358,10 +365,10 @@ export class PlaybookDiagnostics {
           startCharacter + valueStartOffset + valueLength
         )
 
-        const validValues = prop.values.map((v) => `"${v}"`).join(", ")
+        const validValuesStr = validValues.map((v) => `"${v}"`).join(", ")
         const diagnostic = new vscode.Diagnostic(
           range,
-          `Invalid value "${cleanValue}" for prop "${propName}". Valid values: ${validValues}`,
+          `Invalid value "${cleanValue}" for prop "${propName}". Valid values: ${validValuesStr}`,
           vscode.DiagnosticSeverity.Warning
         )
         diagnostic.source = "Playbook"
@@ -644,7 +651,8 @@ export class PlaybookDiagnostics {
             match[0],
             position.character,
             position.line,
-            diagnostics
+            diagnostics,
+            document
           )
         }
       }

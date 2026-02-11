@@ -200,6 +200,34 @@ suite("Metadata Test Suite", () => {
     })
   })
 
+  test("Should have positioning props with combined values from Ruby and TypeScript", () => {
+    assert.ok(metadata.globalProps, "Metadata should have globalProps")
+
+    // Test bottom - should have Ruby values (authoritative) plus any additional TypeScript values
+    const bottom = metadata.globalProps.bottom
+    assert.ok(bottom, "Should have bottom prop")
+    assert.strictEqual(bottom.type, "string", "bottom should be string type")
+    assert.ok(bottom.values, "bottom should have values")
+
+    // Ruby values should all be present (from bottom.rb)
+    const rubyBottomValues = ["0", "xxs", "xs", "sm", "md", "lg", "xl", "auto", "initial", "inherit"]
+    rubyBottomValues.forEach(value => {
+      assert.ok(
+        bottom.values.includes(value),
+        `bottom should include Ruby value '${value}' from bottom.rb`
+      )
+    })
+
+    // Also verify other positioning props exist
+    const positioningProps = ["top", "right", "left"]
+    positioningProps.forEach((propName) => {
+      const prop = metadata.globalProps[propName]
+      assert.ok(prop, `Should have ${propName}`)
+      assert.strictEqual(prop.type, "string", `${propName} should be string type`)
+      assert.ok(prop.values && prop.values.length > 0, `${propName} should have values`)
+    })
+  })
+
   test("Should have sizing props with correct enum values", () => {
     assert.ok(metadata.globalProps, "Metadata should have globalProps")
 

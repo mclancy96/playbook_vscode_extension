@@ -1,10 +1,26 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-02-11T15:12:03.511Z",
+  "generatedAt": "2026-02-11T16:17:53.733Z",
   "globalProps": {
     "align_content": {
       "type": "string",
       "values": [
+        "start",
+        "end",
+        "center",
+        "spaceBetween",
+        "spaceAround",
+        "spaceEvenly"
+      ],
+      "railsValues": [
+        "start",
+        "end",
+        "center",
+        "spaceBetween",
+        "spaceAround",
+        "spaceEvenly"
+      ],
+      "reactValues": [
         "start",
         "end",
         "center",
@@ -18,6 +34,24 @@
       "values": [
         "flexStart",
         "flexEnd",
+        "start",
+        "end",
+        "center",
+        "baseline",
+        "stretch"
+      ],
+      "railsValues": [
+        "flexStart",
+        "flexEnd",
+        "start",
+        "end",
+        "center",
+        "baseline",
+        "stretch"
+      ],
+      "reactValues": [
+        "flexStart",
+        "flexEnd",
         "stretch",
         "baseline",
         "start",
@@ -28,6 +62,22 @@
     "align_self": {
       "type": "string",
       "values": [
+        "auto",
+        "start",
+        "end",
+        "center",
+        "stretch",
+        "baseline"
+      ],
+      "railsValues": [
+        "auto",
+        "start",
+        "end",
+        "center",
+        "stretch",
+        "baseline"
+      ],
+      "reactValues": [
         "auto",
         "stretch",
         "baseline",
@@ -46,11 +96,105 @@
         "lg",
         "xl",
         "rounded"
+      ],
+      "railsValues": [
+        "none",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "rounded"
+      ],
+      "reactValues": [
+        "none",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "rounded"
       ]
     },
     "cursor": {
       "type": "string",
       "values": [
+        "auto",
+        "default",
+        "none",
+        "contextMenu",
+        "help",
+        "pointer",
+        "progress",
+        "wait",
+        "cell",
+        "crosshair",
+        "text",
+        "verticalText",
+        "alias",
+        "copy",
+        "move",
+        "noDrop",
+        "notAllowed",
+        "grab",
+        "grabbing",
+        "eResize",
+        "nResize",
+        "neResize",
+        "nwResize",
+        "sResize",
+        "seResize",
+        "swResize",
+        "wResize",
+        "ewResize",
+        "nsResize",
+        "neswResize",
+        "nwseResize",
+        "colResize",
+        "rowResize",
+        "allScroll",
+        "zoomIn",
+        "zoomOut"
+      ],
+      "railsValues": [
+        "auto",
+        "default",
+        "none",
+        "contextMenu",
+        "help",
+        "pointer",
+        "progress",
+        "wait",
+        "cell",
+        "crosshair",
+        "text",
+        "verticalText",
+        "alias",
+        "copy",
+        "move",
+        "noDrop",
+        "notAllowed",
+        "grab",
+        "grabbing",
+        "eResize",
+        "nResize",
+        "neResize",
+        "nwResize",
+        "sResize",
+        "seResize",
+        "swResize",
+        "wResize",
+        "ewResize",
+        "nsResize",
+        "neswResize",
+        "nwseResize",
+        "colResize",
+        "rowResize",
+        "allScroll",
+        "zoomIn",
+        "zoomOut"
+      ],
+      "reactValues": [
         "auto",
         "default",
         "none",
@@ -111,6 +255,42 @@
         "11",
         "12",
         "none"
+      ],
+      "railsValues": [
+        "auto",
+        "initial",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "none"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "0",
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "none"
       ]
     },
     "flex_direction": {
@@ -120,17 +300,55 @@
         "column",
         "rowReverse",
         "columnReverse"
+      ],
+      "railsValues": [
+        "row",
+        "column",
+        "rowReverse",
+        "columnReverse"
+      ],
+      "reactValues": [
+        "row",
+        "column",
+        "rowReverse",
+        "columnReverse"
       ]
     },
     "flex_grow": {
-      "type": "number"
+      "type": "string",
+      "values": [
+        "1",
+        "0"
+      ],
+      "railsValues": [
+        "1",
+        "0"
+      ]
     },
     "flex_shrink": {
-      "type": "number"
+      "type": "string",
+      "values": [
+        "1",
+        "0"
+      ],
+      "railsValues": [
+        "1",
+        "0"
+      ]
     },
     "flex_wrap": {
       "type": "string",
       "values": [
+        "wrap",
+        "nowrap",
+        "wrapReverse"
+      ],
+      "railsValues": [
+        "wrap",
+        "nowrap",
+        "wrapReverse"
+      ],
+      "reactValues": [
         "wrap",
         "nowrap",
         "wrapReverse"
@@ -148,11 +366,41 @@
         "spaceBetween",
         "spaceAround",
         "spaceEvenly"
+      ],
+      "railsValues": [
+        "start",
+        "end",
+        "center",
+        "spaceBetween",
+        "spaceAround",
+        "spaceEvenly"
+      ],
+      "reactValues": [
+        "start",
+        "end",
+        "center",
+        "spaceBetween",
+        "spaceAround",
+        "spaceEvenly"
       ]
     },
     "justify_self": {
       "type": "string",
       "values": [
+        "auto",
+        "start",
+        "end",
+        "center",
+        "stretch"
+      ],
+      "railsValues": [
+        "auto",
+        "start",
+        "end",
+        "center",
+        "stretch"
+      ],
+      "reactValues": [
         "auto",
         "stretch",
         "start",
@@ -163,6 +411,24 @@
     "line_height": {
       "type": "string",
       "values": [
+        "tightest",
+        "tighter",
+        "tight",
+        "normal",
+        "loose",
+        "looser",
+        "loosest"
+      ],
+      "railsValues": [
+        "tightest",
+        "tighter",
+        "tight",
+        "normal",
+        "loose",
+        "looser",
+        "loosest"
+      ],
+      "reactValues": [
         "loosest",
         "looser",
         "loose",
@@ -175,6 +441,19 @@
     "margin_right": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -202,11 +481,37 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "margin_top": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -234,11 +539,37 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "margin_x": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -266,11 +597,37 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "margin": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -297,11 +654,35 @@
         "0",
         "none",
         "100%"
+      ],
+      "railsValues": [
+        "0%",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "0",
+        "none",
+        "100%"
       ]
     },
     "max_width": {
       "type": "string",
       "values": [
+        "0%",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "0",
+        "none",
+        "100%"
+      ],
+      "railsValues": [
         "0%",
         "xs",
         "sm",
@@ -327,11 +708,32 @@
         "0",
         "none",
         "100%"
+      ],
+      "railsValues": [
+        "0%",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "0",
+        "none",
+        "100%"
       ]
     },
     "gap": {
       "type": "string",
       "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ],
+      "railsValues": [
         "none",
         "xxs",
         "xs",
@@ -351,11 +753,47 @@
       "type": "string",
       "values": [
         "tabular"
+      ],
+      "railsValues": [
+        "tabular"
+      ],
+      "reactValues": [
+        "tabular"
       ]
     },
     "order": {
       "type": "number",
       "values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12",
+        "first",
+        "none"
+      ],
+      "railsValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "11",
+        "12"
+      ],
+      "reactValues": [
         "first",
         "1",
         "2",
@@ -386,11 +824,37 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "padding_left": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -418,11 +882,37 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "padding_bottom": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -450,11 +940,37 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "padding_y": {
       "type": "string",
       "values": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
+      ],
+      "reactValues": [
         "auto",
         "initial",
         "inherit",
@@ -482,6 +998,19 @@
         "lg",
         "xl",
         "xxl"
+      ],
+      "reactValues": [
+        "auto",
+        "initial",
+        "inherit",
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl"
       ]
     },
     "position": {
@@ -492,11 +1021,49 @@
         "fixed",
         "sticky",
         "static"
+      ],
+      "railsValues": [
+        "relative",
+        "absolute",
+        "fixed",
+        "sticky"
+      ],
+      "reactValues": [
+        "relative",
+        "absolute",
+        "fixed",
+        "sticky",
+        "static"
       ]
     },
     "top": {
       "type": "string",
       "values": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit",
+        "xxl"
+      ],
+      "railsValues": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ],
+      "reactValues": [
         "xxs",
         "xs",
         "sm",
@@ -509,6 +1076,31 @@
     "right": {
       "type": "string",
       "values": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit",
+        "xxl"
+      ],
+      "railsValues": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ],
+      "reactValues": [
         "xxs",
         "xs",
         "sm",
@@ -521,6 +1113,31 @@
     "bottom": {
       "type": "string",
       "values": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit",
+        "xxl"
+      ],
+      "railsValues": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ],
+      "reactValues": [
         "xxs",
         "xs",
         "sm",
@@ -533,6 +1150,31 @@
     "left": {
       "type": "string",
       "values": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit",
+        "xxl"
+      ],
+      "railsValues": [
+        "0",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ],
+      "reactValues": [
         "xxs",
         "xs",
         "sm",
@@ -549,11 +1191,45 @@
         "deep",
         "deeper",
         "deepest"
+      ],
+      "railsValues": [
+        "none",
+        "deep",
+        "deeper",
+        "deepest"
+      ],
+      "reactValues": [
+        "none",
+        "deep",
+        "deeper",
+        "deepest"
       ]
     },
     "text_align": {
       "type": "string",
       "values": [
+        "start",
+        "end",
+        "left",
+        "right",
+        "center",
+        "justify",
+        "justify-all",
+        "match-parent",
+        "justifyAll",
+        "matchParent"
+      ],
+      "railsValues": [
+        "start",
+        "end",
+        "left",
+        "right",
+        "center",
+        "justify",
+        "justify-all",
+        "match-parent"
+      ],
+      "reactValues": [
         "start",
         "end",
         "left",
@@ -571,6 +1247,12 @@
         "visible",
         "hidden",
         "auto"
+      ],
+      "reactValues": [
+        "scroll",
+        "visible",
+        "hidden",
+        "auto"
       ]
     },
     "overflow_y": {
@@ -580,11 +1262,29 @@
         "visible",
         "hidden",
         "auto"
+      ],
+      "reactValues": [
+        "scroll",
+        "visible",
+        "hidden",
+        "auto"
       ]
     },
     "overflow": {
       "type": "string",
       "values": [
+        "visible",
+        "hidden",
+        "scroll",
+        "auto"
+      ],
+      "railsValues": [
+        "visible",
+        "hidden",
+        "scroll",
+        "auto"
+      ],
+      "reactValues": [
         "scroll",
         "visible",
         "hidden",
@@ -594,6 +1294,21 @@
     "truncate": {
       "type": "string",
       "values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "none"
+      ],
+      "railsValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5"
+      ],
+      "reactValues": [
         "1",
         "2",
         "3",
@@ -613,11 +1328,57 @@
         "sub",
         "text-top",
         "text-bottom"
+      ],
+      "railsValues": [
+        "baseline",
+        "super",
+        "top",
+        "middle",
+        "bottom",
+        "sub",
+        "text-top",
+        "text-bottom"
+      ],
+      "reactValues": [
+        "baseline",
+        "super",
+        "top",
+        "middle",
+        "bottom",
+        "sub",
+        "text-top",
+        "text-bottom"
       ]
     },
     "z_index": {
       "type": "string",
       "values": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "max"
+      ],
+      "railsValues": [
+        "1",
+        "2",
+        "3",
+        "4",
+        "5",
+        "6",
+        "7",
+        "8",
+        "9",
+        "10",
+        "max"
+      ],
+      "reactValues": [
         "1",
         "2",
         "3",
@@ -641,11 +1402,31 @@
         "xl",
         "xxl",
         "xxxl"
+      ],
+      "railsValues": [
+        "auto",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "xxxl"
       ]
     },
     "max_height": {
       "type": "string",
       "values": [
+        "auto",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "xxxl"
+      ],
+      "railsValues": [
         "auto",
         "xs",
         "sm",
@@ -667,11 +1448,108 @@
         "xl",
         "xxl",
         "xxxl"
+      ],
+      "railsValues": [
+        "auto",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "xxl",
+        "xxxl"
+      ]
+    },
+    "display_size": {
+      "type": "string",
+      "values": [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ],
+      "railsValues": [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl"
+      ]
+    },
+    "display": {
+      "type": "string",
+      "values": [
+        "block",
+        "inline_block",
+        "inline",
+        "flex",
+        "inline_flex",
+        "none",
+        "grid"
+      ],
+      "railsValues": [
+        "block",
+        "inline_block",
+        "inline",
+        "flex",
+        "inline_flex",
+        "none",
+        "grid"
+      ]
+    },
+    "hover_shadow": {
+      "type": "string",
+      "values": [
+        "deep",
+        "deeper",
+        "deepest"
+      ],
+      "railsValues": [
+        "deep",
+        "deeper",
+        "deepest"
+      ]
+    },
+    "hover_scale": {
+      "type": "string",
+      "values": [
+        "sm",
+        "md",
+        "lg"
+      ],
+      "railsValues": [
+        "sm",
+        "md",
+        "lg"
+      ]
+    },
+    "hover_visible": {
+      "type": "string",
+      "values": [
+        "true",
+        "false"
+      ],
+      "railsValues": [
+        "true",
+        "false"
       ]
     },
     "spacing": {
       "type": "string",
       "values": [
+        "none",
+        "xxs",
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl",
+        "auto",
+        "initial",
+        "inherit"
+      ],
+      "railsValues": [
         "none",
         "xxs",
         "xs",
@@ -691,8 +1569,14 @@
         "sm",
         "md",
         "lg",
-        "xl",
-        "default"
+        "xl"
+      ],
+      "railsValues": [
+        "xs",
+        "sm",
+        "md",
+        "lg",
+        "xl"
       ]
     },
     "break_method": {
@@ -700,17 +1584,10 @@
       "values": [
         "on",
         "at"
-      ]
-    },
-    "display": {
-      "type": "string",
-      "values": [
-        "block",
-        "inline_block",
-        "inline",
-        "flex",
-        "inline_flex",
-        "none"
+      ],
+      "railsValues": [
+        "on",
+        "at"
       ]
     },
     "aria": {
