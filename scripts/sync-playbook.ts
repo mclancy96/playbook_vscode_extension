@@ -715,10 +715,23 @@ function parseReactPropsFromTypeScript(
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join("")
 
-    const typePattern = `type\\s+${pascalName}Props\\s*=\\s*\\{`
-    const startIndex = content.search(new RegExp(typePattern))
+    // Try both ${ComponentName}Props and ${ComponentName}PropTypes patterns
+    // Some components use PropTypes (e.g., ButtonPropTypes) instead of Props
+    const typePatterns = [
+      `type\\s+${pascalName}Props\\s*=\\s*\\{`,
+      `type\\s+${pascalName}PropTypes\\s*=\\s*\\{`
+    ]
+
+    let startIndex = -1
+    for (const pattern of typePatterns) {
+      startIndex = content.search(new RegExp(pattern))
+      if (startIndex !== -1) {
+        break
+      }
+    }
 
     if (startIndex === -1) {
+      console.warn(`⚠️  Could not find Props type for ${pascalName} (tried ${pascalName}Props and ${pascalName}PropTypes)`)
       return []
     }
 

@@ -421,6 +421,48 @@ suite("Diagnostics Test Suite", () => {
     assert.ok(!textWarning, "Should allow React prop 'text' in React component")
   })
 
+  test("Should recognize React-only props like onClick and htmlType for Button", async () => {
+    const content = `<Button
+  disabled={isSubmitting}
+  htmlType="submit"
+  loading={isSubmitting}
+  onClick={handleSubmit}
+  text="Add"
+/>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const onClickWarning = diagnostics.find((d) => d.message.includes('"onClick"'))
+    const htmlTypeWarning = diagnostics.find((d) => d.message.includes('"htmlType"'))
+
+    assert.ok(!onClickWarning, "Should recognize 'onClick' as a valid React prop for Button")
+    assert.ok(!htmlTypeWarning, "Should recognize 'htmlType' as a valid React prop for Button")
+  })
+
+  test("Should validate htmlType enum values for Button", async () => {
+    const validContent = `<Button htmlType="submit" text="Submit" />`
+    const invalidContent = `<Button htmlType="invalid" text="Submit" />`
+
+    const validDoc = await createTestDocument("typescriptreact", validContent)
+    diagnosticsInstance.updateDiagnostics(validDoc)
+    const validDiagnostics = diagnosticsInstance.getDiagnostics(validDoc.uri)
+    const validHtmlTypeWarning = validDiagnostics.find((d) =>
+      d.message.includes("htmlType") && d.message.includes("invalid")
+    )
+
+    const invalidDoc = await createTestDocument("typescriptreact", invalidContent)
+    diagnosticsInstance.updateDiagnostics(invalidDoc)
+    const invalidDiagnostics = diagnosticsInstance.getDiagnostics(invalidDoc.uri)
+    const invalidHtmlTypeWarning = invalidDiagnostics.find((d) =>
+      d.message.includes("htmlType") && d.message.includes("invalid")
+    )
+
+    assert.ok(!validHtmlTypeWarning, "Should accept valid htmlType value 'submit'")
+    assert.ok(invalidHtmlTypeWarning, "Should reject invalid htmlType value 'invalid'")
+  })
+
   test("Should validate props in multi-line React components", async () => {
     const content = `<Body
   top=""
@@ -627,7 +669,131 @@ suite("Diagnostics Test Suite", () => {
       "Should not validate non-form-builder objects like 'some_object'"
     )
   })
+
+  test("Should NOT validate child component props against parent component in nested React structure", async () => {
+    const content = `<Flex height="100%" justify="evenly">
+  <FlexItem>
+    <Title size={3} tag="h1" text="Title Goes Here" />
+  </FlexItem>
+  <FlexItem>
+    <Card padding="md">
+      <TextInput
+        error={errors.itemName}
+        label="Item Name"
+        placeholder="Enter Item Name"
+        required
+        value={itemName}
+      />
+    </Card>
+  </FlexItem>
+</Flex>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+
+    // Props that belong to Title, not Flex
+    const titleSizeOnFlex = diagnostics.find((d) =>
+      d.message.includes("size") && d.message.includes("Flex")
+    )
+    const titleTagOnFlex = diagnostics.find((d) =>
+      d.message.includes("tag") && d.message.includes("Flex")
+    )
+    const titleTextOnFlex = diagnostics.find((d) =>
+      d.message.includes("text") && d.message.includes("Flex")
+    )
+
+    // Props that belong to TextInput, not Card or Flex
+    const errorOnCard = diagnostics.find((d) =>
+      d.message.includes("error") && d.message.includes("Card")
+    )
+    const errorOnFlex = diagnostics.find((d) =>
+      d.message.includes("error") && d.message.includes("Flex")
+    )
+    const labelOnCard = diagnostics.find((d) =>
+      d.message.includes("label") && d.message.includes("Card")
+    )
+    const labelOnFlex = diagnostics.find((d) =>
+      d.message.includes("label") && d.message.includes("Flex")
+    )
+    const placeholderOnCard = diagnostics.find((d) =>
+      d.message.includes("placeholder") && d.message.includes("Card")
+    )
+    const placeholderOnFlex = diagnostics.find((d) =>
+      d.message.includes("placeholder") && d.message.includes("Flex")
+    )
+    const valueOnCard = diagnostics.find((d) =>
+      d.message.includes("value") && d.message.includes("Card")
+    )
+    const valueOnFlex = diagnostics.find((d) =>
+      d.message.includes("value") && d.message.includes("Flex")
+    )
+
+    assert.ok(!titleSizeOnFlex, "Should NOT validate Title's 'size' prop against Flex")
+    assert.ok(!titleTagOnFlex, "Should NOT validate Title's 'tag' prop against Flex")
+    assert.ok(!titleTextOnFlex, "Should NOT validate Title's 'text' prop against Flex")
+    assert.ok(!errorOnCard, "Should NOT validate TextInput's 'error' prop against Card")
+    assert.ok(!errorOnFlex, "Should NOT validate TextInput's 'error' prop against Flex")
+    assert.ok(!labelOnCard, "Should NOT validate TextInput's 'label' prop against Card")
+    assert.ok(!labelOnFlex, "Should NOT validate TextInput's 'label' prop against Flex")
+    assert.ok(!placeholderOnCard, "Should NOT validate TextInput's 'placeholder' prop against Card")
+    assert.ok(!placeholderOnFlex, "Should NOT validate TextInput's 'placeholder' prop against Flex")
+    assert.ok(!valueOnCard, "Should NOT validate TextInput's 'value' prop against Card")
+    assert.ok(!valueOnFlex, "Should NOT validate TextInput's 'value' prop against Flex")
+  })
+
+  test("Should validate only direct props on single-line nested components", async () => {
+    const content = `<Flex justify="center">
+  <Title size={3} text="Hello" />
+</Flex>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+
+    const titlePropsOnFlex = diagnostics.filter((d) =>
+      (d.message.includes("size") || d.message.includes("text")) && d.message.includes("Flex")
+    )
+
+    assert.strictEqual(
+      titlePropsOnFlex.length,
+      0,
+      "Should NOT validate nested Title component props against parent Flex"
+    )
+  })
+
+  test("Should validate props on deeply nested components separately", async () => {
+    const content = `<Flex>
+  <FlexItem>
+    <Card>
+      <Flex>
+        <FlexItem>
+          <TextInput label="Name" placeholder="Enter name" />
+        </FlexItem>
+      </Flex>
+    </Card>
+  </FlexItem>
+</Flex>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+
+    const textInputPropsOnCard = diagnostics.filter((d) =>
+      (d.message.includes("label") || d.message.includes("placeholder")) && d.message.includes("Card")
+    )
+
+    assert.strictEqual(
+      textInputPropsOnCard.length,
+      0,
+      "Should NOT validate deeply nested TextInput props against Card"
+    )
+  })
 })
+
 
 async function createTestDocument(
   languageId: string,

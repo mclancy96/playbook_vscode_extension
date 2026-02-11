@@ -208,8 +208,6 @@ export class PlaybookDiagnostics {
         }
 
         if (fullValue === "{") {
-          // This prop has a nested object value - validate the prop name first
-          // before skipping the nested contents
           const isValidProp = component.props[propName] || metadata.globalProps?.[propName]
 
           if (!isValidProp) {
@@ -230,7 +228,6 @@ export class PlaybookDiagnostics {
             diagnostics.push(diagnostic)
           }
 
-          // Now skip the nested object contents
           let nestedBraceCount = 1
           let searchIndex = propRegex.lastIndex
 
@@ -290,9 +287,8 @@ export class PlaybookDiagnostics {
         }
       }
     } else {
-      // Extract the full component block for multi-line support
-      console.log(`[VALIDATE] React: extracting component block from line ${startLineIndex}`)
-      const componentBlock = this.extractReactComponentBlock(document, startLineIndex)
+      console.log(`[VALIDATE] React: extracting component block from line ${startLineIndex} for ${component.react}`)
+      const componentBlock = this.extractReactComponentBlock(document, startLineIndex, component.react)
       if (!componentBlock) {
         console.log(`[VALIDATE] React: No component block found`)
         return
@@ -302,12 +298,10 @@ export class PlaybookDiagnostics {
       let match
       const blockLines = componentBlock.text.split('\n')
 
-      // Process each line in the component block
       for (let i = 0; i < blockLines.length; i++) {
         const line = blockLines[i]
         const actualLineIndex = startLineIndex + i
 
-        // Reset regex for each line
         propRegex.lastIndex = 0
 
         while ((match = propRegex.exec(line)) !== null) {
@@ -315,7 +309,6 @@ export class PlaybookDiagnostics {
           const quotedValue = match[2]
           const braceValue = match[3]
 
-          // Reconstruct propValue to include quotes/braces (like the Rails implementation)
           const propValue = quotedValue !== undefined
             ? `"${quotedValue}"`
             : braceValue !== undefined
@@ -362,34 +355,79 @@ export class PlaybookDiagnostics {
 
   private extractReactComponentBlock(
     document: vscode.TextDocument,
-    startLineIndex: number
+    startLineIndex: number,
+    targetComponentName: string
   ): { text: string; startLine: number; componentName: string } | null {
     const startLine = document.lineAt(startLineIndex).text
-    const componentMatch = startLine.match(/<([A-Z][a-zA-Z0-9]*)(?:\s|>|\/|$)/)
+
+    const componentRegex = new RegExp(`<(${targetComponentName})(?:\\s|>|\\/|$)`)
+    const componentMatch = startLine.match(componentRegex)
 
     if (!componentMatch) {
       return null
     }
 
     const componentName = componentMatch[1]
+    const componentStartIndex = startLine.indexOf(componentMatch[0])
     const lines: string[] = []
+    let foundClosingBracket = false
 
-    // Search forward up to 50 lines to find the closing tag or self-closing tag
     for (let i = startLineIndex; i < Math.min(startLineIndex + 50, document.lineCount); i++) {
-      const line = document.lineAt(i).text
-      lines.push(line)
+      let line = document.lineAt(i).text
 
-      // Check for self-closing tag or closing tag
-      if (line.includes('/>') || line.includes(`</${componentName}>`)) {
-        return {
-          text: lines.join('\n'),
-          startLine: startLineIndex,
-          componentName
+      if (i === startLineIndex) {
+        line = line.substring(componentStartIndex)
+      }
+
+      const selfClosingIndex = line.indexOf('/>')
+      if (selfClosingIndex !== -1) {
+        const beforeSelfClosing = line.substring(0, selfClosingIndex)
+        const nestedInLine = beforeSelfClosing.substring(componentMatch[0].length).match(/<([A-Z][a-zA-Z0-9]*)/)
+        if (nestedInLine) {
+          console.log(`[VALIDATE] React: Found nested component <${nestedInLine[1]}> before self-closing tag`)
+          const nestedPos = beforeSelfClosing.indexOf(nestedInLine[0])
+          lines.push(line.substring(0, nestedPos))
+        } else {
+          lines.push(line.substring(0, selfClosingIndex + 2))
+        }
+        foundClosingBracket = true
+        break
+      }
+
+      const closingBracketIndex = line.indexOf('>')
+      if (closingBracketIndex !== -1) {
+        const beforeBracket = line.substring(0, closingBracketIndex)
+        const searchStart = i === startLineIndex ? componentMatch[0].length : 0
+        const nestedMatch = beforeBracket.substring(searchStart).match(/<([A-Z][a-zA-Z0-9]*)/)
+        if (nestedMatch) {
+          console.log(`[VALIDATE] React: Stopping before nested component <${nestedMatch[1]}> on line ${i}`)
+          const nestedPos = beforeBracket.indexOf(nestedMatch[0], searchStart)
+          if (nestedPos > 0) {
+            lines.push(line.substring(0, nestedPos))
+          }
+          break
+        }
+
+        lines.push(line.substring(0, closingBracketIndex + 1))
+        foundClosingBracket = true
+        break
+      }
+
+      if (i > startLineIndex) {
+        const nestedComponentMatch = line.match(/<([A-Z][a-zA-Z0-9]*)/)
+        if (nestedComponentMatch) {
+          console.log(`[VALIDATE] React: Stopping at nested component <${nestedComponentMatch[1]}> on line ${i}`)
+          break
         }
       }
+
+      lines.push(line)
     }
 
-    // If we didn't find a closing tag, still return what we have
+    if (lines.length === 0) {
+      return null
+    }
+
     return {
       text: lines.join('\n'),
       startLine: startLineIndex,
@@ -407,7 +445,6 @@ export class PlaybookDiagnostics {
     diagnostics: vscode.Diagnostic[],
     document: vscode.TextDocument
   ): void {
-    // Get context-appropriate values based on file type
     const validValues = getPropValues(prop, document.languageId)
 
     if (validValues && validValues.length > 0) {
@@ -455,17 +492,12 @@ export class PlaybookDiagnostics {
 
       const propsMatch = line.match(/props:\s*\{/)
       if (propsMatch) {
-        // Check if this props block belongs to a different method call (like render_app or form builder)
         const beforeProps = line.substring(0, propsMatch.index!)
-        // If we're on a line AFTER the pb_rails line and there's another method call, skip it
         if (i > startLineIndex) {
-          // Check if there's a method call that's NOT pb_rails before the props
           const otherMethodMatch = beforeProps.match(/\w+\(/)
           if (otherMethodMatch && !beforeProps.includes("pb_rails(")) {
             continue
           }
-          // Also check for form builder methods (e.g., f.text_field, f.select, etc.)
-          // These are identified by pattern: f.<method_name> or other_var.<method_name>
           const formBuilderMatch = beforeProps.match(/\w+\.\w+/)
           if (formBuilderMatch) {
             continue
@@ -531,8 +563,6 @@ export class PlaybookDiagnostics {
     playbookMetadata: any,
     diagnostics: vscode.Diagnostic[]
   ): void {
-    // Match form builder method calls: f.text_field, form.select, etc.
-    // Pattern: <variable>.<method_name>
     const formBuilderRegex = /(\w+)\.(\w+)\s*\(/g
     let match
 
@@ -544,10 +574,8 @@ export class PlaybookDiagnostics {
 
       console.log(`[FormBuilder] Found method call: ${variableName}.${methodName}`)
 
-      // Common form variable names
       const formVariables = ["f", "form", "builder"]
 
-      // Only validate if it looks like a form variable
       if (!formVariables.includes(variableName)) {
         console.log(`[FormBuilder] Skipping - not a form variable: ${variableName}`)
         continue
@@ -556,7 +584,6 @@ export class PlaybookDiagnostics {
       const field = findFormBuilderField(formBuilderMetadata, methodName)
 
       if (!field) {
-        // Don't warn for unknown methods - they might be Rails form helpers we haven't mapped yet
         console.log(`[FormBuilder] Skipping - unknown form builder method: ${methodName}`)
         continue
       }
@@ -565,7 +592,6 @@ export class PlaybookDiagnostics {
         `[PlaybookDiagnostics] Found form builder field: ${variableName}.${methodName} on line ${lineIndex + 1}`
       )
 
-      // Validate props for this form builder field
       this.validateFormBuilderProps(
         document,
         lineIndex,
@@ -639,7 +665,6 @@ export class PlaybookDiagnostics {
       }
 
       if (fullValue === "{") {
-        // This prop has a nested object value
         const isValidProp = field.props[propName] || metadata.globalProps?.[propName]
 
         if (!isValidProp) {
@@ -660,7 +685,6 @@ export class PlaybookDiagnostics {
           diagnostics.push(diagnostic)
         }
 
-        // Skip the nested object contents
         let nestedBraceCount = 1
         let searchIndex = propRegex.lastIndex
 
@@ -728,14 +752,11 @@ export class PlaybookDiagnostics {
     let propsStartLine = -1
     let propsStartChar = -1
 
-    // Look for props: { on the same line or within the next few lines
     for (let i = startLineIndex; i < Math.min(startLineIndex + 10, document.lineCount); i++) {
       const line = document.lineAt(i).text
 
       const propsMatch = line.match(/props:\s*\{/)
       if (propsMatch) {
-        // Make sure this props block belongs to the form builder call on startLineIndex
-        // by checking it's on the same line or directly after with proper continuation
         propsStartLine = i
         propsStartChar = propsMatch.index! + propsMatch[0].length
         break

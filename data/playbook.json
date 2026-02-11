@@ -1,6 +1,6 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-02-11T16:17:53.733Z",
+  "generatedAt": "2026-02-11T20:13:27.487Z",
   "globalProps": {
     "align_content": {
       "type": "string",
@@ -2525,6 +2525,29 @@
             "fab",
             "fak"
           ]
+        },
+        "fixed_width": {
+          "type": "boolean"
+        },
+        "id": {
+          "type": "string"
+        },
+        "on_click": {
+          "type": "any"
+        },
+        "tab_index": {
+          "type": "number"
+        },
+        "html_type": {
+          "type": "enum",
+          "values": [
+            "submit",
+            "reset",
+            "button"
+          ]
+        },
+        "wrapper_class": {
+          "type": "string"
         }
       }
     },
@@ -2735,6 +2758,26 @@
             "primary",
             "purple"
           ]
+        },
+        "position": {
+          "type": "enum",
+          "values": [
+            "side",
+            "right_side",
+            "top"
+          ]
+        },
+        "color": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string"
+        },
+        "length": {
+          "type": "number"
+        },
+        "padding": {
+          "type": "string"
         }
       }
     },
@@ -4674,6 +4717,16 @@
         "display_flex": {
           "type": "boolean",
           "default": "false"
+        },
+        "flex": {
+          "type": "string"
+        },
+        "order": {
+          "type": "enum",
+          "values": [
+            "first",
+            "none"
+          ]
         }
       }
     },
@@ -5537,6 +5590,9 @@
         "responsive": {
           "type": "boolean",
           "default": "false"
+        },
+        "dark": {
+          "type": "boolean"
         }
       }
     },

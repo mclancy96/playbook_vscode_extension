@@ -5,6 +5,34 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.25] - 2026-02-11
+
+### Fixed
+
+- **React-Only Props Recognition** 🐛
+  - Fixed issue where React-only props like `onClick` and `htmlType` were not being recognized in components
+  - Root cause: Sync script was only looking for `${ComponentName}Props` type pattern but some components use `${ComponentName}PropTypes`
+  - Updated sync script to search for both patterns when extracting React component props
+  - Affects components: Button, Card, Flex, FlexItem, Layout, Table components, and others
+  - Re-ran sync to regenerate metadata with all React-only props included
+  - Examples of React-only props now recognized:
+    - Button: `onClick`, `htmlType`, `tabIndex`, `fixedWidth`, `wrapperClass`
+    - Added comprehensive tests to ensure React-only props are validated correctly
+
+- **Nested React Component Validation** 🐛
+  - Fixed critical issue where nested React components had their props incorrectly validated against parent components
+  - Previously, code like this would show false warnings:
+
+    ```tsx
+    <Flex height="100%" justify="evenly">
+      <Title size={3} text="Hello" />  // "size" and "text" were incorrectly flagged as unknown props for Flex
+    </Flex>
+    ```
+
+  - Now each component's props are validated against only that component, not parent or child components
+  - Updated `extractReactComponentBlock` to stop extraction at the closing `>` of the opening tag, not at nested components
+  - Added component name parameter to extraction to handle multiple components on the same line correctly
+
 ## [1.0.24] - 2026-02-11
 
 ### Fixed
