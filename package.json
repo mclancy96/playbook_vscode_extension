@@ -2,7 +2,7 @@
   "name": "playbook-vscode",
   "displayName": "Playbook UI Helper",
   "description": "Developer experience enhancements for Playbook UI design system - snippets, autocomplete, and hover documentation for Rails and React",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "publisher": "ClancyTools",
   "icon": "enhanced_logo.png",
   "engines": {
@@ -92,12 +92,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/mclancy96/playbook_vscode_extension"
+    "url": "https://github.com/ClancyTools/playbook_vscode_extension"
   },
   "bugs": {
-    "url": "https://github.com/mclancy96/playbook_vscode_extension/issues"
+    "url": "https://github.com/ClancyTools/playbook_vscode_extension/issues"
   },
-  "homepage": "https://github.com/mclancy96/playbook_vscode_extension#readme",
+  "homepage": "https://github.com/ClancyTools/playbook_vscode_extension#readme",
   "license": "MIT",
   "galleryBanner": {
     "color": "#1C1C1C",
