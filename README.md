@@ -235,15 +235,15 @@ Some props accept any value and won't show validation errors:
 ## Links
 
 - [Playbook UI Documentation](https://playbook.powerhrg.com/)
-- [GitHub Repository](https://github.com/mclancy96/playbook_vscode_extension)
+- [GitHub Repository](https://github.com/ClancyTools/playbook_vscode_extension)
 - [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=clancytools.playbook-vscode)
-- [Report an Issue](https://github.com/mclancy96/playbook_vscode_extension/issues)
+- [Report an Issue](https://github.com/ClancyTools/playbook_vscode_extension/issues)
 
 ## Support
 
 For questions or issues:
 
-- [GitHub Issues](https://github.com/mclancy96/playbook_vscode_extension/issues)
+- [GitHub Issues](https://github.com/ClancyTools/playbook_vscode_extension/issues)
 - Internal Slack: **#playbook-ui**
 
 ## License
