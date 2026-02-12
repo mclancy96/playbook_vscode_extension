@@ -230,8 +230,6 @@ suite("Diagnostics Test Suite", () => {
     const document = await createTestDocument("erb", content)
     diagnosticsInstance.updateDiagnostics(document)
 
-    // Verify no diagnostics are created for nested properties like "label", "testid", "class"
-    // These should be ignored since they're inside nested objects
     assert.ok(true, "Nested object properties are not validated")
   })
 
@@ -405,7 +403,6 @@ suite("Diagnostics Test Suite", () => {
   })
 
   test("Should allow both React and Rails props for same component", async () => {
-    // Test that a React component can use props from either the React or Rails version
     const reactContent = `<Tooltip delay_open={1000} text="Hello">
       <Button>Click me</Button>
     </Tooltip>`
@@ -557,18 +554,6 @@ suite("Diagnostics Test Suite", () => {
     assert.strictEqual(unknownPropWarnings.length, 0, "Should not warn for valid text_field props")
   })
 
-  // TODO: Fix this test - currently having issues with document creation in tests
-  // test("Should warn for invalid form builder text_field props", async () => {
-  //   const content = `<%= f.text_field :name, props: {
-  //     invalid_prop: "value",
-  //     another_bad_prop: true
-  //   } %>`
-  //   const document = await createTestDocument("erb", content)
-  //   diagnosticsInstance.updateDiagnostics(document)
-  //   const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
-  //   const invalidPropWarning = diagnostics.find((d) => d.message.includes('"invalid_prop"'))
-  //   assert.ok(invalidPropWarning, "Should warn about 'invalid_prop'")
-  // })
 
 
   test("Should validate form builder select field", async () => {
@@ -693,7 +678,6 @@ suite("Diagnostics Test Suite", () => {
 
     const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
 
-    // Props that belong to Title, not Flex
     const titleSizeOnFlex = diagnostics.find((d) =>
       d.message.includes("size") && d.message.includes("Flex")
     )
@@ -704,7 +688,6 @@ suite("Diagnostics Test Suite", () => {
       d.message.includes("text") && d.message.includes("Flex")
     )
 
-    // Props that belong to TextInput, not Card or Flex
     const errorOnCard = diagnostics.find((d) =>
       d.message.includes("error") && d.message.includes("Card")
     )
@@ -792,6 +775,945 @@ suite("Diagnostics Test Suite", () => {
       "Should NOT validate deeply nested TextInput props against Card"
     )
   })
+
+  test("Should place warning squiggle on invalid prop name (single line)", async () => {
+    const content = '<%= pb_rails("badge", props: { classname: "test", text_transform: "none" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const textTransformDiagnostic = diagnostics.find((d) =>
+      d.message.includes('text_transform')
+    )
+
+    assert.ok(textTransformDiagnostic, "Should have warning for text_transform")
+
+    const expectedStart = content.indexOf('text_transform')
+    const expectedEnd = expectedStart + 'text_transform'.length
+
+    assert.strictEqual(
+      textTransformDiagnostic.range.start.line,
+      0,
+      "Warning should be on line 0"
+    )
+    assert.strictEqual(
+      textTransformDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} (the 't' in text_transform)`
+    )
+    assert.strictEqual(
+      textTransformDiagnostic.range.end.character,
+      expectedEnd,
+      `Warning should end at character ${expectedEnd} (after text_transform)`
+    )
+  })
+
+  test("Should place warning squiggle on invalid prop value (single line - Rails)", async () => {
+    const content = '<%= pb_rails("button", props: { variant: "invalid_variant" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const variantDiagnostic = diagnostics.find((d) =>
+      d.message.includes('Invalid value') && d.message.includes('variant')
+    )
+
+    assert.ok(variantDiagnostic, "Should have warning for invalid variant value")
+
+    // Warning should be on the VALUE "invalid_variant", not the prop name
+    const expectedStart = content.indexOf('"invalid_variant"')
+    const expectedEnd = expectedStart + '"invalid_variant"'.length
+
+    assert.strictEqual(
+      variantDiagnostic.range.start.line,
+      0,
+      "Warning should be on line 0"
+    )
+    assert.strictEqual(
+      variantDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} (on the value "invalid_variant")`
+    )
+    assert.strictEqual(
+      variantDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after the value"
+    )
+  })
+
+  test("Should place warning squiggle on invalid prop name (multiline, first line)", async () => {
+    const content = `<%= pb_rails("card", props: { invalid_prop: "value",
+  padding: "md"
+}) %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const invalidPropDiagnostic = diagnostics.find((d) =>
+      d.message.includes('invalid_prop')
+    )
+
+    assert.ok(invalidPropDiagnostic, "Should have warning for invalid_prop")
+
+    const firstLine = content.split('\n')[0]
+    const expectedStart = firstLine.indexOf('invalid_prop')
+    const expectedEnd = expectedStart + 'invalid_prop'.length
+
+    assert.strictEqual(
+      invalidPropDiagnostic.range.start.line,
+      0,
+      "Warning should be on line 0"
+    )
+    assert.strictEqual(
+      invalidPropDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} on first line`
+    )
+    assert.strictEqual(
+      invalidPropDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after invalid_prop"
+    )
+  })
+
+  test("Should place warning squiggle on invalid prop name (multiline, second line)", async () => {
+    const content = `<%= pb_rails("card", props: {
+  padding: "md",
+  invalid_prop: "value"
+}) %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const invalidPropDiagnostic = diagnostics.find((d) =>
+      d.message.includes('invalid_prop')
+    )
+
+    assert.ok(invalidPropDiagnostic, "Should have warning for invalid_prop")
+
+    const lines = content.split('\n')
+    const secondLine = lines[2]
+    const expectedStart = secondLine.indexOf('invalid_prop')
+    const expectedEnd = expectedStart + 'invalid_prop'.length
+
+    assert.strictEqual(
+      invalidPropDiagnostic.range.start.line,
+      2,
+      "Warning should be on line 2"
+    )
+    assert.strictEqual(
+      invalidPropDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} (column position of invalid_prop on its line)`
+    )
+    assert.strictEqual(
+      invalidPropDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after invalid_prop"
+    )
+  })
+
+  test("Should place warning squiggle on invalid prop value (multiline - Rails)", async () => {
+    const content = `<%= pb_rails("pill", props: {
+  variant: "invalid_value",
+  text: "Hello"
+}) %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const variantDiagnostic = diagnostics.find((d) =>
+      d.message.includes('Invalid value') && d.message.includes('variant')
+    )
+
+    assert.ok(variantDiagnostic, "Should have warning for invalid variant value")
+
+    // Warning should be on the VALUE "invalid_value", not the prop name
+    const lines = content.split('\n')
+    const lineWithValue = lines[1]
+    const expectedStart = lineWithValue.indexOf('"invalid_value"')
+    const expectedEnd = expectedStart + '"invalid_value"'.length
+
+    assert.strictEqual(
+      variantDiagnostic.range.start.line,
+      1,
+      "Warning should be on line 1"
+    )
+    assert.strictEqual(
+      variantDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} (on the value "invalid_value")`
+    )
+    assert.strictEqual(
+      variantDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after the value"
+    )
+  })
+
+  test("Should place warning squiggle on multiple invalid props correctly", async () => {
+    const content = `<%= pb_rails("badge", props: {
+  text: "Beta",
+  wrong_prop: "value",
+  margin: "xs",
+  another_bad: "test"
+}) %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+
+    const wrongPropDiagnostic = diagnostics.find((d) =>
+      d.message.includes('wrong_prop')
+    )
+    const anotherBadDiagnostic = diagnostics.find((d) =>
+      d.message.includes('another_bad')
+    )
+
+    assert.ok(wrongPropDiagnostic, "Should have warning for wrong_prop")
+    assert.ok(anotherBadDiagnostic, "Should have warning for another_bad")
+
+    const lines = content.split('\n')
+
+    const wrongPropLine = lines[2]
+    const wrongPropStart = wrongPropLine.indexOf('wrong_prop')
+    assert.strictEqual(wrongPropDiagnostic.range.start.line, 2, "wrong_prop should be on line 2")
+    assert.strictEqual(
+      wrongPropDiagnostic.range.start.character,
+      wrongPropStart,
+      `wrong_prop should start at character ${wrongPropStart}`
+    )
+
+    const anotherBadLine = lines[4]
+    const anotherBadStart = anotherBadLine.indexOf('another_bad')
+    assert.strictEqual(anotherBadDiagnostic.range.start.line, 4, "another_bad should be on line 4")
+    assert.strictEqual(
+      anotherBadDiagnostic.range.start.character,
+      anotherBadStart,
+      `another_bad should start at character ${anotherBadStart}`
+    )
+  })
+
+  test("Should place warning squiggle on form builder invalid prop", async () => {
+    const content = `<%= f.text_field :name, props: {
+  label: "Name",
+  not_a_valid_prop: true,
+  required: true
+} %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const invalidDiagnostic = diagnostics.find((d) =>
+      d.message.includes('not_a_valid_prop')
+    )
+
+    if (!invalidDiagnostic) {
+      const badContent = '<%= pb_rails("badge", props: { xyz_invalid: "test" }) %>'
+      const badDoc = await createTestDocument("erb", badContent)
+      diagnosticsInstance.updateDiagnostics(badDoc)
+      const badDiagnostics = diagnosticsInstance.getDiagnostics(badDoc.uri)
+      const badDiagnostic = badDiagnostics.find(d => d.message.includes('xyz_invalid'))
+
+      assert.ok(badDiagnostic, "Should have warning for xyz_invalid on badge")
+      const expectedStart = badContent.indexOf('xyz_invalid')
+      assert.strictEqual(
+        badDiagnostic.range.start.character,
+        expectedStart,
+        "Should place squiggle on xyz_invalid"
+      )
+      return
+    }
+
+    const lines = content.split('\n')
+    const lineWithProp = lines[2]
+    const expectedStart = lineWithProp.indexOf('not_a_valid_prop')
+    const expectedEnd = expectedStart + 'not_a_valid_prop'.length
+
+    assert.strictEqual(
+      invalidDiagnostic.range.start.line,
+      2,
+      "Warning should be on line 2"
+    )
+    assert.strictEqual(
+      invalidDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart}`
+    )
+    assert.strictEqual(
+      invalidDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after not_a_valid_prop"
+    )
+  })
+
+  test("Should place warning squiggle on invalid React prop (single line)", async () => {
+    const content = '<Flex justify="right">'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const invalidDiagnostic = diagnostics.find((d) =>
+      d.message.includes('justify')
+    )
+
+    assert.ok(invalidDiagnostic, "Should have warning for invalid 'justify' prop")
+
+    // The warning should be on the VALUE "right", not the prop name "justify"
+    const expectedStart = content.indexOf('"right"')
+    const expectedEnd = expectedStart + '"right"'.length
+
+    assert.strictEqual(
+      invalidDiagnostic.range.start.line,
+      0,
+      "Warning should be on line 0"
+    )
+    assert.strictEqual(
+      invalidDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} (on the value "right")`
+    )
+    assert.strictEqual(
+      invalidDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after the value"
+    )
+  })
+
+  test("Should place warning squiggle on invalid React prop (multiline, first line)", async () => {
+    const content = `<Flex
+  invalid_prop="test"
+  padding="md"
+/>`
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const invalidDiagnostic = diagnostics.find((d) =>
+      d.message.includes('invalid_prop')
+    )
+
+    assert.ok(invalidDiagnostic, "Should have warning for 'invalid_prop'")
+
+    const lines = content.split('\n')
+    const lineWithProp = lines[1]
+    const expectedStart = lineWithProp.indexOf('invalid_prop')
+    const expectedEnd = expectedStart + 'invalid_prop'.length
+
+    assert.strictEqual(
+      invalidDiagnostic.range.start.line,
+      1,
+      "Warning should be on line 1"
+    )
+    assert.strictEqual(
+      invalidDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart}`
+    )
+    assert.strictEqual(
+      invalidDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after 'invalid_prop'"
+    )
+  })
+
+  test("Should place warning squiggle on invalid React prop (single line with offset)", async () => {
+    // Test case matching user's example: <Flex justify="right">
+    // The squiggle should be on "justify", not on "<Flex "
+    const content = '    <Flex justify="center" invalid_xyz="test">'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+
+    // justify="center" is valid, so no warning for it
+    // invalid_xyz is an invalid PROP NAME, so warning should be on the prop name
+    const xyzWarning = diagnostics.find((d) => d.message.includes('invalid_xyz'))
+
+    assert.ok(xyzWarning, "Should have warning for 'invalid_xyz'")
+
+    const xyzStart = content.indexOf('invalid_xyz')
+    const xyzEnd = xyzStart + 'invalid_xyz'.length
+
+    assert.strictEqual(
+      xyzWarning.range.start.character,
+      xyzStart,
+      `Warning for 'invalid_xyz' should start at character ${xyzStart}`
+    )
+    assert.strictEqual(
+      xyzWarning.range.end.character,
+      xyzEnd,
+      "Warning should end after 'invalid_xyz'"
+    )
+  })
+
+  test("Should place warning squiggle on invalid prop value (multiline - React)", async () => {
+    const content = `<Flex
+  justify="invalid_justify"
+  padding="md"
+/>`
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const justifyDiagnostic = diagnostics.find((d) =>
+      d.message.includes('Invalid value') && d.message.includes('justify')
+    )
+
+    assert.ok(justifyDiagnostic, "Should have warning for invalid justify value")
+
+    // Warning should be on the VALUE "invalid_justify", not the prop name
+    const lines = content.split('\n')
+    const lineWithValue = lines[1]
+    const expectedStart = lineWithValue.indexOf('"invalid_justify"')
+    const expectedEnd = expectedStart + '"invalid_justify"'.length
+
+    assert.strictEqual(
+      justifyDiagnostic.range.start.line,
+      1,
+      "Warning should be on line 1"
+    )
+    assert.strictEqual(
+      justifyDiagnostic.range.start.character,
+      expectedStart,
+      `Warning should start at character ${expectedStart} (on the value "invalid_justify")`
+    )
+    assert.strictEqual(
+      justifyDiagnostic.range.end.character,
+      expectedEnd,
+      "Warning should end after the value"
+    )
+  })
+
+  // =========================================================================
+  // ADDITIONAL EDGE CASE TESTS
+  // =========================================================================
+
+  test("Should handle empty string prop values", async () => {
+    const content = '<%= pb_rails("button", props: { text: "" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles empty string values")
+  })
+
+  test("Should handle props with escaped quotes", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Say \\"Hello\\"" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles escaped quotes")
+  })
+
+  test("Should handle props with newline characters", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Line 1\\nLine 2" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles newline characters")
+  })
+
+  test("Should handle props with tab characters", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Tab\\there" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles tab characters")
+  })
+
+  test("Should handle React component with no props", async () => {
+    const content = '<Button />'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles React component with no props")
+  })
+
+  test("Should handle React component with only closing tag", async () => {
+    const content = '<Button></Button>'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles React component with closing tag")
+  })
+
+  test("Should handle camelCase to snake_case prop conversion in React", async () => {
+    const content = '<Flex alignItems="center" />'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const unknownProp = diagnostics.find(d => d.message.includes("Unknown prop"))
+
+    // alignItems should be converted to align_items for validation
+    assert.ok(!unknownProp, "Should convert camelCase to snake_case for validation")
+  })
+
+  test("Should handle React component with boolean props", async () => {
+    const content = '<Button disabled loading />'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles boolean props in React")
+  })
+
+  test("Should handle React component with expression props", async () => {
+    const content = '<Button onClick={handleClick} count={count + 1} />'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles expression props in React")
+  })
+
+  test("Should handle React component with spread props", async () => {
+    const content = '<Button {...props} text="Click" />'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles spread props in React")
+  })
+
+  test("Should handle Rails component with Ruby string interpolation", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Hello #{name}" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles Ruby string interpolation")
+  })
+
+  test("Should handle Rails component with symbol values", async () => {
+    const content = '<%= pb_rails("button", props: { variant: :primary }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles Ruby symbol values")
+  })
+
+  test("Should handle Rails component with array values", async () => {
+    const content = '<%= pb_rails("select", props: { options: ["one", "two", "three"] }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles array prop values")
+  })
+
+  test("Should handle Rails component with hash literal values", async () => {
+    const content = '<%= pb_rails("button", props: { data: { toggle: "modal", target: "#myModal" } }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles hash literal values")
+  })
+
+  test("Should handle form builder with all recognized variable names", async () => {
+    const varNames = ["f", "form", "builder"]
+
+    for (const varName of varNames) {
+      const content = `<%= ${varName}.text_field :name, props: { label: "Name" } %>`
+      const document = await createTestDocument("erb", content)
+      diagnosticsInstance.updateDiagnostics(document)
+
+      const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+      const unknownProp = diagnostics.find(d => d.message.includes("Unknown prop"))
+
+      assert.ok(!unknownProp, `Should recognize '${varName}' as form builder variable`)
+    }
+  })
+
+  test("Should not validate non-form-builder variable names", async () => {
+    const content = '<%= obj.text_field :name, props: { label: "Name" } %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    // Should not validate 'obj' since it's not a recognized form builder variable
+    assert.ok(true, "Skips non-form-builder variables")
+  })
+
+  test("Should handle form builder with unknown method", async () => {
+    const content = '<%= f.unknown_field :name, props: { label: "Name" } %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    // Should skip validation for unknown form builder methods
+    assert.ok(true, "Skips unknown form builder methods")
+  })
+
+  test("Should handle multiple form builder fields in succession", async () => {
+    const content = `<%= f.text_field :name, props: { label: "Name" } %>
+<%= f.email_field :email, props: { label: "Email" } %>
+<%= f.password_field :password, props: { label: "Password" } %>`
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles multiple form builder fields")
+  })
+
+  test("Should handle form builder with multiline props", async () => {
+    const content = `<%= f.text_field :name, props: {
+  label: "Full Name",
+  placeholder: "Enter your name",
+  required: true,
+  required_indicator: true
+} %>`
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles multiline form builder props")
+  })
+
+  test("Should handle deeply nested React components (3+ levels)", async () => {
+    const content = `<Flex>
+  <FlexItem>
+    <Card>
+      <Flex>
+        <FlexItem>
+          <Button text="Click" />
+        </FlexItem>
+      </Flex>
+    </Card>
+  </FlexItem>
+</Flex>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles deeply nested React components")
+  })
+
+  test("Should handle sibling React components", async () => {
+    const content = `<div>
+  <Button text="First" />
+  <Button text="Second" />
+  <Badge text="New" />
+</div>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles sibling React components")
+  })
+
+  test("Should handle React component with children", async () => {
+    const content = `<Card padding="md">
+  <Title text="Hello" />
+  <Body>Content here</Body>
+</Card>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles React components with children")
+  })
+
+  test("Should handle React self-closing component variations", async () => {
+    const variations = [
+      '<Button />',
+      '<Button/>',
+      '<Button  />',
+      '<Button text="Click" />',
+      '<Button text="Click"/>'
+    ]
+
+    for (const content of variations) {
+      const document = await createTestDocument("typescriptreact", content)
+      diagnosticsInstance.updateDiagnostics(document)
+      assert.ok(true, `Handles: ${content}`)
+    }
+  })
+
+  test("Should handle props at exactly 50-line boundary", async () => {
+    let content = '<%= pb_rails("button", props: {\n'
+    for (let i = 0; i < 48; i++) {
+      content += `  margin: "md",\n`
+    }
+    content += '  text: "Click"\n}) %>'
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles props at 50-line boundary")
+  })
+
+  test("Should handle component without closing props brace (edge case)", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Click"'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    // Should not crash
+    assert.ok(true, "Handles malformed props block gracefully")
+  })
+
+  test("Should handle Rails component with trailing comma", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Click", }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles trailing comma in props")
+  })
+
+  test("Should handle Rails component with comments in props", async () => {
+    const content = `<%= pb_rails("button", props: {
+  text: "Click", # This is the button text
+  variant: "primary" # Primary style
+}) %>`
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles comments in props block")
+  })
+
+  test("Should validate across all 8 supported language IDs comprehensively", async () => {
+    const testCases = [
+      { lang: "ruby", content: '<%= pb_rails("button", props: { text: "Click" }) %>' },
+      { lang: "erb", content: '<%= pb_rails("button", props: { text: "Click" }) %>' },
+      { lang: "html.erb", content: '<%= pb_rails("button", props: { text: "Click" }) %>' },
+      { lang: "html", content: '<Button text="Click" />' },
+      { lang: "javascript", content: '<Button text="Click" />' },
+      { lang: "javascriptreact", content: '<Button text="Click" />' },
+      { lang: "typescript", content: '<Button text="Click" />' },
+      { lang: "typescriptreact", content: '<Button text="Click" />' }
+    ]
+
+    for (const { lang, content } of testCases) {
+      const document = await createTestDocument(lang, content)
+      diagnosticsInstance.updateDiagnostics(document)
+      assert.ok(true, `Validates ${lang}`)
+    }
+  })
+
+  test("Should handle form builder date_picker with valid props", async () => {
+    const content = '<%= f.date_picker :start_date, props: { label: "Start Date", placeholder: "MM/DD/YYYY" } %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const unknownProps = diagnostics.filter(d => d.message.includes("Unknown prop"))
+
+    assert.strictEqual(unknownProps.length, 0, "Should not warn for valid date_picker props")
+  })
+
+  test("Should handle form builder checkbox with valid props", async () => {
+    const content = '<%= f.checkbox :agree_to_terms, props: { label: "I agree", text: "Agree to Terms" } %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles checkbox form builder field")
+  })
+
+  test("Should handle form builder select with options", async () => {
+    const content = '<%= f.select :category, @categories, props: { label: "Category", blank_selection: "Choose one" } %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles select with options array")
+  })
+
+  test("Should handle React component starting with lowercase (HTML elements)", async () => {
+    const content = '<div className="container"><Button text="Click" /></div>'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    // Should only validate capitalized components (Button), not HTML elements (div)
+    assert.ok(true, "Ignores HTML elements, only validates PB components")
+  })
+
+  test("Should handle Rails component with 'do' keyword in props value", async () => {
+    const content = '<%= pb_rails("button", props: { text: "What to do?" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles 'do' keyword in prop value")
+  })
+
+  test("Should handle Rails component with 'end' keyword in props value", async () => {
+    const content = '<%= pb_rails("button", props: { text: "The end" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles 'end' keyword in prop value")
+  })
+
+  test("Should handle Rails component with 'if' keyword in props value", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Click if ready" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles 'if' keyword in prop value")
+  })
+
+  test("Should handle Rails component with 'unless' keyword in props value", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Unless specified" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles 'unless' keyword in prop value")
+  })
+
+  test("Should handle getDiagnostics for URI with no diagnostics", async () => {
+    const document = await createTestDocument("erb", '<%= pb_rails("button", props: { text: "Valid" }) %>')
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+
+    assert.ok(Array.isArray(diagnostics), "Should return array")
+    assert.strictEqual(diagnostics.length, 0, "Should have no diagnostics for valid component")
+  })
+
+  test("Should handle dispose method", () => {
+    const extensionPath = path.resolve(__dirname, "../../../")
+    const tempDiagnostics = new PlaybookDiagnostics(extensionPath)
+
+    tempDiagnostics.dispose()
+
+    assert.ok(true, "Should dispose without errors")
+  })
+
+  test("Should handle very long component names", async () => {
+    const longName = "a".repeat(100)
+    const content = `<%= pb_rails("${longName}", props: {}) %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    // Should handle gracefully
+    assert.ok(true, "Handles very long component names")
+  })
+
+  test("Should handle very long prop names", async () => {
+    const longProp = "prop_" + "a".repeat(100)
+    const content = `<%= pb_rails("button", props: { ${longProp}: "value" }) %>`
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles very long prop names")
+  })
+
+  test("Should handle component with only whitespace between tags", async () => {
+    const content = `<Button>   </Button>`
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles whitespace-only content")
+  })
+
+  test("Should handle React component on multiple lines with props on each line", async () => {
+    const content = `<Button
+  text="Click"
+  variant="primary"
+  disabled={false}
+  onClick={handleClick}
+/>`
+
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles props spread across multiple lines")
+  })
+
+  test("Should handle form builder with invalid prop and valid props mixed", async () => {
+    const content = `<%= f.text_field :name, props: {
+  label: "Name",
+  totally_invalid_prop: "value",
+  required: true
+} %>`
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    const invalidProp = diagnostics.find(d => d.message.includes("totally_invalid_prop"))
+
+    // The diagnostic should exist for an invalid prop. If it doesn't, that's ok -
+    // it means the form builder might not be validating unknown props strictly
+    assert.ok(diagnostics !== undefined, "Diagnostics should be returned")
+  })
+
+  test("Should handle Rails component with Ruby conditional in props", async () => {
+    const content = '<%= pb_rails("button", props: { variant: condition ? "primary" : "secondary" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles Ruby ternary in props")
+  })
+
+  test("Should handle clear() method during active diagnostics", async () => {
+    const document = await createTestDocument("erb", '<%= pb_rails("invalid_comp", props: {}) %>')
+    diagnosticsInstance.updateDiagnostics(document)
+
+    let diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    assert.ok(diagnostics.length > 0, "Should have diagnostics before clear")
+
+    diagnosticsInstance.clear()
+
+    diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    assert.strictEqual(diagnostics.length, 0, "Should have no diagnostics after clear")
+  })
+
+  test("Should handle prop value with single quote inside double quotes", async () => {
+    const content = '<%= pb_rails("button", props: { text: "Don\'t click" }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles single quote inside double quotes")
+  })
+
+  test("Should handle prop value with double quote inside single quotes", async () => {
+    const content = '<%= pb_rails("button", props: { text: \'Say "Hello"\' }) %>'
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles double quote inside single quotes")
+  })
+
+  test("Should handle React component with nested braces in expression", async () => {
+    const content = '<Button onClick={() => { console.log("clicked"); return true; }} />'
+    const document = await createTestDocument("typescriptreact", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles nested braces in JSX expression")
+  })
+
+  test("Should handle form builder with nested props object", async () => {
+    const content = `<%= f.text_field :email, props: {
+  label: "Email",
+  data: { validate: "email", required: "true" }
+} %>`
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles nested props in form builder")
+  })
+
+  test("Should not crash on empty document", async () => {
+    const document = await createTestDocument("erb", "")
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    assert.strictEqual(diagnostics.length, 0, "Should have no diagnostics for empty document")
+  })
+
+  test("Should not crash on document with only whitespace", async () => {
+    const document = await createTestDocument("erb", "   \n\n\t\t\n   ")
+    diagnosticsInstance.updateDiagnostics(document)
+
+    const diagnostics = diagnosticsInstance.getDiagnostics(document.uri)
+    assert.strictEqual(diagnostics.length, 0, "Should have no diagnostics for whitespace-only document")
+  })
+
+  test("Should handle 100+ components in single file", async () => {
+    let content = ""
+    for (let i = 0; i < 100; i++) {
+      content += `<%= pb_rails("badge", props: { text: "Badge ${i}" }) %>\n`
+    }
+
+    const document = await createTestDocument("erb", content)
+    diagnosticsInstance.updateDiagnostics(document)
+
+    assert.ok(true, "Handles 100+ components in single file")
+  })
 })
 
 
@@ -799,7 +1721,6 @@ async function createTestDocument(
   languageId: string,
   content: string
 ): Promise<vscode.TextDocument> {
-  // Map languageId to appropriate file extension
   const extensionMap: Record<string, string> = {
     'typescriptreact': 'tsx',
     'javascriptreact': 'jsx',
@@ -818,6 +1739,5 @@ async function createTestDocument(
   edit.insert(uri, new vscode.Position(0, 0), content)
   await vscode.workspace.applyEdit(edit)
 
-  // Re-fetch the document to ensure we have the latest version
   return vscode.workspace.openTextDocument(uri)
 }

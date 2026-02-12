@@ -103,7 +103,7 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
     }
 
     if (values.length > 0) {
-      typeAliases[typeName] = [...new Set(values)] // Remove duplicates
+      typeAliases[typeName] = [...new Set(values)]
     }
   }
 
@@ -133,7 +133,7 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
       }
     }
 
-    return [...new Set(enumValues)] // Remove duplicates
+    return [...new Set(enumValues)]
   }
 
   const typeDefRegex = /type\s+(\w+)\s*=\s*\{([^}]+)\}/gs
@@ -191,17 +191,12 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
     }
   }
 
-  // Extract sizing and positioning values from Ruby modules (width, height, top, bottom, etc.)
-  // These are defined in lib/playbook/*.rb files with *_values methods
-  // Store Rails and React values separately for context-specific validation
   const sizingPropsFromRuby = extractSizingPropsFromRuby(playbookRoot)
   Object.keys(sizingPropsFromRuby).forEach((key) => {
     if (globalProps[key] && globalProps[key].values) {
-      // Both TypeScript and Ruby define this prop - store separately
       const tsValues = globalProps[key].values || []
       const rubyValues = sizingPropsFromRuby[key].values || []
 
-      // Combine for backward compatibility
       const combined = [
         ...rubyValues,
         ...tsValues.filter((v: string) => !rubyValues.includes(v))
@@ -214,7 +209,6 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
         reactValues: tsValues
       }
     } else {
-      // Only Ruby defines this prop
       globalProps[key] = {
         ...sizingPropsFromRuby[key],
         railsValues: sizingPropsFromRuby[key].values
@@ -222,14 +216,12 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
     }
   })
 
-  // For props only in TypeScript, set reactValues
   Object.keys(globalProps).forEach((key) => {
     if (globalProps[key].values && !globalProps[key].railsValues && !globalProps[key].reactValues) {
       globalProps[key].reactValues = globalProps[key].values
     }
   })
 
-  // Debug: Log props with separate values
   const propsWithSeparateValues = Object.keys(globalProps).filter(k =>
     globalProps[k].railsValues || globalProps[k].reactValues
   )
@@ -237,12 +229,10 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
     console.log(`\n📝 Props with separate Rails/React values: ${propsWithSeparateValues.join(', ')}`)
   }
 
-  // Ensure critical props are present with fallbacks (only for props not in Ruby/TypeScript)
   if (!globalProps.dark) {
     globalProps.dark = { type: "boolean" }
   }
 
-  // Props that aren't in globalProps.ts or Ruby but are needed for Rails/forms
   if (!globalProps.aria) {
     globalProps.aria = { type: "string" }
   }
@@ -264,6 +254,9 @@ function extractGlobalPropsFromTypeScript(playbookPath: string): Record<string, 
   if (!globalProps.id) {
     globalProps.id = { type: "string" }
   }
+  if (!globalProps.key) {
+    globalProps.key = { type: "string" }
+  }
   if (!globalProps.style) {
     globalProps.style = { type: "string" }
   }
@@ -280,23 +273,20 @@ function extractSizingPropsFromRuby(playbookRoot: string): Record<string, any> {
     return sizingProps
   }
 
-  // Dynamically scan all .rb files in lib/playbook
   const rubyFiles = fs.readdirSync(libDir).filter(file => file.endsWith('.rb'))
 
   rubyFiles.forEach(fileName => {
     const filePath = path.join(libDir, fileName)
     const content = fs.readFileSync(filePath, "utf-8")
 
-    // Extract all *_values methods from this file
     const valuesRegex = /def\s+(\w+)_values\s*\n\s*%w\[([^\]]+)\]/g
     let match
 
     while ((match = valuesRegex.exec(content)) !== null) {
-      const methodName = match[1] // e.g., "height", "width", "min_width"
+      const methodName = match[1]
       const valuesStr = match[2]
       const values = valuesStr.trim().split(/\s+/)
 
-      // Only add if we found actual values
       if (values.length > 0 && values[0]) {
         sizingProps[methodName] = {
           type: "string",
@@ -715,8 +705,6 @@ function parseReactPropsFromTypeScript(
       .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
       .join("")
 
-    // Try both ${ComponentName}Props and ${ComponentName}PropTypes patterns
-    // Some components use PropTypes (e.g., ButtonPropTypes) instead of Props
     const typePatterns = [
       `type\\s+${pascalName}Props\\s*=\\s*\\{`,
       `type\\s+${pascalName}PropTypes\\s*=\\s*\\{`
@@ -901,7 +889,6 @@ function main() {
 
   generateSnippets(mergedComponents)
 
-  // Extract global props with Rails/React separation
   const globalProps = extractGlobalPropsFromTypeScript(PLAYBOOK_REPO_PATH)
   generateMetadata(mergedComponents, globalProps)
 

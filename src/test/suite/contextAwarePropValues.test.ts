@@ -15,7 +15,6 @@ suite("Context-Aware Prop Values Test Suite", () => {
     const position = metadata.globalProps.position
     assert.ok(position, "position prop should exist")
 
-    // ERB file should get Rails values (no "static")
     const railsValues = getPropValues(position, "erb")
     assert.ok(railsValues, "Should return values for ERB")
     assert.strictEqual(railsValues.includes("relative"), true, "Rails should have 'relative'")
@@ -26,7 +25,6 @@ suite("Context-Aware Prop Values Test Suite", () => {
     const position = metadata.globalProps.position
     assert.ok(position, "position prop should exist")
 
-    // TSX file should get React values (includes "static")
     const reactValues = getPropValues(position, "typescriptreact")
     assert.ok(reactValues, "Should return values for TSX")
     assert.strictEqual(reactValues.includes("relative"), true, "React should have 'relative'")
@@ -37,7 +35,6 @@ suite("Context-Aware Prop Values Test Suite", () => {
     const truncate = metadata.globalProps.truncate
     assert.ok(truncate, "truncate prop should exist")
 
-    // Rails should not have "none"
     const railsValues = getPropValues(truncate, "erb")
     assert.ok(railsValues, "Should return values for ERB")
     assert.strictEqual(railsValues.includes("1"), true, "Rails should have '1'")
@@ -48,7 +45,6 @@ suite("Context-Aware Prop Values Test Suite", () => {
     const truncate = metadata.globalProps.truncate
     assert.ok(truncate, "truncate prop should exist")
 
-    // React should have "none"
     const reactValues = getPropValues(truncate, "typescriptreact")
     assert.ok(reactValues, "Should return values for TSX")
     assert.strictEqual(reactValues.includes("1"), true, "React should have '1'")
@@ -79,7 +75,6 @@ suite("Context-Aware Prop Values Test Suite", () => {
       const railsValues = getPropValues(prop, "erb")
       assert.ok(railsValues, `${propName} should have Rails values`)
 
-      // Rails should have these values
       assert.strictEqual(railsValues.includes("0"), true, `Rails ${propName} should have '0'`)
       assert.strictEqual(railsValues.includes("auto"), true, `Rails ${propName} should have 'auto'`)
       assert.strictEqual(railsValues.includes("initial"), true, `Rails ${propName} should have 'initial'`)
@@ -95,24 +90,20 @@ suite("Context-Aware Prop Values Test Suite", () => {
       const reactValues = getPropValues(prop, "typescriptreact")
       assert.ok(reactValues, `${propName} should have React values`)
 
-      // React should have xxl (from TypeScript Sizes type)
       assert.strictEqual(reactValues.includes("xxl"), true, `React ${propName} should have 'xxl'`)
     })
   })
 
   test("Should fall back to generic values for props without separate Rails/React values", () => {
-    // Props that don't have differences should work in both contexts
     const border_radius = metadata.globalProps.border_radius
 
     const erbValues = getPropValues(border_radius, "erb")
     const tsxValues = getPropValues(border_radius, "typescriptreact")
 
-    // If there are no separate values, both should get the same values
     if (border_radius.railsValues && border_radius.reactValues) {
       assert.ok(erbValues, "ERB should get values")
       assert.ok(tsxValues, "TSX should get values")
     } else {
-      // No separate values, should return generic values for both
       assert.deepStrictEqual(erbValues, tsxValues, "Should return same values when no separation")
     }
   })
@@ -130,7 +121,6 @@ suite("Context-Aware Prop Values Test Suite", () => {
     const z_index = metadata.globalProps.z_index
     const reactValues = getPropValues(z_index, "typescriptreact")
 
-    // React might not have "max" (it's Rails-specific)
     if (z_index.reactValues && z_index.reactValues.length > 0 && !z_index.reactValues.includes("max")) {
       assert.ok(reactValues, "Should have React values")
       assert.strictEqual(reactValues!.includes("max"), false, "React z_index should NOT have 'max'")    }

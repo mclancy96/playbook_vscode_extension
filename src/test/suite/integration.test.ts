@@ -5,7 +5,6 @@ import { PlaybookDiagnostics } from "../../diagnostics"
 import { PlaybookCompletionProvider } from "../../completionProvider"
 import { PlaybookHoverProvider } from "../../hoverProvider"
 
-// Helper function to create test documents consistently
 async function createTestDocument(
   languageId: string,
   content: string
@@ -35,22 +34,18 @@ suite("Extension Integration Test Suite", () => {
   test("Diagnostics should detect invalid prop values in Rails ERB files", async function () {
     this.timeout(testTimeout)
 
-    // Ensure extension is activated
     const extension = vscode.extensions.getExtension("ClancyTools.playbook-vscode")
     await extension!.activate()
 
-    // Create a test document with invalid prop value
     const testContent = `<%= pb_rails("badge", props: {
   variant: "invalid_variant_that_does_not_exist"
 }) %>`
 
     const doc = await createTestDocument("erb", testContent)
 
-    // Directly instantiate diagnostics provider and call updateDiagnostics
     const diagnosticsProvider = new PlaybookDiagnostics(extensionPath)
     diagnosticsProvider.updateDiagnostics(doc)
 
-    // Use the provider's getter to access diagnostics from its collection
     const diagnostics = diagnosticsProvider.getDiagnostics(doc.uri)
 
     assert.ok(diagnostics.length > 0, "Should have at least one diagnostic")
@@ -78,11 +73,9 @@ suite("Extension Integration Test Suite", () => {
 
     const doc = await createTestDocument("html.erb", testContent)
 
-    // Directly instantiate diagnostics provider and call updateDiagnostics
     const diagnosticsProvider = new PlaybookDiagnostics(extensionPath)
     diagnosticsProvider.updateDiagnostics(doc)
 
-    // Use the provider's getter to access diagnostics from its collection
     const diagnostics = diagnosticsProvider.getDiagnostics(doc.uri)
 
     assert.ok(diagnostics.length > 0, "Should have diagnostics for html.erb files")
@@ -102,7 +95,6 @@ suite("Extension Integration Test Suite", () => {
 
     const editor = await vscode.window.showTextDocument(doc)
 
-    // Position cursor after the opening brace (line 1, after spaces)
     const position = new vscode.Position(1, 2)
     editor.selection = new vscode.Selection(position, position)
 
@@ -117,7 +109,6 @@ suite("Extension Integration Test Suite", () => {
     assert.ok(completions, "Should return completions")
     assert.ok(completions.items.length > 0, "Should have completion items")
 
-    // Badge should have props like variant, text, rounded, etc.
     const hasVariant = completions.items.some((item) => item.label === "variant")
     const hasText = completions.items.some((item) => item.label === "text")
 
@@ -136,10 +127,8 @@ suite("Extension Integration Test Suite", () => {
 
     const doc = await createTestDocument("erb", testContent)
 
-    // Position cursor inside the empty string for variant value (after opening quote)
     const position = new vscode.Position(1, 12)
 
-    // Directly call the completion provider
     const completionProvider = new PlaybookCompletionProvider(extensionPath)
     const completions = completionProvider.provideCompletionItems(
       doc,
@@ -181,7 +170,6 @@ function MyComponent() {
 
     const editor = await vscode.window.showTextDocument(doc)
 
-    // Position cursor after Badge with space (to trigger prop suggestions)
     const position = new vscode.Position(3, 17)
     editor.selection = new vscode.Selection(position, position)
 
@@ -213,10 +201,8 @@ function MyComponent() {
 
     const doc = await createTestDocument("erb", testContent)
 
-    // Position cursor over "badge" component name
     const position = new vscode.Position(0, 15)
 
-    // Directly call the hover provider
     const hoverProvider = new PlaybookHoverProvider(extensionPath)
     const hover = hoverProvider.provideHover(doc, position)
 
@@ -226,7 +212,6 @@ function MyComponent() {
     const hoverContent = hover.contents[0]
     assert.ok(hoverContent, "Hover should have content")
 
-    // Check that hover contains documentation about Badge
     const markdownContent =
       hoverContent instanceof vscode.MarkdownString ? hoverContent.value : String(hoverContent)
     assert.ok(
@@ -241,7 +226,6 @@ function MyComponent() {
     const extension = vscode.extensions.getExtension("ClancyTools.playbook-vscode")
     await extension!.activate()
 
-    // Test that providers work for each language
     const supportedLanguages = ["erb", "html.erb", "typescriptreact", "javascriptreact"]
 
     for (const lang of supportedLanguages) {
@@ -253,14 +237,12 @@ function MyComponent() {
       await vscode.window.showTextDocument(testDoc)
       await new Promise((resolve) => setTimeout(resolve, 500))
 
-      // The fact that we can open it and it activates the extension is a good sign
       assert.ok(extension!.isActive, `Extension should stay active for language: ${lang}`)
 
       await vscode.commands.executeCommand("workbench.action.closeActiveEditor")
     }
   })
 
-  // Test go-to-definition feature
   test("Definition provider should navigate to Playbook documentation", async function () {
     this.timeout(testTimeout)
 
@@ -270,7 +252,6 @@ function MyComponent() {
     const testContent = `<%= pb_rails("button", props: {}) %>`
     const doc = await createTestDocument("erb", testContent)
 
-    // Position cursor on "button" component name
     const position = new vscode.Position(0, 15)
 
     const definitionProvider = new (
@@ -285,7 +266,6 @@ function MyComponent() {
     )
   })
 
-  // Test that diagnostics fire for unknown components
   test("Diagnostics should detect unknown components", async function () {
     this.timeout(testTimeout)
 
@@ -309,7 +289,6 @@ function MyComponent() {
     assert.ok(unknownComponentDiag, "Should warn about unknown component")
   })
 
-  // Test that diagnostics fire for unknown props
   test("Diagnostics should detect unknown props", async function () {
     this.timeout(testTimeout)
 
@@ -333,14 +312,12 @@ function MyComponent() {
     assert.ok(unknownPropDiag, "Should warn about unknown prop")
   })
 
-  // Test React component completion
   test("Completion provider should suggest React component names", async function () {
     this.timeout(testTimeout)
 
     const testContent = `<Bu`
     const doc = await createTestDocument("typescriptreact", testContent)
-
-    const position = new vscode.Position(0, 3) // After "<Bu"
+    const position = new vscode.Position(0, 3)
 
     const completionProvider = new PlaybookCompletionProvider(extensionPath)
     const completions = completionProvider.provideCompletionItems(
@@ -350,22 +327,18 @@ function MyComponent() {
       { triggerKind: vscode.CompletionTriggerKind.Invoke, triggerCharacter: undefined }
     )
 
-    // Component name completion requires specific context
-    // This test validates that the provider runs without errors
     assert.ok(
       completions !== null && completions !== undefined,
       "Completion provider should return a result"
     )
   })
 
-  // Test React prop name completion
   test("Completion provider should suggest React prop names", async function () {
     this.timeout(testTimeout)
 
     const testContent = `<Button  />`
     const doc = await createTestDocument("typescriptreact", testContent)
-
-    const position = new vscode.Position(0, 8) // After space in <Button  />
+    const position = new vscode.Position(0, 8)
 
     const completionProvider = new PlaybookCompletionProvider(extensionPath)
     const completions = completionProvider.provideCompletionItems(
@@ -388,7 +361,6 @@ function MyComponent() {
     )
   })
 
-  // Test hover on React components
   test("Hover provider should show documentation for React components", async function () {
     this.timeout(testTimeout)
 
@@ -397,8 +369,7 @@ function MyComponent() {
 
     const testContent = `<Button text="Click" />`
     const doc = await createTestDocument("typescriptreact", testContent)
-
-    const position = new vscode.Position(0, 2) // On "Button"
+    const position = new vscode.Position(0, 8)
 
     const hoverProvider = new PlaybookHoverProvider(extensionPath)
     const hover = hoverProvider.provideHover(doc, position)
@@ -406,7 +377,6 @@ function MyComponent() {
     assert.ok(hover, "Should return hover information for React component")
   })
 
-  // Test hover on props
   test("Hover provider should show documentation for props", async function () {
     this.timeout(testTimeout)
 
@@ -415,25 +385,20 @@ function MyComponent() {
 
     const testContent = `<%= pb_rails("button", props: { variant: "primary", text: "Click" }) %>`
     const doc = await createTestDocument("erb", testContent)
-
-    const position = new vscode.Position(0, 33) // On "variant"
+    const position = new vscode.Position(0, 40)
 
     const hoverProvider = new PlaybookHoverProvider(extensionPath)
     const hover = hoverProvider.provideHover(doc, position)
 
-    // Hover may or may not trigger depending on exact cursor position
-    // This test validates the provider executes without errors
     assert.ok(true, "Hover provider executed successfully")
   })
 
-  // Test Rails component name completion
   test("Completion provider should suggest Rails component names", async function () {
     this.timeout(testTimeout)
 
     const testContent = `<%= pb_rails("")`
     const doc = await createTestDocument("erb", testContent)
-
-    const position = new vscode.Position(0, 14) // Inside the empty string
+    const position = new vscode.Position(0, 14)
 
     const completionProvider = new PlaybookCompletionProvider(extensionPath)
     const completions = completionProvider.provideCompletionItems(
@@ -443,14 +408,12 @@ function MyComponent() {
       { triggerKind: vscode.CompletionTriggerKind.Invoke, triggerCharacter: '"' }
     )
 
-    // This test validates that the provider runs without errors
     assert.ok(
       completions !== null && completions !== undefined,
       "Completion provider should return a result"
     )
   })
 
-  // Test that extension handles nested props correctly
   test("Diagnostics should handle nested props without false positives", async function () {
     this.timeout(testTimeout)
 
@@ -468,7 +431,6 @@ function MyComponent() {
 
     const diagnostics = diagnosticsProvider.getDiagnostics(doc.uri)
 
-    // Should not warn about "label" or "test" being invalid props
     const labelWarning = diagnostics.find((d) => d.message.includes('"label"'))
     const testWarning = diagnostics.find((d) => d.message.includes('"test"'))
 
@@ -476,7 +438,6 @@ function MyComponent() {
     assert.ok(!testWarning, "Should not warn about nested 'test' prop in data")
   })
 
-  // Test multiline component parsing
   test("Diagnostics should handle multiline components", async function () {
     this.timeout(testTimeout)
 
@@ -499,7 +460,6 @@ function MyComponent() {
     assert.ok(invalidPropDiag, "Should detect invalid prop in multiline component")
   })
 
-  // Test that valid global props are accepted
   test("Diagnostics should accept valid global props", async function () {
     this.timeout(testTimeout)
 
@@ -519,7 +479,6 @@ function MyComponent() {
 
     const diagnostics = diagnosticsProvider.getDiagnostics(doc.uri)
 
-    // Should not warn about global props
     const idWarning = diagnostics.find((d) => d.message.includes('"id"'))
     const classnameWarning = diagnostics.find((d) => d.message.includes('"classname"'))
     const marginWarning = diagnostics.find((d) => d.message.includes('"margin"'))

@@ -87,14 +87,11 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
       return "react-prop-name"
     }
 
-    // Check if we're inside a multi-line React component
     const reactComponentContext = this.findReactComponentContext(document, position)
     if (reactComponentContext) {
-      // Check if we're typing a prop value
       if (linePrefix.match(/\w+\s*=\s*["'{]?$/)) {
         return "react-prop-value"
       }
-      // Otherwise we're typing a prop name
       return "react-prop-name"
     }
 
@@ -105,22 +102,17 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
     document: vscode.TextDocument,
     position: vscode.Position
   ): string | null {
-    // Search backwards up to 20 lines to find the opening tag
     for (let lineNum = position.line; lineNum >= Math.max(0, position.line - 20); lineNum--) {
       const line = document.lineAt(lineNum).text
 
-      // Look for opening React component tag
       const componentMatch = line.match(/<([A-Z][a-zA-Z0-9]*)(?:\s|$)/)
       if (componentMatch) {
         const componentName = componentMatch[1]
 
-        // Check if we haven't found a closing tag between the opening tag and current position
         let foundClosing = false
         for (let checkLine = lineNum; checkLine <= position.line; checkLine++) {
           const checkText = document.lineAt(checkLine).text
-          // Look for self-closing tag or closing tag
           if (checkText.includes('/>') || checkText.includes(`</${componentName}>`)) {
-            // Make sure the closing tag is before our current position
             if (checkLine < position.line ||
                 (checkLine === position.line && checkText.indexOf('/>') < position.character)) {
               foundClosing = true
@@ -261,7 +253,6 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
       const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
       item.detail = `${prop.type}${prop.required ? " (required)" : ""}`
 
-      // Get context-appropriate values
       const validValues = getPropValues(prop, document.languageId)
       let doc = `Type: \`${prop.type}\``
       if (validValues && validValues.length > 0) {
@@ -291,7 +282,6 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
         const item = new vscode.CompletionItem(propName, vscode.CompletionItemKind.Property)
         item.detail = `${(prop as any).type} (global)`
 
-        // Get context-appropriate values
         const validValues = getPropValues(prop as any, document.languageId)
         let doc = `Type: \`${(prop as any).type}\` (global prop)`
         if (validValues && validValues.length > 0) {
@@ -451,7 +441,6 @@ export class PlaybookCompletionProvider implements vscode.CompletionItemProvider
 
     const items: vscode.CompletionItem[] = []
 
-    // Get context-appropriate values
     const validValues = getPropValues(prop, document.languageId)
     if (validValues && validValues.length > 0) {
       for (const value of validValues) {

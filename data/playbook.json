@@ -1,6 +1,6 @@
 {
   "$schema": "./playbook-schema.json",
-  "generatedAt": "2026-02-11T20:13:27.487Z",
+  "generatedAt": "2026-02-11T20:28:29.487Z",
   "globalProps": {
     "align_content": {
       "type": "string",
@@ -1609,6 +1609,9 @@
       "type": "string"
     },
     "id": {
+      "type": "string"
+    },
+    "key": {
       "type": "string"
     },
     "style": {

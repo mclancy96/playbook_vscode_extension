@@ -12,6 +12,8 @@ import {
   getPropValues
 } from "./metadata"
 
+const HARDCODED_GLOBAL_PROPS = new Set(["id", "key"])
+
 export class PlaybookDiagnostics {
   private diagnosticCollection: vscode.DiagnosticCollection
   private extensionPath: string
@@ -208,7 +210,7 @@ export class PlaybookDiagnostics {
         }
 
         if (fullValue === "{") {
-          const isValidProp = component.props[propName] || metadata.globalProps?.[propName]
+          const isValidProp = component.props[propName] || metadata.globalProps?.[propName] || HARDCODED_GLOBAL_PROPS.has(propName)
 
           if (!isValidProp) {
             const position = this.getPositionInPropsBlock(propsBlock, match.index)
@@ -255,7 +257,7 @@ export class PlaybookDiagnostics {
 
         const position = this.getPositionInPropsBlock(propsBlock, match.index)
 
-        if (!component.props[propName] && !metadata.globalProps?.[propName]) {
+        if (!component.props[propName] && !metadata.globalProps?.[propName] && !HARDCODED_GLOBAL_PROPS.has(propName)) {
           const range = new vscode.Range(
             position.line,
             position.character,
@@ -317,8 +319,8 @@ export class PlaybookDiagnostics {
 
           const snakeCaseProp = propName.replace(/([A-Z])/g, "_$1").toLowerCase()
 
-          if (!component.props[snakeCaseProp] && !metadata.globalProps?.[snakeCaseProp]) {
-            const startIndex = match.index
+          if (!component.props[snakeCaseProp] && !metadata.globalProps?.[snakeCaseProp] && !HARDCODED_GLOBAL_PROPS.has(propName)) {
+            const startIndex = i === 0 ? match.index + componentBlock.startChar : match.index
             const range = new vscode.Range(
               actualLineIndex,
               startIndex,
@@ -336,12 +338,13 @@ export class PlaybookDiagnostics {
           } else {
             const prop = component.props[snakeCaseProp] || metadata.globalProps?.[snakeCaseProp]
             if (prop) {
+              const adjustedStartIndex = i === 0 ? match.index + componentBlock.startChar : match.index
               this.validatePropValue(
                 propName,
                 propValue || "",
                 prop,
                 match[0],
-                match.index,
+                adjustedStartIndex,
                 actualLineIndex,
                 diagnostics,
                 document
@@ -357,7 +360,7 @@ export class PlaybookDiagnostics {
     document: vscode.TextDocument,
     startLineIndex: number,
     targetComponentName: string
-  ): { text: string; startLine: number; componentName: string } | null {
+  ): { text: string; startLine: number; startChar: number; componentName: string } | null {
     const startLine = document.lineAt(startLineIndex).text
 
     const componentRegex = new RegExp(`<(${targetComponentName})(?:\\s|>|\\/|$)`)
@@ -431,6 +434,7 @@ export class PlaybookDiagnostics {
     return {
       text: lines.join('\n'),
       startLine: startLineIndex,
+      startChar: componentStartIndex,
       componentName
     }
   }
@@ -479,7 +483,7 @@ export class PlaybookDiagnostics {
   private extractPropsBlock(
     document: vscode.TextDocument,
     startLineIndex: number
-  ): { text: string; startLine: number; lines: string[] } | null {
+  ): { text: string; startLine: number; startChar: number; lines: string[] } | null {
     let propsStartLine = -1
     let propsStartChar = -1
 
@@ -539,6 +543,7 @@ export class PlaybookDiagnostics {
             return {
               text: lines.join("\n"),
               startLine: propsStartLine,
+              startChar: propsStartChar,
               lines: lines
             }
           }
@@ -665,7 +670,7 @@ export class PlaybookDiagnostics {
       }
 
       if (fullValue === "{") {
-        const isValidProp = field.props[propName] || metadata.globalProps?.[propName]
+        const isValidProp = field.props[propName] || metadata.globalProps?.[propName] || HARDCODED_GLOBAL_PROPS.has(propName)
 
         if (!isValidProp) {
           const position = this.getPositionInPropsBlock(propsBlock, match.index)
@@ -712,7 +717,7 @@ export class PlaybookDiagnostics {
 
       const position = this.getPositionInPropsBlock(propsBlock, match.index)
 
-      if (!field.props[propName] && !metadata.globalProps?.[propName]) {
+      if (!field.props[propName] && !metadata.globalProps?.[propName] && !HARDCODED_GLOBAL_PROPS.has(propName)) {
         const range = new vscode.Range(
           position.line,
           position.character,
@@ -748,7 +753,7 @@ export class PlaybookDiagnostics {
   private extractFormBuilderPropsBlock(
     document: vscode.TextDocument,
     startLineIndex: number
-  ): { text: string; startLine: number; lines: string[] } | null {
+  ): { text: string; startLine: number; startChar: number; lines: string[] } | null {
     let propsStartLine = -1
     let propsStartChar = -1
 
@@ -793,6 +798,7 @@ export class PlaybookDiagnostics {
             return {
               text: lines.join("\n"),
               startLine: propsStartLine,
+              startChar: propsStartChar,
               lines: lines
             }
           }
@@ -810,7 +816,7 @@ export class PlaybookDiagnostics {
   }
 
   private getPositionInPropsBlock(
-    propsBlock: { text: string; startLine: number; lines: string[] },
+    propsBlock: { text: string; startLine: number; startChar: number; lines: string[] },
     matchIndex: number
   ): { line: number; character: number } {
     let currentIndex = 0
@@ -822,13 +828,14 @@ export class PlaybookDiagnostics {
 
       if (matchIndex >= currentIndex && matchIndex < lineEndIndex) {
         const character = matchIndex - currentIndex
-        return { line: currentLine + i, character }
+        const adjustedCharacter = (i === 0) ? character + propsBlock.startChar : character
+        return { line: currentLine + i, character: adjustedCharacter }
       }
 
       currentIndex = lineEndIndex + 1
     }
 
-    return { line: propsBlock.startLine, character: 0 }
+    return { line: propsBlock.startLine, character: propsBlock.startChar }
   }
 
   public clear(): void {

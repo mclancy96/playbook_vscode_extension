@@ -11,7 +11,6 @@ interface FormBuilderMetadata {
   fields: FormBuilderField[]
 }
 
-// Path to the Playbook repository (adjust as needed)
 const PLAYBOOK_REPO_PATH = process.env.PLAYBOOK_REPO_PATH || "../playbook/playbook"
 
 /**
@@ -31,8 +30,6 @@ function extractFormBuilderMetadata(): FormBuilderMetadata {
   const builderContent = fs.readFileSync(builderFilePath, "utf-8")
   const fields: FormBuilderField[] = []
 
-  // Extract FormFieldBuilder definitions (text_field, email_field, etc.)
-  // Pattern: prepend(FormFieldBuilder.new(:method_name, kit_name: "kit_name"))
   const formFieldBuilderRegex =
     /prepend\(FormFieldBuilder\.new\(:(\w+),\s*kit_name:\s*"([^"]+)"\)\)/g
   let match
@@ -41,7 +38,6 @@ function extractFormBuilderMetadata(): FormBuilderMetadata {
     const fieldName = match[1]
     const kitName = match[2]
 
-    // Get props for the underlying kit
     const kitProps = getKitProps(kitName)
 
     fields.push({
@@ -53,7 +49,6 @@ function extractFormBuilderMetadata(): FormBuilderMetadata {
     console.log(`Found form field: ${fieldName} -> ${kitName}`)
   }
 
-  // Extract custom field definitions (select, date_picker, etc.)
   const builderDir = path.join(PLAYBOOK_REPO_PATH, "lib/playbook/forms/builder")
   if (fs.existsSync(builderDir)) {
     const files = fs.readdirSync(builderDir)
@@ -64,13 +59,11 @@ function extractFormBuilderMetadata(): FormBuilderMetadata {
         const filePath = path.join(builderDir, file)
         const content = fs.readFileSync(filePath, "utf-8")
 
-        // Extract the kit name from pb_rails() calls
         const pbRailsMatch = content.match(/pb_rails\(\s*"([^"]+)",/)
         if (pbRailsMatch) {
           const kitName = pbRailsMatch[1]
           const kitProps = getKitProps(kitName)
 
-          // Only add if not already added via FormFieldBuilder
           if (!fields.find((f) => f.name === fieldName)) {
             fields.push({
               name: fieldName,
@@ -85,7 +78,6 @@ function extractFormBuilderMetadata(): FormBuilderMetadata {
     }
   }
 
-  // Add common form builder props that apply to all fields
   const commonProps = {
     label: { type: "string | boolean" },
     placeholder: { type: "string" },
@@ -107,7 +99,6 @@ function extractFormBuilderMetadata(): FormBuilderMetadata {
     input_aria: { type: "hash" }
   }
 
-  // Merge common props with kit-specific props for each field
   fields.forEach((field) => {
     field.props = { ...commonProps, ...field.props }
   })
@@ -145,7 +136,6 @@ function main() {
   console.log("Extracting form builder metadata...")
   const metadata = extractFormBuilderMetadata()
 
-  // Save to a JSON file
   const outputPath = path.join(__dirname, "../data/form-builders.json")
   fs.writeFileSync(outputPath, JSON.stringify(metadata, null, 2), "utf-8")
 

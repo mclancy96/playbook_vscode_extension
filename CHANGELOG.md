@@ -5,6 +5,27 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.26] - 2026-02-11
+
+### Fixed
+
+- **Warning Squiggle Placement** 🎯
+  - Fixed issue where warning squiggles appeared at incorrect positions for unknown props in both Rails and React components
+  - **Rails**: Previously, warnings like "Unknown prop 'text_transform'" would underline the wrong characters (e.g., `ge", margin_le` instead of `text_transform`)
+  - **React**: Previously, warnings in components like `<Flex justify="right">` would appear at the wrong position (under `<Flex` instead of under the invalid value)
+  - Root cause: Character position calculation didn't account for the offset created when extracting component blocks
+  - Now correctly tracks and applies the starting character offset when converting prop positions to document coordinates
+  - Affects all Rails and React component prop validation warnings
+  - Added 8 new regression tests (5 for Rails, 3 for React) to prevent future positioning bugs
+
+### Added
+
+- **Hardcoded Global Props Support** ✨
+  - Added `id` and `key` as hardcoded global props that are always allowed on all components
+  - These props bypass metadata lookup and are validated regardless of what's in the metadata file
+  - Ensures React's `key` prop and standard `id` prop are always recognized without needing extraction from source
+  - Complements the existing global props system extracted from TypeScript definitions
+
 ## [1.0.25] - 2026-02-11
 
 ### Fixed
@@ -25,7 +46,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
     ```tsx
     <Flex height="100%" justify="evenly">
-      <Title size={3} text="Hello" />  // "size" and "text" were incorrectly flagged as unknown props for Flex
+      <Title size={3} text="Hello" />
     </Flex>
     ```
 
