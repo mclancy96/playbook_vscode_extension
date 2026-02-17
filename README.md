@@ -27,14 +27,6 @@ Developer experience enhancements for the [Playbook UI](https://github.com/power
 - `pbImport` → Import statement for any component
 - ...and 140+ more!
 
-**Smart Features:**
-
-- ✅ Enum prop values with IntelliSense (e.g., `variant: primary|secondary|link`)
-- ✅ Boolean props with true/false suggestions
-- ✅ Default values pre-filled when available
-- ✅ Automatic detection of block/children components
-- ✅ Tab stops for easy navigation between props
-
 ### 📚 Hover Documentation
 
 **Inline documentation as you code**
@@ -117,12 +109,6 @@ Errors appear as:
 3. Search for **"Playbook UI Helper"**
 4. Click **Install**
 
-### From Command Line
-
-```bash
-code --install-extension clancytools.playbook-vscode
-```
-
 ### Auto-Activation
 
 The extension automatically activates when you open:
@@ -176,62 +162,6 @@ The extension automatically activates when you open:
 - JavaScript React (`.jsx`)
 - TypeScript React (`.tsx`)
 
-## Tips & Tricks
-
-### Multi-line Props
-
-The extension works seamlessly with multi-line prop declarations:
-
-```erb
-<%= pb_rails("card", props: {
-  padding: "md",
-  margin_top: "lg",
-  dark: true,
-  border_radius: "md"
-}) %>
-```
-
-### Global Props
-
-These props work on **every** component:
-
-- **Spacing**: `padding`, `margin`, `padding_top`, `margin_bottom`, etc.
-- **Layout**: `display`, `position`, `vertical_align`, `text_align`
-- **Flexbox**: `flex_direction`, `align_items`, `justify_content`, `gap`
-- **Styling**: `dark`, `shadow`, `border_radius`, `cursor`, `background`
-- **Responsive**: All spacing and layout props support responsive breakpoints
-
-### Special Props
-
-Some props accept any value and won't show validation errors:
-
-- `id` - Element IDs
-- `data` - Data attributes
-- `aria` - ARIA attributes
-- `html_options` - Additional HTML options
-- `children` - Component children
-- `style` - Inline styles
-
-## Troubleshooting
-
-### Autocomplete Not Showing?
-
-- Press `Ctrl+Space` to manually trigger
-- Make sure you're inside a Playbook component
-- Check that file extension is `.erb`, `.rb`, `.jsx`, or `.tsx`
-
-### Validation Warnings?
-
-- Check the spelling of prop names
-- Verify enum values match valid options (hover to see them)
-- Variables and method calls won't trigger warnings, only quoted strings
-
-### Snippets Not Working?
-
-- Make sure you're typing the full prefix (e.g., `pb_button` not just `button`)
-- Press Tab after typing the prefix
-- Check that IntelliSense is enabled in VS Code settings
-
 ## Links
 
 - [Playbook UI Documentation](https://playbook.powerhrg.com/)
@@ -244,7 +174,6 @@ Some props accept any value and won't show validation errors:
 For questions or issues:
 
 - [GitHub Issues](https://github.com/ClancyTools/playbook_vscode_extension/issues)
-- Internal Slack: **#playbook-ui**
 
 ## License
 
