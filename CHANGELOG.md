@@ -5,6 +5,10 @@ All notable changes to the Playbook UI VS Code extension will be documented in t
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.29] - 2026-02-17
+
+- **Touchup README Again**
+
 ## [1.0.28] - 2026-02-17
 
 - **Touchup README**

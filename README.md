@@ -92,19 +92,18 @@ Errors appear as:
 - Problems panel entries with helpful messages
 - Suggestions for valid values
 
-### 🔗 Jump to Documentation
-
-**Quick access to component docs**
-
-- **Cmd+Click** (Mac) or **Ctrl+Click** (Windows) on any component name
-- Or press **F12** / use "Go to Definition"
-- Opens the official Playbook documentation in your browser
-
 ## Installation
 
 ### From VS Code Marketplace
 
 1. Open VS Code
+2. Press `Cmd+Shift+X` (Mac) or `Ctrl+Shift+X` (Windows/Linux)
+3. Search for **"Playbook UI Helper"**
+4. Click **Install**
+
+### From Cursor Marketplace
+
+1. Open Cursor
 2. Press `Cmd+Shift+X` (Mac) or `Ctrl+Shift+X` (Windows/Linux)
 3. Search for **"Playbook UI Helper"**
 4. Click **Install**
