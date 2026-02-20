@@ -11,7 +11,6 @@ const SNIPPETS_DIR = path.join(OUTPUT_DIR, "snippets")
 const DATA_DIR = path.join(OUTPUT_DIR, "data")
 const WHITELIST_PATH = path.join(OUTPUT_DIR, "snippet-whitelist.json")
 
-// Load snippet whitelist
 let SNIPPET_WHITELIST: any = { rails: {}, react: {} }
 if (fs.existsSync(WHITELIST_PATH)) {
   SNIPPET_WHITELIST = JSON.parse(fs.readFileSync(WHITELIST_PATH, "utf-8"))
@@ -423,7 +422,6 @@ function parsePropLine(line: string): PropDefinition | null {
       .filter((v) => v && v !== "nil" && v.length > 0)
   }
 
-  // Only check for explicit required: true in Ruby definition
   const requiredMatch = rest.match(/required:\s*true/)
   if (requiredMatch) {
     prop.required = true
@@ -564,7 +562,6 @@ function generateERBSnippet(component: ComponentMetadata): any {
   const propLines: string[] = []
   let tabIndex = 1
 
-  // First, add all required props (from Ruby definition)
   const requiredProps = props.filter((p) => p.required)
   for (const prop of requiredProps) {
     if (prop.values && prop.values.length > 0) {
@@ -578,14 +575,13 @@ function generateERBSnippet(component: ComponentMetadata): any {
     tabIndex++
   }
 
-  // Then, add whitelisted optional props
   const whitelistedProps = SNIPPET_WHITELIST.rails[name] || []
   if (whitelistedProps.length > 0) {
     for (const whitelistItem of whitelistedProps) {
       const propName = whitelistItem.name
       const prop = props.find((p) => p.name === propName)
 
-      if (!prop || prop.required) continue // Skip if already added as required
+      if (!prop || prop.required) continue
 
       if (whitelistItem.placeholder !== null && whitelistItem.placeholder !== "") {
         propLines.push(`\t${propName}: "\${${tabIndex}:${whitelistItem.placeholder}}\",`)
@@ -639,7 +635,6 @@ function generateReactSnippet(component: ComponentMetadata): any {
   const propLines: string[] = []
   let tabIndex = 1
 
-  // First, add all required props (from Ruby definition)
   const requiredProps = props.filter((p) => p.required)
   for (const prop of requiredProps) {
     const camelPropName = prop.name.replace(/_([a-z])/g, (_: string, letter: string) =>
@@ -659,14 +654,13 @@ function generateReactSnippet(component: ComponentMetadata): any {
     tabIndex++
   }
 
-  // Then, add whitelisted optional props
   const whitelistedProps = SNIPPET_WHITELIST.react[reactName] || []
   if (whitelistedProps.length > 0) {
     for (const whitelistItem of whitelistedProps) {
       const propName = whitelistItem.name
       const prop = props.find((p) => p.name === propName)
 
-      if (!prop || prop.required) continue // Skip if already added as required
+      if (!prop || prop.required) continue
 
       const camelPropName = propName.replace(/_([a-z])/g, (_: string, letter: string) =>
         letter.toUpperCase()
@@ -876,7 +870,7 @@ function parseReactPropsFromTypeScript(
       props.push({
         name: snakeCaseName,
         type,
-        required: false, // React props are not checked for required status
+        required: false,
         ...(values && { values })
       })
     }
